@@ -193,14 +193,8 @@ let dogs = [
   },
 ];
 
-let dogTemperaments;
-let allTemperaments = [];
-for (const dog of dogs) {
-  dogTemperaments = dog.temperament.replace(/,/g, "").split(" ");
-  for (const temperament of dogTemperaments) {
-    allTemperaments.includes(temperament) || allTemperaments.push(temperament);
-  }
+let arr = [1, 2, 3];
+for (let i = 4; i < 10; i++) {
+  arr = [...arr, i];
 }
-allTemperaments.sort();
-
-console.log(allTemperaments);
+console.log(arr);

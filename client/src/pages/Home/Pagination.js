@@ -1,20 +1,22 @@
-import { useSelector } from "react-redux";
+const Pagination = ({ pages, setPages }) => {
+  const { totalPages } = pages;
 
-const Pagination = () => {
-  const state = useSelector((state) => state);
-  const { dogsDB, dogsFound, dogsFiltered } = state;
-
-  let dogs;
-
-  dogsFound.length === 0 && dogsFiltered.length === 0
-    ? (dogs = dogsDB)
-    : state.dogsFiltered.length === 0
-    ? (dogs = dogsFound)
-    : (dogs = dogsFiltered);
+  const handleClick = (e) => {
+    setPages({
+      ...pages,
+      pageShowed: e.target.value,
+    });
+    console.log(e.target.value);
+  };
 
   return (
     <>
       <h1>PAGE NUMBERS</h1>
+      {[...Array(totalPages)].map((el, i) => (
+        <button key={i} onClick={handleClick} value={i}>
+          {i + 1}
+        </button>
+      ))}
     </>
   );
 };
