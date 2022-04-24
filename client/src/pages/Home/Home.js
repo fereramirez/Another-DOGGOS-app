@@ -32,7 +32,6 @@ const Home = () => {
 
   return (
     <>
-      <h1>HOME</h1>
       <SearchBar setLoading={setLoading} />
       <CardsContainer loading={loading} />
     </>

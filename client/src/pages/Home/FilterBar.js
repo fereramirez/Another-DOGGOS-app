@@ -2,8 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterDogs, orderDogs } from "../../Redux/actions";
 
+const initialOrder = {
+  by: "name",
+  asc: "asc",
+};
+
 const FilterBar = () => {
-  const initialOrder = { by: "name", asc: "asc" };
   const [order, setOrder] = useState(initialOrder);
 
   const state = useSelector((state) => state);

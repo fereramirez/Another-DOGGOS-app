@@ -26,11 +26,15 @@ const CardsContainer = ({ loading }) => {
     ? (dogs = dogsFound)
     : (dogs = dogsFiltered);
 
+  //!FACU ¿es mala practica dejar la asignacion de arriba fuera de un useEffect?
+
   useEffect(() => {
     setPages({
       ...pages,
+      pageShowed: 0,
       totalPages: Math.ceil(dogs.length / dogsPerPage),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dogs]);
 
   useEffect(() => {
@@ -39,9 +43,8 @@ const CardsContainer = ({ loading }) => {
       indexFirstDogShowed: pageShowed * 12,
       indexLastDogShowed: dogsPerPage + pageShowed * 12,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageShowed]);
-
-  //!FACU ¿es mala practica dejar la asignacion de arriba fuera de un useEffect?
 
   return (
     <div>

@@ -4,9 +4,10 @@ const Card = ({ dogDetails }) => {
   return (
     <>
       <Link to={`/dogdetails/${dogDetails.id}`}>
-        <h3>{dogDetails.name}</h3>
+        <h4>{dogDetails.name}</h4>
       </Link>
-      <h4>{dogDetails.temperament}</h4>
+      <h5>{dogDetails.temperament}</h5>
+      <h5>{dogDetails.weight.imperial}</h5>
       <hr />
     </>
   );
