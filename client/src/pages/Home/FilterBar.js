@@ -44,6 +44,7 @@ const FilterBar = () => {
       }
     }
     allTemperaments.current.sort();
+    allTemperaments.current.unshift(null);
   }, [dogsDB, dogsFound]);
 
   return (

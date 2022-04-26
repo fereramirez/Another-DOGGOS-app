@@ -1,4 +1,6 @@
-/* let state = {
+/*  let state = {
+
+  
   dogsDB: [
     {
       weight: { imperial: "38 - 50", metric: "17 - 23" },
@@ -42,7 +44,7 @@
     },
   ],
   dogsFiltered: [],
-}; */
+}; 
 
 let dogs = [
   {
@@ -198,3 +200,5 @@ for (let i = 4; i < 10; i++) {
   arr = [...arr, i];
 }
 console.log(arr);
+
+ */

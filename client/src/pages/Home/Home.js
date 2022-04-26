@@ -10,8 +10,6 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  //!VOLVER A VER hacer helper para manejar peticiones a API
-
   useEffect(() => {
     setLoading(true);
     fetch(`https://api.thedogapi.com/v1/breeds`, {
