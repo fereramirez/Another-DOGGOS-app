@@ -26,8 +26,6 @@ const CardsContainer = ({ loading }) => {
     ? (dogs = dogsFound)
     : (dogs = dogsFiltered);
 
-  //!FACU ¿es mala practica dejar la asignacion de arriba fuera de un useEffect?
-
   useEffect(() => {
     setPages({
       ...pages,

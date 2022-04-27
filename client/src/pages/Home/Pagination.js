@@ -21,15 +21,17 @@ const Pagination = ({ pages, setPages }) => {
     });
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log(pageShowed);
     let buttons = document.querySelectorAll("button");
     //console.log(buttons[0].disabled);
     //buttons[0].disabled = true;
-  }, []);
+  }, []); */
 
   useEffect(() => {
     let buttons = document.querySelectorAll("button");
+    /*  buttons[0].disabled = true;
+    console.log(buttons[0]); */
     for (const button of buttons) {
       button.value === pageShowed
         ? (button.disabled = true)
