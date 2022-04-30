@@ -28,7 +28,9 @@ const FilterBar = () => {
   }, [order]);
 
   const handleFilter = (e) => {
-    dispatch(filterDogs(e.target.value));
+    let value = e.target.value.toLowerCase();
+    value = value.charAt(0).toUpperCase() + value.slice(1).replace("_", " ");
+    dispatch(filterDogs(value));
   };
   useEffect(() => {
     allTemperaments.current = [];
@@ -61,13 +63,19 @@ const FilterBar = () => {
           {order.by === "name" ? "Z-A" : "More weight"}
         </option>
       </select>
-      <select name="temperament" onChange={handleFilter}>
+      {/* <select name="temperament" onChange={handleFilter}>
         {allTemperaments.current.map((temperament) => (
           <option value={temperament} key={temperament}>
             {temperament}
           </option>
         ))}
-      </select>
+      </select> */}
+      <input list="allTemperaments" onChange={handleFilter} />
+      <datalist id="allTemperaments">
+        {allTemperaments.current.map((temperament) => (
+          <option value={temperament} key={temperament} />
+        ))}
+      </datalist>
     </>
   );
 };

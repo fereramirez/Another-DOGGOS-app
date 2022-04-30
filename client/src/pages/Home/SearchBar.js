@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { noDogs, searchDogs } from "../../Redux/actions";
+import { API_URL_NAME } from "../../Constants";
 
 const { REACT_APP_API_KEY } = process.env;
 
@@ -15,7 +16,7 @@ const SearchBar = ({ setLoading }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch(`https://api.thedogapi.com/v1/breeds/search?q=${form}`, {
+    fetch(`${API_URL_NAME}${form}`, {
       headers: { "x-api-key": `${REACT_APP_API_KEY}` },
     })
       .then((res) => res.json())

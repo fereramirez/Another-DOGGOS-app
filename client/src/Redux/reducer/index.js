@@ -7,12 +7,14 @@ import {
   FILTER_DOGS,
   ORDER_DOGS,
   NO_DOGS,
+  FIRST_LOAD,
 } from "../actions/index.js";
 
 const initialState = {
   dogsDB: [],
   dogsFound: [],
   dogsFiltered: [],
+  isItLoaded: true,
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -53,12 +55,20 @@ export default function rootReducer(state = initialState, action) {
       state.dogsFound.length === 0 ? (dogs = "dogsDB") : (dogs = "dogsFound");
 
       if (action.payload) {
-        return {
-          ...state,
-          dogsFiltered: state[dogs].filter(
-            (dog) => dog.temperament && dog.temperament.includes(action.payload)
-          ),
-        };
+        let dogsAfterFilter = state[dogs].filter(
+          (dog) => dog.temperament && dog.temperament.includes(action.payload)
+        );
+        if (dogsAfterFilter.length) {
+          return {
+            ...state,
+            dogsFiltered: dogsAfterFilter,
+          };
+        } else {
+          return {
+            ...state,
+            dogsFiltered: [null],
+          };
+        }
       } else {
         return {
           ...state,
@@ -106,9 +116,13 @@ export default function rootReducer(state = initialState, action) {
     case NO_DOGS:
       return initialState;
 
+    case FIRST_LOAD:
+      return {
+        ...state,
+        isItLoaded: false,
+      };
+
     default:
       return state;
   }
 }
-
-// reducer;

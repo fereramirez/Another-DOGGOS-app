@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import { getAllDogs, noDogs } from "../../Redux/actions";
+import { API_URL } from "../../Constants";
 
 const { REACT_APP_API_KEY } = process.env;
 
@@ -14,7 +15,7 @@ const DogDetails = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://api.thedogapi.com/v1/breeds`, {
+    fetch(`${API_URL}`, {
       headers: { "x-api-key": `${REACT_APP_API_KEY}` },
     })
       .then((res) => res.json())

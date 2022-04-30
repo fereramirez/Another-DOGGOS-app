@@ -52,10 +52,14 @@ const CardsContainer = ({ loading }) => {
         <>
           <FilterBar />
           <div>
-            {dogs.map((dog, index) =>
-              index >= indexFirstDogShowed && index < indexLastDogShowed ? (
-                <Card dogDetails={dog} key={dog.id} />
-              ) : null
+            {dogs && dogs[0] === null ? (
+              <h1>NOOO</h1>
+            ) : (
+              dogs.map((dog, index) =>
+                index >= indexFirstDogShowed && index < indexLastDogShowed ? (
+                  <Card dogDetails={dog} key={dog.id} />
+                ) : null
+              )
             )}
           </div>
           <Pagination pages={pages} setPages={setPages} />

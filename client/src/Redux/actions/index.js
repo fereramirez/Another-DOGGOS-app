@@ -6,6 +6,7 @@ export const DELETE_DOG = "DELETE_DOG";
 export const FILTER_DOGS = "FILTER_DOGS";
 export const ORDER_DOGS = "ORDER_DOGS";
 export const NO_DOGS = "NO_DOGS";
+export const FIRST_LOAD = "FIRST_LOAD";
 
 export const getAllDogs = (dogs) => {
   return {
@@ -59,5 +60,11 @@ export const orderDogs = (order) => {
 export const noDogs = () => {
   return {
     type: NO_DOGS,
+  };
+};
+
+export const firstLoad = () => {
+  return {
+    type: FIRST_LOAD,
   };
 };

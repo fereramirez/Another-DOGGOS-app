@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Loader from "../../components/Loader";
+import { API_URL } from "../../Constants";
 
 const { REACT_APP_API_KEY } = process.env;
 
@@ -61,21 +62,14 @@ const CreateDog = () => {
     let error = {};
 
     if (!name.trim()) error.name = "Breed name is empty";
-
     if (!min_height) error.min_height = "Minimum height is empty";
-
     if (!max_height) error.max_height = "Maximum height is empty";
-
     if (parseInt(min_height) > parseInt(max_height))
       error.min_height = "Min height can not be higher than max height";
-
     if (!min_weight) error.min_weight = "Minimum weight is empty";
-
     if (!max_weight) error.max_weight = "Maximum weight is empty";
-
     if (parseInt(min_weight) > parseInt(max_weight))
       error.min_weight = "Min weight can not be higher than max weight";
-
     if (!life_span) error.life_span = "Life span is empty";
 
     /* if (temperaments.length < 1 || temperaments.length > 5)
@@ -179,7 +173,7 @@ const CreateDog = () => {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`https://api.thedogapi.com/v1/breeds`, {
+    fetch(`${API_URL}`, {
       headers: { "x-api-key": `${REACT_APP_API_KEY}` },
     })
       .then((res) => res.json())
@@ -265,24 +259,26 @@ const CreateDog = () => {
           <Loader />
         ) : (
           <>
-            <label>Temperaments</label>
-            {focusInfo.temperaments && (
-              <label>Select at least one and at most 5 temperaments</label>
-            )}
-            <select
-              name="temperaments"
-              multiple
-              size="12"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              onFocus={handleFocus}
-            >
-              {allTemperaments.current.map((temperament) => (
-                <option value={temperament} key={temperament}>
-                  {temperament}
-                </option>
-              ))}
-            </select>
+            <label>
+              Temperaments
+              {focusInfo.temperaments && (
+                <label>Select at least one and at most 5 temperaments</label>
+              )}
+              <select
+                name="temperaments"
+                multiple
+                size="12"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                onFocus={handleFocus}
+              >
+                {allTemperaments.current.map((temperament) => (
+                  <option value={temperament} key={temperament}>
+                    {temperament}
+                  </option>
+                ))}
+              </select>
+            </label>
             {temperaments.length > 0 &&
               temperaments.map((temperament) => (
                 <h4 key={temperament}>{temperament}</h4>
