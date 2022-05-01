@@ -36,7 +36,7 @@ const FilterBar = () => {
     allTemperaments.current = [];
     let dogs, dogTemperaments;
     dogsFound.length === 0 ? (dogs = dogsDB) : (dogs = dogsFound);
-
+    //!VOLVER A VER modificar
     for (const dog of dogs) {
       dog.temperament &&
         (dogTemperaments = dog.temperament.replace(/,/g, "").split(" "));
