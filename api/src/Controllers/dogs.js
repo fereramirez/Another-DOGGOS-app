@@ -21,7 +21,7 @@ const getAllDogs = async (req, res, next) => {
 
 const getDogsQuery = async (req, res, next) => {
   const nameQuery = req.query.name;
-  if (!nameQuery) res.send({ error: 400, message: "Name query is empty" });
+  if (!nameQuery) res.send({ error: 400, message: "There is no 'name' query" });
   try {
     const { data: dogsFoundApi } = await axios.get(
       `${API_URL_NAME}${nameQuery}`
@@ -49,9 +49,53 @@ const getDogsQuery = async (req, res, next) => {
   }
 };
 
-const getDog = async (req, res) => {
-  const idRaza = req.params.idRaza;
-  res.send("GET a ruta /dog/:idRaza");
+const getDog = async (req, res, next) => {
+  const idDog = req.params.idDog;
+  if (!idDog)
+    res.send({ error: 400, message: "There is no 'idDog' parameter" });
+  try {
+    let dogFound = null;
+    if (idDog.includes("-")) {
+      dogFound = await Dog.findOne({
+        where: { id: idDog },
+        include: [
+          {
+            model: Temperament,
+            attributes: ["name"],
+            through: { attributes: [] },
+          },
+        ],
+      });
+    } else {
+      const { data: allDogs } = await axios.get(
+        `${API_URL}?api_key=${API_KEY}`
+      );
+      for (const dog of allDogs) {
+        dog.id === parseInt(idDog) ? (dogFound = dog) : null;
+      }
+    }
+    if (dogFound === null) res.send({ error: 404, message: "Dog not found" });
+    const {
+      name,
+      weight,
+      height,
+      life_span,
+      temperament,
+      temperaments,
+      reference_image_id,
+    } = dogFound;
+    res.send({
+      name,
+      weight,
+      height,
+      life_span,
+      temperament,
+      temperaments,
+      reference_image_id,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const createDog = async (req, res, next) => {

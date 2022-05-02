@@ -15,7 +15,7 @@ router.get("/", getAllDogs);
 
 router.get("/search", getDogsQuery);
 
-router.get("/:idRaza", getDog);
+router.get("/:idDog", getDog);
 
 router.post("/", createDog);
 

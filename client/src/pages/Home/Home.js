@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CardsContainer from "./CardsContainer";
 import SearchBar from "./SearchBar";
 import { firstLoad, getAllDogs, noDogs } from "../../Redux/actions/index.js";
-import { API_URL } from "../../Constants";
-
-const { REACT_APP_API_KEY } = process.env;
+import { URL } from "../../Constants";
 
 const Home = () => {
   const isItLoaded = useSelector((state) => state.isItLoaded);
@@ -15,9 +13,7 @@ const Home = () => {
   useEffect(() => {
     // if (isItLoaded) {
     setLoading(true);
-    fetch(`${API_URL}`, {
-      headers: { "x-api-key": `${REACT_APP_API_KEY}` },
-    })
+    fetch(URL)
       .then((res) => res.json())
       .then((json) => {
         dispatch(getAllDogs(json));

@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { noDogs, searchDogs } from "../../Redux/actions";
-import { API_URL_NAME } from "../../Constants";
-
-const { REACT_APP_API_KEY } = process.env;
+import { URL_NAME } from "../../Constants";
 
 const SearchBar = ({ setLoading }) => {
   const [form, setForm] = useState("");
@@ -16,9 +14,7 @@ const SearchBar = ({ setLoading }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch(`${API_URL_NAME}${form}`, {
-      headers: { "x-api-key": `${REACT_APP_API_KEY}` },
-    })
+    fetch(`${URL_NAME}${form}`)
       .then((res) => res.json())
       .then((json) => {
         dispatch(searchDogs(json));

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Loader from "../../components/Loader";
-import { API_URL } from "../../Constants";
+import { URL } from "../../Constants";
 
 const { REACT_APP_API_KEY } = process.env;
 
@@ -173,9 +173,7 @@ const CreateDog = () => {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`${API_URL}`, {
-      headers: { "x-api-key": `${REACT_APP_API_KEY}` },
-    })
+    fetch(`${URL}`)
       .then((res) => res.json())
       .then((dogs) => {
         allTemperaments.current = [];
