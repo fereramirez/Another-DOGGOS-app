@@ -1,5 +1,6 @@
 import {
   GET_ALL_DOGS,
+  GET_DOG,
   SEARCH_DOGS,
   CREATE_DOG,
   EDIT_DOG,
@@ -7,13 +8,13 @@ import {
   FILTER_DOGS,
   ORDER_DOGS,
   NO_DOGS,
-  FIRST_LOAD,
 } from "../actions/index.js";
 
 const initialState = {
-  dogsDB: [],
+  dogsAll: [],
   dogsFound: [],
   dogsFiltered: [],
+  dogDetails: [],
   isItLoaded: true,
 };
 
@@ -23,7 +24,13 @@ export default function rootReducer(state = initialState, action) {
     case GET_ALL_DOGS:
       return {
         ...state,
-        dogsDB: action.payload.map((data) => data),
+        dogsAll: action.payload.map((data) => data),
+      };
+
+    case GET_DOG:
+      return {
+        ...state,
+        dogDetails: action.payload,
       };
 
     case SEARCH_DOGS:
@@ -36,11 +43,11 @@ export default function rootReducer(state = initialState, action) {
     case CREATE_DOG:
       return {
         ...state,
-        dogsDB: [...state.dogsDB, action.payload],
+        dogsAll: [...state.dogsAll, action.payload],
       };
 
     case EDIT_DOG:
-      let newData = state.dogsDB.map((dog) =>
+      let newData = state.dogsAll.map((dog) =>
         dog.id === action.payload.id ? action.payload : dog
       );
       return {
@@ -49,10 +56,10 @@ export default function rootReducer(state = initialState, action) {
       };
 
     case DELETE_DOG:
-      return state.dogsDB.filter((dog) => dog.id !== action.payload);
+      return state.dogsAll.filter((dog) => dog.id !== action.payload);
 
     case FILTER_DOGS:
-      state.dogsFound.length === 0 ? (dogs = "dogsDB") : (dogs = "dogsFound");
+      state.dogsFound.length === 0 ? (dogs = "dogsAll") : (dogs = "dogsFound");
 
       if (action.payload) {
         let dogsAfterFilter = state[dogs].filter(
@@ -80,7 +87,7 @@ export default function rootReducer(state = initialState, action) {
       let dogA, dogB;
 
       state.dogsFound.length === 0 && state.dogsFiltered.length === 0
-        ? (dogs = "dogsDB")
+        ? (dogs = "dogsAll")
         : state.dogsFiltered.length === 0
         ? (dogs = "dogsFound")
         : (dogs = "dogsFiltered");
@@ -115,12 +122,6 @@ export default function rootReducer(state = initialState, action) {
 
     case NO_DOGS:
       return initialState;
-
-    case FIRST_LOAD:
-      return {
-        ...state,
-        isItLoaded: false,
-      };
 
     default:
       return state;

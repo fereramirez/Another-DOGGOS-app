@@ -1,4 +1,5 @@
 export const GET_ALL_DOGS = "GET_ALL_DOGS";
+export const GET_DOG = "GET_DOG";
 export const SEARCH_DOGS = "SEARCH_DOGS";
 export const CREATE_DOG = "CREATE_DOG";
 export const EDIT_DOG = "EDIT_DOG";
@@ -6,12 +7,18 @@ export const DELETE_DOG = "DELETE_DOG";
 export const FILTER_DOGS = "FILTER_DOGS";
 export const ORDER_DOGS = "ORDER_DOGS";
 export const NO_DOGS = "NO_DOGS";
-export const FIRST_LOAD = "FIRST_LOAD";
 
 export const getAllDogs = (dogs) => {
   return {
     type: GET_ALL_DOGS,
     payload: dogs,
+  };
+};
+
+export const getDog = (dog) => {
+  return {
+    type: GET_DOG,
+    payload: dog,
   };
 };
 
@@ -60,11 +67,5 @@ export const orderDogs = (order) => {
 export const noDogs = () => {
   return {
     type: NO_DOGS,
-  };
-};
-
-export const firstLoad = () => {
-  return {
-    type: FIRST_LOAD,
   };
 };

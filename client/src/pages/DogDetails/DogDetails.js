@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
-import { getAllDogs, noDogs } from "../../Redux/actions";
+import { getDog, noDogs } from "../../Redux/actions";
 import { URL } from "../../Constants";
 
 const DogDetails = () => {
@@ -13,12 +13,11 @@ const DogDetails = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${URL}`)
+    fetch(`${URL}${id}`)
       .then((res) => res.json())
       .then((json) => {
-        dispatch(getAllDogs(json));
-        let dog = json.find((dog) => dog.id === parseInt(id));
-        setDetails(dog);
+        dispatch(getDog(json));
+        setDetails(json);
         setLoading(false);
       })
       .catch((err) => {

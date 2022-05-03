@@ -43,7 +43,8 @@ const getDogsQuery = async (req, res, next) => {
     const allDogsResponse = await Promise.all([dogsFoundApi, dogsFoundDb]);
     const [dogsFoundApiResponse, dogsFoundDbResponse] = allDogsResponse;
     const allDogsFound = dogsFoundApiResponse.concat(dogsFoundDbResponse);
-    res.send(allDogsFound);
+    allDogsFound.length > 0 ? res.send(allDogsFound) : res.send([null]);
+    //res.send(allDogsFound);
   } catch (error) {
     next(error);
   }

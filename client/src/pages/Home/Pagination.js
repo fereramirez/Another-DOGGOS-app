@@ -4,17 +4,19 @@ import { useSelector } from "react-redux";
 const Pagination = ({ pages, setPages }) => {
   const { totalPages, pageShowed } = pages;
   const state = useSelector((state) => state);
-  const { dogsDB, dogsFound, dogsFiltered } = state;
+  const { dogsAll, dogsFound, dogsFiltered } = state;
 
   let dogs;
 
   dogsFound.length === 0 && dogsFiltered.length === 0
-    ? (dogs = dogsDB)
+    ? (dogs = dogsAll)
     : dogsFiltered.length === 0
     ? (dogs = dogsFound)
     : (dogs = dogsFiltered);
 
   const handleClick = (e) => {
+    sessionStorage.setItem("pageData", e.target.value);
+
     setPages({
       ...pages,
       pageShowed: e.target.value,
@@ -27,6 +29,17 @@ const Pagination = ({ pages, setPages }) => {
     //console.log(buttons[0].disabled);
     //buttons[0].disabled = true;
   }, []); */
+
+  useEffect(() => {
+    let initialPage = sessionStorage.getItem("pageData") || 0;
+    setPages({
+      ...pages,
+      pageShowed: initialPage,
+    });
+    window.onunload = function () {
+      sessionStorage.removeItem("pageData");
+    };
+  }, []);
 
   useEffect(() => {
     let buttons = document.querySelectorAll("button");

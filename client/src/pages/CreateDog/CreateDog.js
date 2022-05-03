@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Loader from "../../components/Loader";
 import { URL } from "../../Constants";
 
-const { REACT_APP_API_KEY } = process.env;
+//const { REACT_APP_API_KEY } = process.env;
 
 const initialForm = {
   name: "",
