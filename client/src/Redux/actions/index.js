@@ -1,4 +1,5 @@
 export const GET_ALL_DOGS = "GET_ALL_DOGS";
+export const SHOW_DOGS = "SHOW_DOGS";
 export const GET_DOG = "GET_DOG";
 export const SEARCH_DOGS = "SEARCH_DOGS";
 export const CREATE_DOG = "CREATE_DOG";
@@ -12,6 +13,13 @@ export const getAllDogs = (dogs) => {
   return {
     type: GET_ALL_DOGS,
     payload: dogs,
+  };
+};
+
+export const showDogs = (index) => {
+  return {
+    type: SHOW_DOGS,
+    payload: index,
   };
 };
 

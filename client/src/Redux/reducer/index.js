@@ -1,5 +1,6 @@
 import {
   GET_ALL_DOGS,
+  SHOW_DOGS,
   GET_DOG,
   SEARCH_DOGS,
   CREATE_DOG,
@@ -14,8 +15,8 @@ const initialState = {
   dogsAll: [],
   dogsFound: [],
   dogsFiltered: [],
+  dogsShowed: [],
   dogDetails: [],
-  isItLoaded: true,
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -25,6 +26,20 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         dogsAll: action.payload.map((data) => data),
+      };
+
+    case SHOW_DOGS:
+      state.dogsFound.length === 0 && state.dogsFiltered.length === 0
+        ? (dogs = "dogsAll")
+        : state.dogsFiltered.length === 0
+        ? (dogs = "dogsFound")
+        : (dogs = "dogsFiltered");
+      return {
+        ...state,
+        dogsShowed: state[dogs].slice(
+          action.payload.indexFirstDogShowed,
+          action.payload.indexLastDogShowed
+        ),
       };
 
     case GET_DOG:
@@ -63,7 +78,9 @@ export default function rootReducer(state = initialState, action) {
 
       if (action.payload) {
         let dogsAfterFilter = state[dogs].filter(
-          (dog) => dog.temperament && dog.temperament.includes(action.payload)
+          (dog) =>
+            dog.temperament &&
+            dog.temperament.toUpperCase().includes(action.payload.toUpperCase())
         );
         if (dogsAfterFilter.length) {
           return {

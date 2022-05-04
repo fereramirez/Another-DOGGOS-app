@@ -14,17 +14,26 @@ const SearchBar = ({ setLoading }) => {
 
   const handleChange = (e) => {
     setForm(e.target.value);
+    !e.target.value && handleReset();
   };
 
   const handleReset = (e) => {
     setForm("");
+    sessionStorage.setItem("pageData", 0);
+    sessionStorage.setItem("filterData", "");
     sessionStorage.removeItem("searchData");
+    // sessionStorage.setItem("orderByData", "name");
+    // sessionStorage.setItem("orderAscData", "asc");
     dispatch(searchDogs([]));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    sessionStorage.setItem("filterData", "");
+    sessionStorage.setItem("pageData", 0);
     sessionStorage.setItem("searchData", form);
+    // sessionStorage.setItem("orderByData", "name");
+    // sessionStorage.setItem("orderAscData", "asc");
     onbeforeunload = function () {
       sessionStorage.clear();
     };

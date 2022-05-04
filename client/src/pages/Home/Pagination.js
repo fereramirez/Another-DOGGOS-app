@@ -14,39 +14,31 @@ const Pagination = ({ pages, setPages }) => {
     ? (dogs = dogsFound)
     : (dogs = dogsFiltered);
 
-  const handleClick = (e) => {
-    sessionStorage.setItem("pageData", e.target.value);
-
+  const handleClick = ({ target }) => {
+    parseInt(target.value) === 0 && sessionStorage.removeItem("pageData");
+    sessionStorage.setItem("pageData", target.value);
     setPages({
       ...pages,
-      pageShowed: e.target.value,
+      pageShowed: parseInt(target.value),
     });
   };
-
-  /*   useEffect(() => {
-    console.log(pageShowed);
-    let buttons = document.querySelectorAll("button");
-    //console.log(buttons[0].disabled);
-    //buttons[0].disabled = true;
-  }, []); */
 
   useEffect(() => {
     let initialPage = sessionStorage.getItem("pageData") || 0;
     setPages({
       ...pages,
-      pageShowed: initialPage,
+      pageShowed: parseInt(initialPage),
     });
     window.onunload = function () {
       sessionStorage.removeItem("pageData");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     let buttons = document.querySelectorAll("button");
-    /*  buttons[0].disabled = true;
-    console.log(buttons[0]); */
     for (const button of buttons) {
-      button.value === pageShowed
+      parseInt(button.value) === parseInt(pageShowed)
         ? (button.disabled = true)
         : (button.disabled = false);
     }
@@ -59,7 +51,7 @@ const Pagination = ({ pages, setPages }) => {
           key={i}
           onClick={handleClick}
           value={i}
-          disabled={i === pageShowed ? true : false}
+          disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
         >
           {i + 1}
         </button>

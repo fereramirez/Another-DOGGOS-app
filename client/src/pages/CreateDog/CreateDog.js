@@ -30,6 +30,7 @@ const regex = {
 const CreateDog = () => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
+  const [temperamentsArray, setTemperamentsArray] = useState([]);
   const [form, setForm] = useState(initialForm);
   const [focusInfo, setFocusInfo] = useState(initialFocusInfo);
   const [warnForm, setWarnForm] = useState({});
@@ -85,6 +86,14 @@ const CreateDog = () => {
     });
   };
 
+  const deleteTemperament = (temp) => {
+    setForm({
+      ...form,
+      temperaments: temperaments.filter((temperament) => temperament !== temp),
+    });
+    clearTimeout(warnTimeoutId.current);
+  };
+
   const handleChange = ({ target }) => {
     const { name, value, type, validity, pattern } = target;
     let validatedValue;
@@ -112,7 +121,6 @@ const CreateDog = () => {
           ...form,
           [name]: temperaments.filter((temperament) => temperament !== value),
         });
-        setWarnForm({});
       } else if (value && temperaments.length < 5) {
         setForm({
           ...form,
@@ -122,10 +130,10 @@ const CreateDog = () => {
         setWarnForm({
           [name]: "5 temperaments can be selected at most",
         });
-        setTimeout(() => setWarnForm({}), 5000);
+        clearTimeout(warnTimeoutId.current);
+        warnTimeout = () => setTimeout(() => setWarnForm({}), 5000);
+        warnTimeoutId.current = warnTimeout();
       }
-      console.log(temperaments);
-      console.log(value);
       /* } else if (name === "newTemperament") {
       validatedValue = validity.valid ? value : newTemperament;
       setNewTemperament(validatedValue); */
@@ -139,6 +147,7 @@ const CreateDog = () => {
   };
 
   const handleBlur = (e) => {
+    clearTimeout(warnTimeoutId.current);
     setErrors(validateForm());
     setWarnForm({});
     setFocusInfo({
@@ -279,34 +288,39 @@ const CreateDog = () => {
             </label>
             {temperaments.length > 0 &&
               temperaments.map((temperament) => (
-                <h4 key={temperament}>{temperament}</h4>
+                <div key={temperament}>
+                  <h4>{temperament}</h4>
+                  <span onClick={() => deleteTemperament(temperament)}>x</span>
+                </div>
               ))}
             {warnForm.temperaments && <p>{warnForm.temperaments}</p>}
             {showErrors && errors.temperaments && <p>{errors.temperaments}</p>}
             <br />
-            {/* <button onClick={customTemperament}>Add custom temperament</button>
+            <>
+              {/* <button onClick={customTemperament}>Add custom temperament</button>
             {addTemperament && (
               <input
-                type="text"
-                name="newTemperament"
-                placeholder="Enter new temperament"
-                pattern={regex.name}
+              type="text"
+              name="newTemperament"
+              placeholder="Enter new temperament"
+              pattern={regex.name}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={newTemperament}
-              />
-            )} */}
-            {/* {temperaments.includes("Add custom temperament") && (
+                />
+              )} */}
+              {/* {temperaments.includes("Add custom temperament") && (
               <input
-                type="text"
+              type="text"
                 name="newTemperament"
                 placeholder="Enter new temperament"
                 pattern={regex.name}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={newTemperament}
-              />
-            )} */}
+                />
+              )} */}
+            </>
           </>
         )}
         <input type="submit" value="Create breed" />
