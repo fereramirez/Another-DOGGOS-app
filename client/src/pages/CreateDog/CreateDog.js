@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Loader from "../../components/Loader";
 import { URL } from "../../Constants";
+import axios from "axios";
 
 //const { REACT_APP_API_KEY } = process.env;
 
@@ -13,6 +14,13 @@ const initialForm = {
   life_span: "",
   temperaments: [],
 };
+/* const initialForm = {
+  name: "",
+  height: "",
+  weight: "",
+  life_span: "",
+  temperament: "",
+}; */
 const initialFocusInfo = {
   name: false,
   min_height: false,
@@ -30,8 +38,8 @@ const regex = {
 const CreateDog = () => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
-  const [temperamentsArray, setTemperamentsArray] = useState([]);
   const [form, setForm] = useState(initialForm);
+  // const [form, setform] = useState(initialForm);
   const [focusInfo, setFocusInfo] = useState(initialFocusInfo);
   const [warnForm, setWarnForm] = useState({});
   const [errors, setErrors] = useState({});
@@ -39,6 +47,7 @@ const CreateDog = () => {
   // const [addTemperament, setAddTemperament] = useState(false);
   // const [newTemperament, setNewTemperament] = useState("");
   let allTemperaments = useRef([]);
+  //let temperamentsToString = useRef("");
   let warnTimeout;
   let warnTimeoutId = useRef();
 
@@ -166,12 +175,17 @@ const CreateDog = () => {
     setErrors(validateForm());
     if (Object.keys(errors).length === 0 && !Object.values(form).includes("")) {
       setLoading(true);
-      handleReset();
-      setLoading(false);
-      setResponse(true);
-      setTimeout(() => setResponse(false), 5000);
-      setShowErrors(false);
-      setErrors(validateForm());
+      axios
+        .post(URL, form)
+        .then((res) => {
+          handleReset();
+          setLoading(false);
+          setResponse(true);
+          setTimeout(() => setResponse(false), 5000);
+          setShowErrors(false);
+          setErrors(validateForm());
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -182,9 +196,9 @@ const CreateDog = () => {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`${URL}`)
-      .then((res) => res.json())
-      .then((dogs) => {
+    axios
+      .get(URL)
+      .then(({ data: dogs }) => {
         allTemperaments.current = [];
         let dogTemperaments;
         for (const dog of dogs) {
@@ -209,6 +223,50 @@ const CreateDog = () => {
     setErrors(validateForm());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
+
+  /*   useEffect(() => {
+    for (let i = 0; i < temperaments.length; i++) {
+      i === 0
+        ? (temperamentsToString.current = `${temperaments[i]}`)
+        : (temperamentsToString.current = `${temperamentsToString.current}, ${temperaments[i]}`);
+    }
+  }, [temperaments]);
+
+  useEffect(() => {
+    setform({
+      ...form,
+      name,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name]);
+  useEffect(() => {
+    setform({
+      ...form,
+      height: `${min_height} - ${max_height}`,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [min_height, max_height]);
+  useEffect(() => {
+    setform({
+      ...form,
+      weight: `${min_weight} - ${max_weight}`,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [min_weight, max_weight]);
+  useEffect(() => {
+    setform({
+      ...form,
+      life_span,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [life_span]);
+  useEffect(() => {
+    setform({
+      ...form,
+      temperament: temperamentsToString.current,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [temperamentsToString.current]); */
 
   return (
     <>
@@ -255,6 +313,13 @@ const CreateDog = () => {
                 value={form[inputName]}
                 autoComplete="off"
               />
+              {inputName.includes("height") ? (
+                <span>cms.</span>
+              ) : inputName.includes("weight") ? (
+                <span>kgs.</span>
+              ) : (
+                <span>years</span>
+              )}
               {warnForm[inputName] && <p>{warnForm[inputName]}</p>}
               {showErrors && errors[inputName] && <p>{errors[inputName]}</p>}
               <br />

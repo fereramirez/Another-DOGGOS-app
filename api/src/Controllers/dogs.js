@@ -32,13 +32,13 @@ const getDogsQuery = async (req, res, next) => {
           [Op.iLike]: `%${nameQuery}%`,
         },
       },
-      include: [
+      /* include: [
         {
           model: Temperament,
           attributes: ["name"],
           through: { attributes: [] },
         },
-      ],
+      ], */
     });
     const allDogsResponse = await Promise.all([dogsFoundApi, dogsFoundDb]);
     const [dogsFoundApiResponse, dogsFoundDbResponse] = allDogsResponse;
@@ -59,13 +59,13 @@ const getDog = async (req, res, next) => {
     if (idDog.includes("-")) {
       dogFound = await Dog.findOne({
         where: { id: idDog },
-        include: [
+        /* include: [
           {
             model: Temperament,
             attributes: ["name"],
             through: { attributes: [] },
           },
-        ],
+        ], */
       });
     } else {
       const { data: allDogs } = await axios.get(
@@ -82,7 +82,7 @@ const getDog = async (req, res, next) => {
       height,
       life_span,
       temperament,
-      temperaments,
+      //temperaments,
       reference_image_id,
     } = dogFound;
     res.send({
@@ -91,7 +91,7 @@ const getDog = async (req, res, next) => {
       height,
       life_span,
       temperament,
-      temperaments,
+      // temperaments,
       reference_image_id,
     });
   } catch (error) {
@@ -101,11 +101,34 @@ const getDog = async (req, res, next) => {
 
 const createDog = async (req, res, next) => {
   if (!req.body) res.send({ error: 400, message: "The body is empty" });
-  const { temperaments } = req.body;
-  const newDog = { ...req.body, id: uuidv4() };
+  const {
+    name,
+    min_height,
+    max_height,
+    min_weight,
+    max_weight,
+    life_span,
+    temperaments,
+  } = req.body;
+  let temperamentsToString = "";
+
+  for (let i = 0; i < temperaments.length; i++) {
+    i === 0
+      ? (temperamentsToString = `${temperaments[i]}`)
+      : (temperamentsToString = `${temperamentsToString}, ${temperaments[i]}`);
+  }
+
+  const newDog = {
+    name,
+    height: { imperial: `${min_height} - ${max_height}` },
+    weight: { imperial: `${min_weight} - ${max_weight}` },
+    life_span: `${life_span} years`,
+    temperament: temperamentsToString,
+    id: uuidv4(),
+  };
   try {
     const createdDog = await Dog.create(newDog);
-    let temperamentsPromises = [];
+    /* let temperamentsPromises = [];
     for (let temperament of temperaments) {
       temperamentsPromises.push(
         Temperament.findOrCreate({
@@ -124,7 +147,7 @@ const createDog = async (req, res, next) => {
       tempsToAdd.push(el[0].dataValues.id);
     });
     await createdDog.addTemperament(tempsToAdd);
-
+ */
     return res.send(createdDog);
   } catch (error) {
     next(error);

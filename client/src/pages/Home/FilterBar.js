@@ -6,26 +6,63 @@ const initialOrder = {
   by: "name",
   asc: "asc",
 };
+const initialFilter = {
+  temperament: "",
+  api: true,
+  own: true,
+};
 
 const FilterBar = ({ pages, setPages }) => {
   const [order, setOrder] = useState(initialOrder);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState(initialFilter);
 
   const state = useSelector((state) => state);
-  const { dogsAll, dogsFound, dogsFiltered, dogsShowed } = state;
+  const { dogsAll, dogsFound, dogsFiltered } = state;
   const dispatch = useDispatch();
   let allTemperaments = useRef([]);
   const { indexFirstDogShowed, indexLastDogShowed } = pages;
 
+  const handleChecked = ({ target }) => {
+    setFilter({
+      ...filter,
+      [target.name]: !filter[target.name],
+    });
+  };
+
   useEffect(() => {
-    let initialFilter = sessionStorage.getItem("filterData") || "";
+    let filterData = {
+      temperament: "",
+      api: "true",
+      own: "true",
+    };
+    filterData.temperament =
+      sessionStorage.getItem("filterTemperamentData") || "";
+    filterData.api = sessionStorage.getItem("filterApiData") || "true";
+    filterData.own = sessionStorage.getItem("filterOwnData") || "true";
+
     let orderData = {
       by: "name",
       asc: "asc",
     };
     orderData.by = sessionStorage.getItem("orderByData");
     orderData.asc = sessionStorage.getItem("orderAscData");
-    setFilter(initialFilter);
+
+    if (
+      filterData.temperament !== initialFilter.temperament ||
+      filterData.api !== "true" ||
+      filterData.own !== "true"
+    ) {
+      setFilter({
+        temperament: filterData.temperament,
+        api: filterData.api === "true" ? true : false,
+        own: filterData.own === "true" ? true : false,
+      });
+    } else {
+      sessionStorage.removeItem("filterTemperamentData");
+      sessionStorage.removeItem("filterApiData");
+      sessionStorage.removeItem("filterOwnData");
+    }
+
     if (
       orderData.by !== initialOrder.by ||
       orderData.asc !== initialOrder.asc
@@ -58,7 +95,10 @@ const FilterBar = ({ pages, setPages }) => {
 
   const handleChange = ({ target }) => {
     if (target.validity.valid) {
-      setFilter(target.value);
+      setFilter({
+        ...filter,
+        temperament: target.value,
+      });
       sessionStorage.setItem("pageData", 0);
     }
   };
@@ -67,8 +107,21 @@ const FilterBar = ({ pages, setPages }) => {
     allTemperaments.current = [];
     let dogs, dogTemperaments;
     dogsFound.length === 0 ? (dogs = dogsAll) : (dogs = dogsFound);
-    let initialFilter = sessionStorage.getItem("filterData") || "";
-    setFilter(initialFilter);
+
+    let filterData = {
+      temperament: "",
+      api: "true",
+      own: "true",
+    };
+    filterData.temperament =
+      sessionStorage.getItem("filterTemperamentData") || "";
+    filterData.api = sessionStorage.getItem("filterApiData") || "true";
+    filterData.own = sessionStorage.getItem("filterOwnData") || "true";
+    setFilter({
+      temperament: filterData.temperament,
+      api: filterData.api === "true" ? true : false,
+      own: filterData.own === "true" ? true : false,
+    });
 
     //!VOLVER A VER modificar
     for (const dog of dogs) {
@@ -80,11 +133,14 @@ const FilterBar = ({ pages, setPages }) => {
       }
     }
     allTemperaments.current.sort();
-    allTemperaments.current.unshift(null);
+    // allTemperaments.current.unshift(null);
   }, [dogsAll, dogsFound]);
 
-  const handleReset = () => {
-    setFilter("");
+  const handleResetTemperament = () => {
+    setFilter({
+      ...filter,
+      temperament: "",
+    });
     sessionStorage.setItem("pageData", 0);
     setPages({
       ...pages,
@@ -93,45 +149,75 @@ const FilterBar = ({ pages, setPages }) => {
   };
 
   useEffect(() => {
-    filter
-      ? sessionStorage.setItem("filterData", filter)
-      : sessionStorage.removeItem("filterData");
+    dispatch(filterDogs(filter));
+
+    filter.temperament
+      ? sessionStorage.setItem("filterTemperamentData", filter.temperament)
+      : sessionStorage.removeItem("filterTemperamentData");
+    sessionStorage.setItem("filterApiData", filter.api);
+    sessionStorage.setItem("filterOwnData", filter.own);
+
     window.onbeforeunload = function () {
       sessionStorage.clear();
     };
-    dispatch(filterDogs(filter));
+    console.log(typeof filter.api);
+    console.log(filter.api);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
-  useEffect(() => {
-    if (dogsFiltered.length === 0 && filter) dispatch(filterDogs(filter));
+  /*  useEffect(() => {
+    if (dogsFiltered.length === 0 && filter.temperament)
+      dispatch(filterDogs(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dogsFiltered]);
+  }, [dogsFiltered]); */
 
   return (
     <>
-      <select
-        name="by"
-        onChange={handleOrder}
-        //  defaultValue="name"
-        value={order.by}
-      >
-        <option value="name">By name</option>
-        <option value="weight">By weight</option>
-      </select>
-      <select
-        name="asc"
-        onChange={handleOrder}
-        // defaultValue="asc"
-        value={order.asc}
-      >
-        <option value="asc">
-          {order.by === "name" ? "A-Z" : "Less weight"}
-        </option>
-        <option value="desc">
-          {order.by === "name" ? "Z-A" : "More weight"}
-        </option>
-      </select>
+      <label>
+        <input
+          name="api"
+          type="checkbox"
+          checked={filter.api}
+          // defaultChecked={filter.api}
+          onChange={handleChecked}
+        />
+        API dogs
+      </label>
+      <label>
+        <input
+          name="own"
+          type="checkbox"
+          checked={filter.own}
+          //defaultChecked={filter.own}
+          onChange={handleChecked}
+        />
+        Own dogs
+      </label>
+      <div>
+        <span>Order by </span>
+        <select
+          name="by"
+          onChange={handleOrder}
+          //  defaultValue="name"
+          value={order.by}
+        >
+          <option value="name">Name</option>
+          <option value="weight">Weight</option>
+        </select>
+        <select
+          name="asc"
+          onChange={handleOrder}
+          // defaultValue="asc"
+          value={order.asc}
+        >
+          <option value="asc">
+            {order.by === "name" ? "A-Z" : "Less weight"}
+          </option>
+          <option value="desc">
+            {order.by === "name" ? "Z-A" : "More weight"}
+          </option>
+        </select>
+      </div>
       {/* <select name="temperament" onChange={handleFilter}>
         {allTemperaments.current.map((temperament) => (
           <option value={temperament} key={temperament}>
@@ -139,21 +225,24 @@ const FilterBar = ({ pages, setPages }) => {
           </option>
         ))}
       </select> */}
-      <input
-        name="filter"
-        placeholder="Filter by temperament"
-        pattern="^[A-Za-zÑñÁáÉéÍíÓóÚúÜüs]+$"
-        list="allTemperaments"
-        onChange={handleChange}
-        value={filter}
-        autoComplete="off"
-      />
-      <datalist id="allTemperaments">
-        {allTemperaments.current.map((temperament) => (
-          <option value={temperament} key={temperament} />
-        ))}
-      </datalist>
-      {filter && <span onClick={handleReset}>x</span>}
+      <div>
+        <span>Filter </span>
+        <input
+          name="temperament"
+          placeholder="by Temperament"
+          pattern="^[A-Za-zÑñÁáÉéÍíÓóÚúÜüs]+$"
+          list="allTemperaments"
+          onChange={handleChange}
+          value={filter.temperament}
+          autoComplete="off"
+        />
+        <datalist id="allTemperaments">
+          {allTemperaments.current.map((temperament) => (
+            <option value={temperament} key={temperament} />
+          ))}
+        </datalist>
+        {filter.temperament && <span onClick={handleResetTemperament}>x</span>}
+      </div>
     </>
   );
 };

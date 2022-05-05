@@ -76,11 +76,13 @@ export default function rootReducer(state = initialState, action) {
     case FILTER_DOGS:
       state.dogsFound.length === 0 ? (dogs = "dogsAll") : (dogs = "dogsFound");
 
-      if (action.payload) {
+      if (action.payload.temperament) {
         let dogsAfterFilter = state[dogs].filter(
           (dog) =>
             dog.temperament &&
-            dog.temperament.toUpperCase().includes(action.payload.toUpperCase())
+            dog.temperament
+              .toUpperCase()
+              .includes(action.payload.temperament.toUpperCase())
         );
         if (dogsAfterFilter.length) {
           return {
