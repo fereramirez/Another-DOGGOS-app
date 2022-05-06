@@ -17,12 +17,22 @@ const Pagination = ({ pages, setPages }) => {
     : (dogs = dogsFiltered);
 
   const handleClick = ({ target }) => {
-    parseInt(target.value) === 0 && sessionStorage.removeItem("pageData");
-    sessionStorage.setItem("pageData", target.value);
-    setPages({
-      ...pages,
-      pageShowed: parseInt(target.value),
-    });
+    if (target.name === "page") {
+      setPages({
+        ...pages,
+        pageShowed: parseInt(target.value),
+      });
+    } else if (target.name === "next") {
+      setPages({
+        ...pages,
+        pageShowed: pages.pageShowed + 1,
+      });
+    } else if (target.name === "previous") {
+      setPages({
+        ...pages,
+        pageShowed: pages.pageShowed - 1,
+      });
+    }
   };
 
   useEffect(() => {
@@ -31,9 +41,6 @@ const Pagination = ({ pages, setPages }) => {
       ...pages,
       pageShowed: parseInt(initialPage),
     });
-    window.onunload = function () {
-      sessionStorage.removeItem("pageData");
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,16 +59,31 @@ const Pagination = ({ pages, setPages }) => {
 
   return (
     <div>
-      {[...Array(total)].map((el, i) => (
-        <button
-          key={i}
-          onClick={handleClick}
-          value={i}
-          disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
-        >
-          {i + 1}
-        </button>
-      ))}
+      {total > 1 && (
+        <>
+          {pageShowed !== 0 && (
+            <button name="previous" onClick={handleClick}>
+              {"<"}
+            </button>
+          )}
+          {[...Array(total)].map((el, i) => (
+            <button
+              name="page"
+              key={i}
+              onClick={handleClick}
+              value={i}
+              disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
+            >
+              {i + 1}
+            </button>
+          ))}
+          {pageShowed !== total - 1 && (
+            <button name="next" onClick={handleClick}>
+              {">"}
+            </button>
+          )}
+        </>
+      )}
     </div>
   );
 };

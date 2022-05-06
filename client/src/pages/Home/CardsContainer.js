@@ -43,6 +43,11 @@ const CardsContainer = ({ loading }) => {
   }, [dogs]);
 
   useEffect(() => {
+    sessionStorage.setItem("pageData", pageShowed);
+    window.onunload = function () {
+      sessionStorage.removeItem("pageData");
+    };
+    pageShowed === 0 && sessionStorage.removeItem("pageData");
     setPages({
       ...pages,
       indexFirstDogShowed: pageShowed * 12,
