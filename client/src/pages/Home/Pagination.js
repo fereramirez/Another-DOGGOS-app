@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { dogsPerPage } from "../../Constants";
 
 const Pagination = ({ pages, setPages }) => {
   const { totalPages, pageShowed } = pages;
   const state = useSelector((state) => state);
   const { dogsAll, dogsFound, dogsFiltered } = state;
+  const [total, setTotal] = useState(totalPages);
 
   let dogs;
 
@@ -24,7 +26,6 @@ const Pagination = ({ pages, setPages }) => {
   };
 
   useEffect(() => {
-    console.log("se monta paginado");
     let initialPage = sessionStorage.getItem("pageData") || 0;
     setPages({
       ...pages,
@@ -45,9 +46,13 @@ const Pagination = ({ pages, setPages }) => {
     }
   }, [pageShowed, dogs]);
 
+  useEffect(() => {
+    setTotal(Math.ceil(dogs.length / dogsPerPage));
+  }, [dogs]);
+
   return (
     <div>
-      {[...Array(totalPages)].map((el, i) => (
+      {[...Array(total)].map((el, i) => (
         <button
           key={i}
           onClick={handleClick}

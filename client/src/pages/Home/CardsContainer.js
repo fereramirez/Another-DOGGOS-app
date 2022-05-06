@@ -5,6 +5,7 @@ import FilterBar from "./FilterBar";
 import { useEffect, useState } from "react";
 import Loader from "../../components/Loader";
 import { showDogs } from "../../Redux/actions";
+import { dogsPerPage } from "../../Constants";
 
 const CardsContainer = ({ loading }) => {
   const state = useSelector((state) => state);
@@ -17,7 +18,6 @@ const CardsContainer = ({ loading }) => {
     ? (dogs = dogsFound)
     : (dogs = dogsFiltered);
 
-  const dogsPerPage = 12;
   const initialPages = {
     totalPages: Math.ceil(dogs.length / dogsPerPage),
     pageShowed: parseInt(sessionStorage.getItem("pageData")) || 0,
@@ -33,11 +33,10 @@ const CardsContainer = ({ loading }) => {
   }, []);
 
   useEffect(() => {
-    console.log("totalPages: " + Math.ceil(dogs.length / dogsPerPage));
     setPages({
       ...pages,
       pageShowed: parseInt(sessionStorage.getItem("pageData")) || 0,
-      totalPages: Math.ceil(dogs.length / dogsPerPage),
+      // totalPages: Math.ceil(dogs.length / dogsPerPage),
     });
     dispatch(showDogs({ indexFirstDogShowed, indexLastDogShowed }));
     // eslint-disable-next-line react-hooks/exhaustive-deps

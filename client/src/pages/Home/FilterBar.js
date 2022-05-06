@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterDogs, orderDogs, showDogs } from "../../Redux/actions";
+import { dogsPerPage } from "../../Constants";
 
 const initialOrder = {
   by: "name",
@@ -150,6 +151,13 @@ const FilterBar = ({ pages, setPages }) => {
 
   useEffect(() => {
     dispatch(filterDogs(filter));
+
+    let dogs;
+    dogsFound.length === 0 && dogsFiltered.length === 0
+      ? (dogs = dogsAll)
+      : dogsFiltered.length === 0
+      ? (dogs = dogsFound)
+      : (dogs = dogsFiltered);
 
     filter.temperament
       ? sessionStorage.setItem("filterTemperamentData", filter.temperament)

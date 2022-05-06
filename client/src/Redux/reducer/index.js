@@ -149,8 +149,8 @@ export default function rootReducer(state = initialState, action) {
               return dogA > dogB ? -1 : dogA < dogB ? 1 : 0;
             }
           } else {
-            dogA = parseInt(a.weight.imperial.split(" ")[0]);
-            dogB = parseInt(b.weight.imperial.split(" ")[0]);
+            dogA = parseInt(a.weight.metric.split(" ")[0]);
+            dogB = parseInt(b.weight.metric.split(" ")[0]);
             if (action.payload.asc === "asc") {
               return dogA - dogB;
             } else {
