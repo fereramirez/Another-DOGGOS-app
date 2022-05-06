@@ -47,7 +47,7 @@ const CardsContainer = ({ loading }) => {
     window.onunload = function () {
       sessionStorage.removeItem("pageData");
     };
-    pageShowed === 0 && sessionStorage.removeItem("pageData");
+    // pageShowed === 0 && sessionStorage.removeItem("pageData");
     setPages({
       ...pages,
       indexFirstDogShowed: pageShowed * 12,

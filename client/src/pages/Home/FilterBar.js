@@ -150,31 +150,31 @@ const FilterBar = ({ pages, setPages }) => {
   };
 
   useEffect(() => {
-    dispatch(filterDogs(filter));
-
-    let dogs;
-    dogsFound.length === 0 && dogsFiltered.length === 0
-      ? (dogs = dogsAll)
-      : dogsFiltered.length === 0
-      ? (dogs = dogsFound)
-      : (dogs = dogsFiltered);
-
-    filter.temperament
-      ? sessionStorage.setItem("filterTemperamentData", filter.temperament)
-      : sessionStorage.removeItem("filterTemperamentData");
     sessionStorage.setItem("filterApiData", filter.api);
     sessionStorage.setItem("filterOwnData", filter.own);
 
     window.onbeforeunload = function () {
       sessionStorage.clear();
     };
+    dispatch(filterDogs(filter));
     setPages({
       ...pages,
       pageShowed: 0,
     });
-    sessionStorage.setItem("pageData", 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [filter.api, filter.own]);
+
+  useEffect(() => {
+    filter.temperament
+      ? sessionStorage.setItem("filterTemperamentData", filter.temperament)
+      : sessionStorage.removeItem("filterTemperamentData");
+    dispatch(filterDogs(filter));
+    setPages({
+      ...pages,
+      pageShowed: 0,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter.temperament]);
 
   /*  useEffect(() => {
     if (dogsFiltered.length === 0 && filter.temperament)
