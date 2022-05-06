@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
-import { noDogs, deleteDog } from "../../Redux/actions";
+import { noDogs, deleteDog, getDog } from "../../Redux/actions";
 import { URL } from "../../Constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -39,6 +39,7 @@ const DogDetails = () => {
       .get(`${URL}${id}`)
       .then(({ data: dog }) => {
         setDetails(dog);
+        dispatch(getDog(dog));
         setLoading(false);
       })
       .catch((err) => {
@@ -46,10 +47,17 @@ const DogDetails = () => {
         dispatch(noDogs());
         setLoading(false);
       });
+
+    return () => {
+      dispatch(getDog({}));
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    navigate("/createdog");
+  };
 
   const handleDelete = (idDelete) => {
     axios.delete(`${URL}${idDelete}`).then((res) => {

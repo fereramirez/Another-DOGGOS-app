@@ -16,6 +16,7 @@ const initialState = {
   dogsFound: [],
   dogsFiltered: [],
   dogsShowed: [],
+  dogDetails: {},
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -41,6 +42,12 @@ export default function rootReducer(state = initialState, action) {
         ),
       };
 
+    case GET_DOG:
+      return {
+        ...state,
+        dogDetails: action.payload,
+      };
+
     case SEARCH_DOGS:
       return {
         ...state,
@@ -55,12 +62,11 @@ export default function rootReducer(state = initialState, action) {
       };
 
     case EDIT_DOG:
-      let newData = state.dogsAll.map((dog) =>
-        dog.id === action.payload.id ? action.payload : dog
-      );
       return {
         ...state,
-        dogDB: newData,
+        dogsAll: state.dogsAll.map((dog) =>
+          dog.id === action.payload.id ? action.payload : dog
+        ),
       };
 
     case DELETE_DOG:

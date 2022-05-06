@@ -142,7 +142,22 @@ const createDog = async (req, res, next) => {
 };
 
 const editDog = async (req, res, next) => {
+  const idDog = req.params.idDog;
+  if (!idDog)
+    res.send({ error: 400, message: "There is no 'idDog' parameter" });
   if (!req.body) res.send({ error: 400, message: "The body is empty" });
+
+  try {
+    dogFound = await Dog.findOne({
+      where: { id: idDog },
+    });
+    console.log(dogFound);
+    if (!dogFound) res.send({ error: 400, message: "No dog found" });
+    const response = await dogFound.update(req.body);
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const deleteDog = async (req, res, next) => {
@@ -153,10 +168,9 @@ const deleteDog = async (req, res, next) => {
     dogFound = await Dog.findOne({
       where: { id: idDog },
     });
-    console.log(dogFound);
-    if (!dogFound) res.send({ error: 400, message: "No dog to delete" });
+    if (!dogFound) res.send({ error: 400, message: "No dog found" });
     await dogFound.destroy();
-    res.send("Eliminado");
+    res.send("Deleted");
   } catch (error) {
     next(error);
   }

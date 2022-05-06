@@ -3,8 +3,8 @@ import Loader from "../../components/Loader";
 import { URL } from "../../Constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { createDog } from "../../Redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { createDog, editDog } from "../../Redux/actions";
 
 const initialForm = {
   name: "",
@@ -31,6 +31,8 @@ const regex = {
 };
 
 const CreateDog = () => {
+  const dogDetails = useSelector((state) => state.dogDetails);
+  const [dogToUpdate, setDogToUpdate] = useState(dogDetails);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -190,19 +192,52 @@ const CreateDog = () => {
         life_span: `${life_span} years`,
         temperament: temperamentsToString,
       };
-      axios
-        .post(URL, newDog)
-        .then((res) => {
-          handleReset();
-          setLoading(false);
-          setResponse(true);
-          setTimeout(() => setResponse(false), 5000);
-          setShowErrors(false);
-          setErrors(validateForm());
-          dispatch(createDog(res.data));
-          navigate("/home");
-        })
-        .catch((err) => console.log(err));
+      if (Object.keys(dogToUpdate).length) {
+        const updatedDog = {};
+        if (dogToUpdate.name !== newDog.name) updatedDog.name = newDog.name;
+        if (dogToUpdate.height.metric !== newDog.height.metric)
+          updatedDog.height.metric = newDog.height.metric;
+        if (dogToUpdate.weight.metric !== newDog.weight.metric)
+          updatedDog.weight.metric = newDog.weight.metric;
+        if (dogToUpdate.life_span !== newDog.life_span)
+          updatedDog.life_span = newDog.life_span;
+        if (dogToUpdate.temperament !== newDog.temperament)
+          updatedDog.temperament = newDog.temperament;
+
+        if (Object.keys(updatedDog).length) {
+          axios
+            .put(`${URL}${dogToUpdate.id}`, updatedDog)
+            .then((res) => {
+              console.log(res);
+              handleReset();
+              setLoading(false);
+              setResponse(true);
+              setTimeout(() => setResponse(false), 5000);
+              setShowErrors(false);
+              setErrors(validateForm());
+              console.log(res.data);
+              dispatch(editDog(res.data));
+              navigate("/home");
+            })
+            .catch((err) => console.log(err));
+        } else {
+          console.log("nooooOOOOO");
+        }
+      } else {
+        axios
+          .post(URL, newDog)
+          .then((res) => {
+            handleReset();
+            setLoading(false);
+            setResponse(true);
+            setTimeout(() => setResponse(false), 5000);
+            setShowErrors(false);
+            setErrors(validateForm());
+            dispatch(createDog(res.data));
+            navigate("/home");
+          })
+          .catch((err) => console.log(err));
+      }
     }
   };
 
@@ -235,10 +270,27 @@ const CreateDog = () => {
         setLoading(false);
       });
 
+    if (Object.keys(dogDetails).length && typeof dogDetails.id === "string") {
+      let dogTemperaments = dogDetails.temperament.replace(/,/g, "").split(" ");
+      let dogHeight = dogDetails.height.metric.replace(/ /g, "").split("-");
+      let dogWeight = dogDetails.weight.metric.replace(/ /g, "").split("-");
+
+      setForm({
+        name: dogDetails.name,
+        min_height: dogHeight[0],
+        max_height: dogHeight[1],
+        min_weight: dogWeight[0],
+        max_weight: dogWeight[1],
+        life_span: dogDetails.life_span.replace(/ years/, ""),
+        temperaments: dogTemperaments,
+      });
+    }
+
     return () => {
       clearTimeout(warnTimeoutId.current);
       setWarnForm({});
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -366,7 +418,14 @@ const CreateDog = () => {
             </>
           </>
         )}
-        <input type="submit" value="Create breed" />
+        <input
+          type="submit"
+          value={
+            dogToUpdate && typeof dogToUpdate.id === "string"
+              ? "Edit breed"
+              : "Create breed"
+          }
+        />
         <button onClick={handleReset}>Reset</button>
         {response && <h1>FORMULARIO ENVIADO</h1>}
       </form>
