@@ -24,6 +24,7 @@ const Pagination = ({ pages, setPages }) => {
   };
 
   useEffect(() => {
+    console.log("se monta paginado");
     let initialPage = sessionStorage.getItem("pageData") || 0;
     setPages({
       ...pages,

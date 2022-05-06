@@ -6,6 +6,7 @@ import CreateDog from "./pages/CreateDog/CreateDog";
 import DogDetails from "./pages/DogDetails/DogDetails";
 import Home from "./pages/Home/Home";
 import LandingPage from "./pages/LandingPage/LandingPage";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
 const App = () => {
   return (
@@ -45,6 +46,15 @@ const App = () => {
             <>
               <NavBar />
               <About />
+            </>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <>
+              <NavBar />
+              <PageNotFound />
             </>
           }
         />

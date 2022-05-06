@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import Loader from "../../components/Loader";
 import { URL } from "../../Constants";
 import axios from "axios";
-
-//const { REACT_APP_API_KEY } = process.env;
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { createDog } from "../../Redux/actions";
 
 const initialForm = {
   name: "",
@@ -14,13 +15,7 @@ const initialForm = {
   life_span: "",
   temperaments: [],
 };
-/* const initialForm = {
-  name: "",
-  height: "",
-  weight: "",
-  life_span: "",
-  temperament: "",
-}; */
+
 const initialFocusInfo = {
   name: false,
   min_height: false,
@@ -36,10 +31,11 @@ const regex = {
 };
 
 const CreateDog = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
   const [form, setForm] = useState(initialForm);
-  // const [form, setform] = useState(initialForm);
   const [focusInfo, setFocusInfo] = useState(initialFocusInfo);
   const [warnForm, setWarnForm] = useState({});
   const [errors, setErrors] = useState({});
@@ -74,16 +70,20 @@ const CreateDog = () => {
     if (!name.trim()) error.name = "Breed name is empty";
     if (!min_height) error.min_height = "Minimum height is empty";
     if (!max_height) error.max_height = "Maximum height is empty";
-    if (parseInt(min_height) > parseInt(max_height))
+    if (parseInt(min_height) > parseInt(max_height)) {
       error.min_height = "Min height can not be higher than max height";
+      error.max_height = "";
+    }
     if (!min_weight) error.min_weight = "Minimum weight is empty";
     if (!max_weight) error.max_weight = "Maximum weight is empty";
-    if (parseInt(min_weight) > parseInt(max_weight))
+    if (parseInt(min_weight) > parseInt(max_weight)) {
       error.min_weight = "Min weight can not be higher than max weight";
+      error.max_weight = "";
+    }
     if (!life_span) error.life_span = "Life span is empty";
 
-    /* if (temperaments.length < 1 || temperaments.length > 5)
-      error.temperaments = "No temperaments selected or created"; */
+    if (temperaments.length < 1)
+      error.temperaments = "No temperaments selected";
 
     return error;
   };
@@ -175,8 +175,23 @@ const CreateDog = () => {
     setErrors(validateForm());
     if (Object.keys(errors).length === 0 && !Object.values(form).includes("")) {
       setLoading(true);
+      let temperamentsToString = "";
+
+      for (let i = 0; i < temperaments.length; i++) {
+        i === 0
+          ? (temperamentsToString = `${temperaments[i]}`)
+          : (temperamentsToString = `${temperamentsToString}, ${temperaments[i]}`);
+      }
+
+      const newDog = {
+        name,
+        height: { metric: `${min_height} - ${max_height}` },
+        weight: { metric: `${min_weight} - ${max_weight}` },
+        life_span: `${life_span} years`,
+        temperament: temperamentsToString,
+      };
       axios
-        .post(URL, form)
+        .post(URL, newDog)
         .then((res) => {
           handleReset();
           setLoading(false);
@@ -184,6 +199,8 @@ const CreateDog = () => {
           setTimeout(() => setResponse(false), 5000);
           setShowErrors(false);
           setErrors(validateForm());
+          dispatch(createDog(res.data));
+          navigate("/home");
         })
         .catch((err) => console.log(err));
     }
@@ -217,56 +234,17 @@ const CreateDog = () => {
         console.log(err);
         setLoading(false);
       });
+
+    return () => {
+      clearTimeout(warnTimeoutId.current);
+      setWarnForm({});
+    };
   }, []);
 
   useEffect(() => {
     setErrors(validateForm());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
-
-  /*   useEffect(() => {
-    for (let i = 0; i < temperaments.length; i++) {
-      i === 0
-        ? (temperamentsToString.current = `${temperaments[i]}`)
-        : (temperamentsToString.current = `${temperamentsToString.current}, ${temperaments[i]}`);
-    }
-  }, [temperaments]);
-
-  useEffect(() => {
-    setform({
-      ...form,
-      name,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name]);
-  useEffect(() => {
-    setform({
-      ...form,
-      height: `${min_height} - ${max_height}`,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [min_height, max_height]);
-  useEffect(() => {
-    setform({
-      ...form,
-      weight: `${min_weight} - ${max_weight}`,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [min_weight, max_weight]);
-  useEffect(() => {
-    setform({
-      ...form,
-      life_span,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [life_span]);
-  useEffect(() => {
-    setform({
-      ...form,
-      temperament: temperamentsToString.current,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [temperamentsToString.current]); */
 
   return (
     <>

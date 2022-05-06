@@ -19,4 +19,8 @@ router.get("/:idDog", getDog);
 
 router.post("/", createDog);
 
+router.delete("/:idDog", deleteDog);
+
+router.put("/:idDog", editDog);
+
 module.exports = router;

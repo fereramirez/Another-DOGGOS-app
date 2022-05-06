@@ -16,7 +16,6 @@ const initialState = {
   dogsFound: [],
   dogsFiltered: [],
   dogsShowed: [],
-  dogDetails: [],
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -42,12 +41,6 @@ export default function rootReducer(state = initialState, action) {
         ),
       };
 
-    case GET_DOG:
-      return {
-        ...state,
-        dogDetails: action.payload,
-      };
-
     case SEARCH_DOGS:
       return {
         ...state,
@@ -71,34 +64,62 @@ export default function rootReducer(state = initialState, action) {
       };
 
     case DELETE_DOG:
-      return state.dogsAll.filter((dog) => dog.id !== action.payload);
+      return {
+        ...state,
+        dogsAll: state.dogsAll.filter((dog) => dog.id !== action.payload),
+      };
 
     case FILTER_DOGS:
       state.dogsFound.length === 0 ? (dogs = "dogsAll") : (dogs = "dogsFound");
+      let dogsAfterFilter;
+
+      if (
+        !action.payload.temperament &&
+        action.payload.own === true &&
+        action.payload.api === true
+      ) {
+        return {
+          ...state,
+          dogsFiltered: [],
+        };
+      }
+
+      if (action.payload.own === true && action.payload.api === false) {
+        dogsAfterFilter = state[dogs].filter(
+          (dog) => dog.id && typeof dog.id !== "number"
+        );
+      } else if (action.payload.own === false && action.payload.api === true) {
+        dogsAfterFilter = state[dogs].filter(
+          (dog) => dog.id && typeof dog.id === "number"
+        );
+      } else if (action.payload.own === true && action.payload.api === true) {
+        dogsAfterFilter = state[dogs];
+      } else if (action.payload.own === false && action.payload.api === false) {
+        return {
+          ...state,
+          dogsFiltered: [null],
+        };
+      }
 
       if (action.payload.temperament) {
-        let dogsAfterFilter = state[dogs].filter(
+        dogsAfterFilter = dogsAfterFilter.filter(
           (dog) =>
             dog.temperament &&
             dog.temperament
               .toUpperCase()
               .includes(action.payload.temperament.toUpperCase())
         );
-        if (dogsAfterFilter.length) {
-          return {
-            ...state,
-            dogsFiltered: dogsAfterFilter,
-          };
-        } else {
-          return {
-            ...state,
-            dogsFiltered: [null],
-          };
-        }
+      }
+
+      if (dogsAfterFilter.length) {
+        return {
+          ...state,
+          dogsFiltered: dogsAfterFilter,
+        };
       } else {
         return {
           ...state,
-          dogsFiltered: [],
+          dogsFiltered: [null],
         };
       }
 

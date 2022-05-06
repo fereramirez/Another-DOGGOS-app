@@ -33,6 +33,7 @@ const CardsContainer = ({ loading }) => {
   }, []);
 
   useEffect(() => {
+    console.log("totalPages: " + Math.ceil(dogs.length / dogsPerPage));
     setPages({
       ...pages,
       pageShowed: parseInt(sessionStorage.getItem("pageData")) || 0,

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import CardsContainer from "./CardsContainer";
 import SearchBar from "./SearchBar";
-import { getAllDogs, noDogs, showDogs } from "../../Redux/actions/index.js";
+import { getAllDogs, noDogs } from "../../Redux/actions/index.js";
 import { URL } from "../../Constants";
-import Loader from "../../components/Loader";
+import axios from "axios";
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
@@ -15,14 +15,13 @@ const Home = () => {
     let notFirstLoad = sessionStorage.getItem("notFirstLoad");
     if (!notFirstLoad) {
       setLoading(true);
-      fetch(URL)
-        .then((res) => res.json())
-        .then((json) => {
-          dispatch(getAllDogs(json));
+      axios
+        .get(URL)
+        .then(({ data: dogs }) => {
+          dispatch(getAllDogs(dogs));
           sessionStorage.setItem("notFirstLoad", true);
           setLoading(false);
         })
-        // .then((dogs) => dispatch(showDogs(0, 12)))
         .catch((err) => {
           console.log(err);
           dispatch(noDogs());

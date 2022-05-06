@@ -44,37 +44,37 @@ const FilterBar = ({ pages, setPages }) => {
       by: "name",
       asc: "asc",
     };
-    orderData.by = sessionStorage.getItem("orderByData");
-    orderData.asc = sessionStorage.getItem("orderAscData");
+    orderData.by = sessionStorage.getItem("orderByData") || "name";
+    orderData.asc = sessionStorage.getItem("orderAscData") || "asc";
 
-    if (
+    /* if (
       filterData.temperament !== initialFilter.temperament ||
       filterData.api !== "true" ||
       filterData.own !== "true"
-    ) {
-      setFilter({
-        temperament: filterData.temperament,
-        api: filterData.api === "true" ? true : false,
-        own: filterData.own === "true" ? true : false,
-      });
-    } else {
+    ) { */
+    setFilter({
+      temperament: filterData.temperament,
+      api: filterData.api === "true" ? true : false,
+      own: filterData.own === "true" ? true : false,
+    });
+    /* } else {
       sessionStorage.removeItem("filterTemperamentData");
       sessionStorage.removeItem("filterApiData");
       sessionStorage.removeItem("filterOwnData");
-    }
+    } */
 
-    if (
+    /* if (
       orderData.by !== initialOrder.by ||
       orderData.asc !== initialOrder.asc
-    ) {
-      setOrder({
-        by: orderData.by,
-        asc: orderData.asc,
-      });
-    } else {
+    ) { */
+    setOrder({
+      by: orderData.by,
+      asc: orderData.asc,
+    });
+    /*   } else {
       sessionStorage.removeItem("orderByData");
       sessionStorage.removeItem("orderAscData");
-    }
+    } */
   }, []);
 
   const handleOrder = (e) => {
@@ -160,8 +160,11 @@ const FilterBar = ({ pages, setPages }) => {
     window.onbeforeunload = function () {
       sessionStorage.clear();
     };
-    console.log(typeof filter.api);
-    console.log(filter.api);
+    setPages({
+      ...pages,
+      pageShowed: 0,
+    });
+    sessionStorage.setItem("pageData", 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 

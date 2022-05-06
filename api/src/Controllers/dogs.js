@@ -12,6 +12,9 @@ const getAllDogs = async (req, res, next) => {
     const dogsMyDb = await Dog.findAll();
     const allDogsResponse = await Promise.all([dogsApi, dogsMyDb]);
     const [dogsApiResponse, dogsMyDbResponse] = allDogsResponse;
+    for (const dog of dogsApiResponse) {
+      if (dog.weight.metric.includes("N")) dog.weight.metric = "15 - 20";
+    }
     const allDogs = dogsApiResponse.concat(dogsMyDbResponse);
     return res.send(allDogs);
   } catch (err) {
@@ -23,8 +26,9 @@ const getDogsQuery = async (req, res, next) => {
   const nameQuery = req.query.name;
   if (!nameQuery) res.send({ error: 400, message: "There is no 'name' query" });
   try {
-    const { data: dogsFoundApi } = await axios.get(
-      `${API_URL_NAME}${nameQuery}`
+    const { data: allDogsApi } = await axios.get(`${API_URL}`);
+    const dogsFoundApi = allDogsApi.filter((dog) =>
+      dog.name.toUpperCase().includes(nameQuery.toUpperCase())
     );
     const dogsFoundDb = await Dog.findAll({
       where: {
@@ -83,7 +87,8 @@ const getDog = async (req, res, next) => {
       life_span,
       temperament,
       //temperaments,
-      reference_image_id,
+      image,
+      id,
     } = dogFound;
     res.send({
       name,
@@ -92,7 +97,8 @@ const getDog = async (req, res, next) => {
       life_span,
       temperament,
       // temperaments,
-      reference_image_id,
+      image,
+      id,
     });
   } catch (error) {
     next(error);
@@ -101,31 +107,12 @@ const getDog = async (req, res, next) => {
 
 const createDog = async (req, res, next) => {
   if (!req.body) res.send({ error: 400, message: "The body is empty" });
-  const {
-    name,
-    min_height,
-    max_height,
-    min_weight,
-    max_weight,
-    life_span,
-    temperaments,
-  } = req.body;
-  let temperamentsToString = "";
-
-  for (let i = 0; i < temperaments.length; i++) {
-    i === 0
-      ? (temperamentsToString = `${temperaments[i]}`)
-      : (temperamentsToString = `${temperamentsToString}, ${temperaments[i]}`);
-  }
 
   const newDog = {
-    name,
-    height: { imperial: `${min_height} - ${max_height}` },
-    weight: { imperial: `${min_weight} - ${max_weight}` },
-    life_span: `${life_span} years`,
-    temperament: temperamentsToString,
+    ...req.body,
     id: uuidv4(),
   };
+
   try {
     const createdDog = await Dog.create(newDog);
     /* let temperamentsPromises = [];
@@ -154,8 +141,26 @@ const createDog = async (req, res, next) => {
   }
 };
 
-const editDog = async (req, res) => {};
-const deleteDog = async (req, res) => {};
+const editDog = async (req, res, next) => {
+  if (!req.body) res.send({ error: 400, message: "The body is empty" });
+};
+
+const deleteDog = async (req, res, next) => {
+  const idDog = req.params.idDog;
+  if (!idDog)
+    res.send({ error: 400, message: "There is no 'idDog' parameter" });
+  try {
+    dogFound = await Dog.findOne({
+      where: { id: idDog },
+    });
+    console.log(dogFound);
+    if (!dogFound) res.send({ error: 400, message: "No dog to delete" });
+    await dogFound.destroy();
+    res.send("Eliminado");
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   getAllDogs,

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { noDogs, searchDogs } from "../../Redux/actions";
 import { URL_NAME } from "../../Constants";
+import axios from "axios";
 
 const SearchBar = ({ setLoading }) => {
   const [form, setForm] = useState("");
@@ -38,10 +39,10 @@ const SearchBar = ({ setLoading }) => {
       sessionStorage.clear();
     };
     setLoading(true);
-    fetch(`${URL_NAME}${form}`)
-      .then((res) => res.json())
-      .then((json) => {
-        dispatch(searchDogs(json));
+    axios
+      .get(`${URL_NAME}${form}`)
+      .then(({ data: dogs }) => {
+        dispatch(searchDogs(dogs));
         setLoading(false);
       })
       .catch((err) => {
