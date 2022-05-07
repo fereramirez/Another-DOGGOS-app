@@ -20,7 +20,17 @@ const getAllTemperaments = async (req, res, next) => {
     allTemperaments.sort();
     allTemperaments.unshift(null);
     res.send(allTemperaments);
-  } catch (error) {
+  } catch (err) {
+    let error = {};
+    if (err.response) {
+      error.message = err.message;
+      error.status = err.response.status;
+    } else if (err.request) {
+      error.message = "Server does not respond";
+      error.status = 504;
+    } else {
+      error.message = "Error " + err.message;
+    }
     next(error);
   }
 };

@@ -18,13 +18,23 @@ const getAllDogs = async (req, res, next) => {
     const allDogs = dogsApiResponse.concat(dogsMyDbResponse);
     return res.send(allDogs);
   } catch (err) {
-    next(err);
+    let error = {};
+    if (err.response) {
+      error.message = err.message;
+      error.status = err.response.status;
+    } else if (err.request) {
+      error.message = "Server does not respond";
+      error.status = 504;
+    } else {
+      error.message = "Error " + err.message;
+    }
+    next(error);
   }
 };
 
 const getDogsQuery = async (req, res, next) => {
   const nameQuery = req.query.name;
-  if (!nameQuery) res.send({ error: 400, message: "There is no 'name' query" });
+  if (!nameQuery) res.status(400).send("There is no 'name' query");
   try {
     const { data: allDogsApi } = await axios.get(`${API_URL}`);
     const dogsFoundApi = allDogsApi.filter((dog) =>
@@ -49,15 +59,24 @@ const getDogsQuery = async (req, res, next) => {
     const allDogsFound = dogsFoundApiResponse.concat(dogsFoundDbResponse);
     allDogsFound.length > 0 ? res.send(allDogsFound) : res.send([null]);
     //res.send(allDogsFound);
-  } catch (error) {
+  } catch (err) {
+    let error = {};
+    if (err.response) {
+      error.message = err.message;
+      error.status = err.response.status;
+    } else if (err.request) {
+      error.message = "Server does not respond";
+      error.status = 504;
+    } else {
+      error.message = "Error " + err.message;
+    }
     next(error);
   }
 };
 
 const getDog = async (req, res, next) => {
   const idDog = req.params.idDog;
-  if (!idDog)
-    res.send({ error: 400, message: "There is no 'idDog' parameter" });
+  if (!idDog) res.status(400).send("There is no 'idDog' parameter");
   try {
     let dogFound = null;
     if (idDog.includes("-")) {
@@ -79,7 +98,7 @@ const getDog = async (req, res, next) => {
         dog.id === parseInt(idDog) ? (dogFound = dog) : null;
       }
     }
-    if (dogFound === null) res.send({ error: 404, message: "Dog not found" });
+    if (!dogFound) res.status(404).send("Dog not found");
     const {
       name,
       weight,
@@ -100,13 +119,23 @@ const getDog = async (req, res, next) => {
       image,
       id,
     });
-  } catch (error) {
+  } catch (err) {
+    let error = {};
+    if (err.response) {
+      error.message = err.message;
+      error.status = err.response.status;
+    } else if (err.request) {
+      error.message = "Server does not respond";
+      error.status = 504;
+    } else {
+      error.message = "Error " + err.message;
+    }
     next(error);
   }
 };
 
 const createDog = async (req, res, next) => {
-  if (!req.body) res.send({ error: 400, message: "The body is empty" });
+  if (!req.body) res.status(400).send("The body is empty");
 
   const newDog = {
     ...req.body,
@@ -143,16 +172,15 @@ const createDog = async (req, res, next) => {
 
 const editDog = async (req, res, next) => {
   const idDog = req.params.idDog;
-  if (!idDog)
-    res.send({ error: 400, message: "There is no 'idDog' parameter" });
-  if (!req.body) res.send({ error: 400, message: "The body is empty" });
+  if (!idDog) res.status(400).send("There is no 'idDog' parameter");
+  if (!req.body) res.status(400).send("The body is empty");
 
   try {
     dogFound = await Dog.findOne({
       where: { id: idDog },
     });
     console.log(dogFound);
-    if (!dogFound) res.send({ error: 400, message: "No dog found" });
+    if (!dogFound) res.status(404).send("Dog not found");
     const response = await dogFound.update(req.body);
     res.send(response);
   } catch (error) {
@@ -162,13 +190,12 @@ const editDog = async (req, res, next) => {
 
 const deleteDog = async (req, res, next) => {
   const idDog = req.params.idDog;
-  if (!idDog)
-    res.send({ error: 400, message: "There is no 'idDog' parameter" });
+  if (!idDog) res.status(400).send("There is no 'idDog' parameter");
   try {
     dogFound = await Dog.findOne({
       where: { id: idDog },
     });
-    if (!dogFound) res.send({ error: 400, message: "No dog found" });
+    if (!dogFound) res.status(404).send("Dog not found");
     await dogFound.destroy();
     res.send("Deleted");
   } catch (error) {
