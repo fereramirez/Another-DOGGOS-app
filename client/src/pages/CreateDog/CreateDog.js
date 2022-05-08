@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Loader from "../../components/Loader";
+import Error from "../../components/Error";
 import { URL } from "../../Constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -35,8 +36,9 @@ const CreateDog = () => {
   const [dogToUpdate, setDogToUpdate] = useState(dogDetails);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
+  //const [response, setResponse] = useState(null);
   const [form, setForm] = useState(initialForm);
   const [focusInfo, setFocusInfo] = useState(initialFocusInfo);
   const [warnForm, setWarnForm] = useState({});
@@ -208,35 +210,49 @@ const CreateDog = () => {
           axios
             .put(`${URL}${dogToUpdate.id}`, updatedDog)
             .then((res) => {
-              console.log(res);
               handleReset();
-              setLoading(false);
-              setResponse(true);
-              setTimeout(() => setResponse(false), 5000);
+              //  setResponse(true);
+              //  setTimeout(() => setResponse(false), 5000);
               setShowErrors(false);
               setErrors(validateForm());
-              console.log(res.data);
               dispatch(editDog(res.data));
               navigate("/home");
+            }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
+            .catch((err) => {
+              if (err.response) {
+                setError(`${err.message}: ${err.response.statusText}`);
+              } else if (err.request) {
+                setError("Server does not respond");
+              } else {
+                setError("Error " + err.message);
+              }
             })
-            .catch((err) => console.log(err));
+            .finally(() => setLoading(false));
         } else {
-          console.log("nooooOOOOO");
+          setError("The breed was not edited"); //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
         }
       } else {
         axios
           .post(URL, newDog)
           .then((res) => {
             handleReset();
-            setLoading(false);
-            setResponse(true);
-            setTimeout(() => setResponse(false), 5000);
+            //   setResponse(true);
+            //   setTimeout(() => setResponse(false), 5000);
             setShowErrors(false);
             setErrors(validateForm());
             dispatch(createDog(res.data));
             navigate("/home");
-          })
-          .catch((err) => console.log(err));
+          }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
+          .catch((err) => {
+            if (err.response) {
+              setError(`${err.message}: ${err.response.statusText}`);
+            } else if (err.request) {
+              setError("Server does not respond");
+            } else {
+              setError("Error " + err.message);
+            }
+          }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
+          .finally(() => setLoading(false));
       }
     }
   };
@@ -263,12 +279,17 @@ const CreateDog = () => {
         }
         allTemperaments.current.sort();
         //allTemperaments.current.unshift("Add custom temperament");
-        setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+        if (err.response) {
+          setError(`${err.message}: ${err.response.statusText}`);
+        } else if (err.request) {
+          setError("Server does not respond");
+        } else {
+          setError("Error " + err.message);
+        }
+      })
+      .finally(() => setLoading(false));
 
     if (Object.keys(dogDetails).length && typeof dogDetails.id === "string") {
       let dogTemperaments = dogDetails.temperament.replace(/,/g, "").split(" ");
@@ -300,99 +321,111 @@ const CreateDog = () => {
 
   return (
     <>
-      <h1>CREATE</h1>
-      <form onSubmit={handleSubmit}>
+      {error ? (
+        <Error message={error} />
+      ) : (
         <>
-          {focusInfo.name && <label>Enter the breed name</label>}
-          <input
-            type="text"
-            name="name"
-            placeholder="Breed name"
-            pattern={regex.name}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            value={name}
-            autoComplete="off"
-          />
-          {warnForm.name && <p>{warnForm.name}</p>}
-          {showErrors && errors.name && <p>{errors.name}</p>} <br />
-          <br />
-          {arrForRender.map((inputName) => (
-            <div key={inputName}>
-              {focusInfo[inputName] && (
-                <label>
-                  Enter the{" "}
-                  {inputName
-                    .replace("_", " ")
-                    .replace("min", "minimum")
-                    .replace("max", "maximum")}
-                </label>
-              )}
+          <h1>CREATE</h1>
+          <form onSubmit={handleSubmit}>
+            <>
+              {focusInfo.name && <label>Enter the breed name</label>}
               <input
                 type="text"
-                name={inputName}
-                placeholder={
-                  inputName.charAt(0).toUpperCase() +
-                  inputName.slice(1).replace("_", " ")
-                }
-                pattern={regex.number}
+                name="name"
+                placeholder="Breed name"
+                pattern={regex.name}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 onFocus={handleFocus}
-                value={form[inputName]}
+                value={name}
                 autoComplete="off"
               />
-              {inputName.includes("height") ? (
-                <span>cms.</span>
-              ) : inputName.includes("weight") ? (
-                <span>kgs.</span>
-              ) : (
-                <span>years</span>
-              )}
-              {warnForm[inputName] && <p>{warnForm[inputName]}</p>}
-              {showErrors && errors[inputName] && <p>{errors[inputName]}</p>}
+              {warnForm.name && <p>{warnForm.name}</p>}
+              {showErrors && errors.name && <p>{errors.name}</p>} <br />
               <br />
-              <br />
-            </div>
-          ))}
-        </>
-        {loading ? (
-          <Loader />
-        ) : (
-          <>
-            <label>
-              Temperaments
-              {focusInfo.temperaments && (
-                <label>Select at least one and at most 5 temperaments</label>
-              )}
-              <select
-                name="temperaments"
-                multiple
-                size="12"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                onFocus={handleFocus}
-              >
-                {allTemperaments.current.map((temperament) => (
-                  <option value={temperament} key={temperament}>
-                    {temperament}
-                  </option>
-                ))}
-              </select>
-            </label>
-            {temperaments.length > 0 &&
-              temperaments.map((temperament) => (
-                <div key={temperament}>
-                  <h4>{temperament}</h4>
-                  <span onClick={() => deleteTemperament(temperament)}>x</span>
+              {arrForRender.map((inputName) => (
+                <div key={inputName}>
+                  {focusInfo[inputName] && (
+                    <label>
+                      Enter the{" "}
+                      {inputName
+                        .replace("_", " ")
+                        .replace("min", "minimum")
+                        .replace("max", "maximum")}
+                    </label>
+                  )}
+                  <input
+                    type="text"
+                    name={inputName}
+                    placeholder={
+                      inputName.charAt(0).toUpperCase() +
+                      inputName.slice(1).replace("_", " ")
+                    }
+                    pattern={regex.number}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    value={form[inputName]}
+                    autoComplete="off"
+                  />
+                  {inputName.includes("height") ? (
+                    <span>cms.</span>
+                  ) : inputName.includes("weight") ? (
+                    <span>kgs.</span>
+                  ) : (
+                    <span>years</span>
+                  )}
+                  {warnForm[inputName] && <p>{warnForm[inputName]}</p>}
+                  {showErrors && errors[inputName] && (
+                    <p>{errors[inputName]}</p>
+                  )}
+                  <br />
+                  <br />
                 </div>
               ))}
-            {warnForm.temperaments && <p>{warnForm.temperaments}</p>}
-            {showErrors && errors.temperaments && <p>{errors.temperaments}</p>}
-            <br />
-            <>
-              {/* <button onClick={customTemperament}>Add custom temperament</button>
+            </>
+            {loading ? (
+              <Loader />
+            ) : (
+              <>
+                <label>
+                  Temperaments
+                  {focusInfo.temperaments && (
+                    <label>
+                      Select at least one and at most 5 temperaments
+                    </label>
+                  )}
+                  <select
+                    name="temperaments"
+                    multiple
+                    size="12"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                  >
+                    {allTemperaments.current.map((temperament) => (
+                      <option value={temperament} key={temperament}>
+                        {temperament}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {temperaments.length > 0 &&
+                  temperaments.map((temperament) => (
+                    <div key={temperament}>
+                      <h4>{temperament}</h4>
+                      <span onClick={() => deleteTemperament(temperament)}>
+                        x
+                      </span>
+                    </div>
+                  ))}
+                {warnForm.temperaments && <p>{warnForm.temperaments}</p>}
+                {showErrors && errors.temperaments && (
+                  <p>{errors.temperaments}</p>
+                )}
+                <br />
+                <>
+                  {/* <button onClick={customTemperament}>Add custom temperament</button>
             {addTemperament && (
               <input
               type="text"
@@ -404,7 +437,7 @@ const CreateDog = () => {
                 value={newTemperament}
                 />
               )} */}
-              {/* {temperaments.includes("Add custom temperament") && (
+                  {/* {temperaments.includes("Add custom temperament") && (
               <input
               type="text"
                 name="newTemperament"
@@ -415,20 +448,22 @@ const CreateDog = () => {
                 value={newTemperament}
                 />
               )} */}
-            </>
-          </>
-        )}
-        <input
-          type="submit"
-          value={
-            dogToUpdate && typeof dogToUpdate.id === "string"
-              ? "Edit breed"
-              : "Create breed"
-          }
-        />
-        <button onClick={handleReset}>Reset</button>
-        {response && <h1>FORMULARIO ENVIADO</h1>}
-      </form>
+                </>
+              </>
+            )}
+            <input
+              type="submit"
+              value={
+                dogToUpdate && typeof dogToUpdate.id === "string"
+                  ? "Edit breed"
+                  : "Create breed"
+              }
+            />
+            <button onClick={handleReset}>Reset</button>
+            {/* response && <h1>FORMULARIO ENVIADO</h1> */}
+          </form>
+        </>
+      )}
     </>
   );
 };

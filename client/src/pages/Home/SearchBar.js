@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { noDogs, searchDogs } from "../../Redux/actions";
+import { searchDogs } from "../../Redux/actions";
 import { URL_NAME } from "../../Constants";
 import axios from "axios";
 
-const SearchBar = ({ setLoading }) => {
+const SearchBar = ({ setLoading, setError }) => {
   const [form, setForm] = useState("");
   const dispatch = useDispatch();
 
@@ -43,13 +43,17 @@ const SearchBar = ({ setLoading }) => {
       .get(`${URL_NAME}${form}`)
       .then(({ data: dogs }) => {
         dispatch(searchDogs(dogs));
-        setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-        dispatch(noDogs());
-        setLoading(false);
-      });
+        if (err.response) {
+          setError(`${err.message}: ${err.response.statusText}`);
+        } else if (err.request) {
+          setError("Server does not respond");
+        } else {
+          setError("Error " + err.message);
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   return (

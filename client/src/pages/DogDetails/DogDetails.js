@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
-import { noDogs, deleteDog, getDog } from "../../Redux/actions";
+import Error from "../../components/Error";
+import { deleteDog, getDog } from "../../Redux/actions";
 import { URL } from "../../Constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Modal from "../../components/Modal";
+import { useModal } from "../../hooks/useModal";
 
 const initialDetails = {
   name: "",
@@ -18,10 +21,15 @@ const initialDetails = {
 
 const DogDetails = () => {
   const [details, setDetails] = useState(initialDetails);
+  const [error, setError] = useState(null);
+  const [errorDelete, setErrorDelete] = useState("");
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isOpenQuestion, openModalQuestion, closeModalQuestion } = useModal();
+  const { isOpenSuccess, openModalSuccess, closeModalSuccess } = useModal();
+  const { isOpenFail, openModalFail, closeModalFail } = useModal();
 
   const {
     name,
@@ -40,13 +48,17 @@ const DogDetails = () => {
       .then(({ data: dog }) => {
         setDetails(dog);
         dispatch(getDog(dog));
-        setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-        dispatch(noDogs());
-        setLoading(false);
-      });
+        if (err.response) {
+          setError(`${err.message}: ${err.response.statusText}`);
+        } else if (err.request) {
+          setError("Server does not respond");
+        } else {
+          setError("Error " + err.message);
+        }
+      })
+      .finally(() => setLoading(false));
 
     return () => {
       dispatch(getDog({}));
@@ -60,16 +72,34 @@ const DogDetails = () => {
   };
 
   const handleDelete = (idDelete) => {
-    axios.delete(`${URL}${idDelete}`).then((res) => {
-      dispatch(deleteDog(idDelete));
-      navigate("/home");
-    });
+    setLoading(true);
+    closeModalQuestion();
+    axios
+      .delete(`${URL}${idDelete}`)
+      .then((res) => {
+        openModalSuccess();
+        dispatch(deleteDog(idDelete));
+        setTimeout(() => navigate("/home"), 5000);
+      })
+      .catch((err) => {
+        openModalFail();
+        if (err.response) {
+          setErrorDelete(`${err.message}: ${err.response.statusText}`);
+        } else if (err.request) {
+          setErrorDelete("Server does not respond");
+        } else {
+          setErrorDelete("Error " + err.message);
+        }
+      });
+    //.finally(() => setLoading(false));
   };
 
   return (
     <>
       {loading ? (
         <Loader />
+      ) : error ? (
+        <Error message={error} />
       ) : (
         details && (
           <>
@@ -82,12 +112,32 @@ const DogDetails = () => {
             {typeof details.id === "string" && (
               <>
                 <button onClick={handleEdit}>Edit</button>
-                <button onClick={() => handleDelete(idDelete)}>Delete</button>
+                {/* <button onClick={() => handleDelete(idDelete)}>Delete</button> */}
+                <button onClick={openModalQuestion}>Delete</button>
               </>
             )}
           </>
         )
       )}
+      <Modal isOpen={isOpenQuestion} closeModal={closeModalQuestion}>
+        <p>{`Delete ${details.name}?`}</p>
+        <button onClick={() => handleDelete(idDelete)}>Accept</button>
+        <button closeModal={closeModalQuestion}>Cancel</button>
+      </Modal>
+      <Modal
+        isOpen={isOpenSuccess}
+        closeModal={closeModalSuccess}
+        onClick={closeModalSuccess}
+      >
+        <p>{`${details.name} deleted successfully`}</p>
+        <p>Returning to Home</p>
+      </Modal>
+      <Modal isOpen={isOpenFail} closeModal={closeModalFail}>
+        <p>{`Failed to delete ${details.name}`}</p>
+        <p>{`${errorDelete}`}</p>
+        <button onClick={() => handleDelete(idDelete)}>Try again</button>
+        <button onClick={closeModalFail}>Cancel</button>
+      </Modal>
     </>
   );
 };
