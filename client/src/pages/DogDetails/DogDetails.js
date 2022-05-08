@@ -27,9 +27,10 @@ const DogDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isOpenQuestion, openModalQuestion, closeModalQuestion } = useModal();
-  const { isOpenSuccess, openModalSuccess, closeModalSuccess } = useModal();
-  const { isOpenFail, openModalFail, closeModalFail } = useModal();
+  const [isOpenDelete, openModalDelete, closeModalDelete] = useModal();
+  const [isOpenEdit, openModalEdit, closeModalEdit] = useModal();
+  const [isOpenSuccess, openModalSuccess, closeModalSuccess] = useModal();
+  const [isOpenFail, openModalFail, closeModalFail] = useModal();
 
   const {
     name,
@@ -68,12 +69,14 @@ const DogDetails = () => {
   }, []);
 
   const handleEdit = () => {
+    sessionStorage.setItem("editDogData", "true");
     navigate("/createdog");
   };
 
   const handleDelete = (idDelete) => {
     setLoading(true);
-    closeModalQuestion();
+    closeModalDelete();
+    closeModalFail();
     axios
       .delete(`${URL}${idDelete}`)
       .then((res) => {
@@ -82,7 +85,7 @@ const DogDetails = () => {
         setTimeout(() => navigate("/home"), 5000);
       })
       .catch((err) => {
-        openModalFail();
+        console.log(err);
         if (err.response) {
           setErrorDelete(`${err.message}: ${err.response.statusText}`);
         } else if (err.request) {
@@ -90,6 +93,7 @@ const DogDetails = () => {
         } else {
           setErrorDelete("Error " + err.message);
         }
+        openModalFail();
       });
     //.finally(() => setLoading(false));
   };
@@ -111,27 +115,30 @@ const DogDetails = () => {
             <div>Temperament: {temperament}</div>
             {typeof details.id === "string" && (
               <>
-                <button onClick={handleEdit}>Edit</button>
+                <button onClick={openModalEdit}>Edit</button>
                 {/* <button onClick={() => handleDelete(idDelete)}>Delete</button> */}
-                <button onClick={openModalQuestion}>Delete</button>
+                <button onClick={openModalDelete}>Delete</button>
               </>
             )}
           </>
         )
       )}
-      <Modal isOpen={isOpenQuestion} closeModal={closeModalQuestion}>
+      <Modal isOpen={isOpenDelete} closeModal={closeModalDelete}>
         <p>{`Delete ${details.name}?`}</p>
         <button onClick={() => handleDelete(idDelete)}>Accept</button>
-        <button closeModal={closeModalQuestion}>Cancel</button>
+        <button onClick={closeModalDelete}>Cancel</button>
       </Modal>
-      <Modal
-        isOpen={isOpenSuccess}
-        closeModal={closeModalSuccess}
-        onClick={closeModalSuccess}
-      >
-        <p>{`${details.name} deleted successfully`}</p>
-        <p>Returning to Home</p>
+      <Modal isOpen={isOpenEdit} closeModal={closeModalEdit}>
+        <p>{`Edit ${details.name}?`}</p>
+        <button onClick={handleEdit}>Accept</button>
+        <button onClick={closeModalEdit}>Cancel</button>
       </Modal>
+      <span onClick={() => navigate("/home")}>
+        <Modal isOpen={isOpenSuccess} closeModal={closeModalSuccess}>
+          <p>{`${details.name} deleted successfully`}</p>
+          <p>Returning to Home</p>
+        </Modal>
+      </span>
       <Modal isOpen={isOpenFail} closeModal={closeModalFail}>
         <p>{`Failed to delete ${details.name}`}</p>
         <p>{`${errorDelete}`}</p>

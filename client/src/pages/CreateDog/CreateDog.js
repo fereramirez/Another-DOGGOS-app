@@ -6,6 +6,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createDog, editDog } from "../../Redux/actions";
+import Modal from "../../components/Modal";
+import { useModal } from "../../hooks/useModal";
 
 const initialForm = {
   name: "",
@@ -32,18 +34,29 @@ const regex = {
 };
 
 const CreateDog = () => {
-  const dogDetails = useSelector((state) => state.dogDetails);
-  const [dogToUpdate, setDogToUpdate] = useState(dogDetails);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const dogDetails = useSelector((state) => state.dogDetails);
+  const [dogToUpdate, setDogToUpdate] = useState(dogDetails);
+  const [newDog, setNewDog] = useState({});
   //const [response, setResponse] = useState(null);
   const [form, setForm] = useState(initialForm);
   const [focusInfo, setFocusInfo] = useState(initialFocusInfo);
   const [warnForm, setWarnForm] = useState({});
   const [errors, setErrors] = useState({});
   const [showErrors, setShowErrors] = useState(false);
+  const [errorEdit, setErrorEdit] = useState("");
+  const [errorCreate, setErrorCreate] = useState("");
+  const [isOpenEditSuccess, openModalEditSuccess, closeModalEditSuccess] =
+    useModal();
+  const [isOpenEditFail, openModalEditFail, closeModalEditFail] = useModal();
+  const [isOpenEditSame, openModalEditSame, closeModalEditSame] = useModal();
+  const [isOpenCreateSuccess, openModalCreateSuccess, closeModalCreateSuccess] =
+    useModal();
+  const [isOpenCreateFail, openModalCreateFail, closeModalCreateFail] =
+    useModal();
   // const [addTemperament, setAddTemperament] = useState(false);
   // const [newTemperament, setNewTemperament] = useState("");
   let allTemperaments = useRef([]);
@@ -187,13 +200,13 @@ const CreateDog = () => {
           : (temperamentsToString = `${temperamentsToString}, ${temperaments[i]}`);
       }
 
-      const newDog = {
+      setNewDog({
         name,
         height: { metric: `${min_height} - ${max_height}` },
         weight: { metric: `${min_weight} - ${max_weight}` },
         life_span: `${life_span} years`,
         temperament: temperamentsToString,
-      };
+      });
       if (Object.keys(dogToUpdate).length) {
         const updatedDog = {};
         if (dogToUpdate.name !== newDog.name) updatedDog.name = newDog.name;
@@ -216,20 +229,22 @@ const CreateDog = () => {
               setShowErrors(false);
               setErrors(validateForm());
               dispatch(editDog(res.data));
-              navigate("/home");
+              openModalEditSuccess();
+              setTimeout(() => navigate("/home"), 5000);
             }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
             .catch((err) => {
               if (err.response) {
-                setError(`${err.message}: ${err.response.statusText}`);
+                setErrorEdit(`${err.message}: ${err.response.statusText}`);
               } else if (err.request) {
-                setError("Server does not respond");
+                setErrorEdit("Server does not respond");
               } else {
-                setError("Error " + err.message);
+                setErrorEdit("Error " + err.message);
               }
-            })
+              openModalEditFail();
+            }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
             .finally(() => setLoading(false));
         } else {
-          setError("The breed was not edited"); //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
+          openModalEditSame();
         }
       } else {
         axios
@@ -241,7 +256,7 @@ const CreateDog = () => {
             setShowErrors(false);
             setErrors(validateForm());
             dispatch(createDog(res.data));
-            navigate("/home");
+            openModalCreateSuccess();
           }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
           .catch((err) => {
             if (err.response) {
@@ -251,6 +266,7 @@ const CreateDog = () => {
             } else {
               setError("Error " + err.message);
             }
+            openModalCreateFail();
           }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
           .finally(() => setLoading(false));
       }
@@ -291,7 +307,9 @@ const CreateDog = () => {
       })
       .finally(() => setLoading(false));
 
-    if (Object.keys(dogDetails).length && typeof dogDetails.id === "string") {
+    const editDogData = sessionStorage.getItem("editDogData");
+
+    if (editDogData) {
       let dogTemperaments = dogDetails.temperament.replace(/,/g, "").split(" ");
       let dogHeight = dogDetails.height.metric.replace(/ /g, "").split("-");
       let dogWeight = dogDetails.weight.metric.replace(/ /g, "").split("-");
@@ -310,6 +328,7 @@ const CreateDog = () => {
     return () => {
       clearTimeout(warnTimeoutId.current);
       setWarnForm({});
+      sessionStorage.removeItem("editDogData");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -325,7 +344,7 @@ const CreateDog = () => {
         <Error message={error} />
       ) : (
         <>
-          <h1>CREATE</h1>
+          <h1>{sessionStorage.getItem("editDogData") ? "EDIT" : "CREATE"}</h1>
           <form onSubmit={handleSubmit}>
             <>
               {focusInfo.name && <label>Enter the breed name</label>}
@@ -454,7 +473,7 @@ const CreateDog = () => {
             <input
               type="submit"
               value={
-                dogToUpdate && typeof dogToUpdate.id === "string"
+                sessionStorage.getItem("editDogData")
                   ? "Edit breed"
                   : "Create breed"
               }
@@ -464,6 +483,33 @@ const CreateDog = () => {
           </form>
         </>
       )}
+      <span onClick={() => navigate("/home")}>
+        <Modal isOpen={isOpenEditSuccess} closeModal={closeModalEditSuccess}>
+          <p>{`${dogToUpdate.name} edited successfully`}</p>
+          <p>Returning to Home</p>
+        </Modal>
+      </span>
+      <Modal isOpen={isOpenEditFail} closeModal={closeModalEditFail}>
+        <p>{`Failed to edit ${dogToUpdate.name}`}</p>
+        <p>{`${errorEdit}`}</p>
+        <button onClick={handleSubmit}>Try again</button>
+        <button onClick={closeModalEditFail}>Cancel</button>
+      </Modal>
+      <Modal isOpen={isOpenEditSame} closeModal={closeModalEditSame}>
+        <p>${dogToUpdate.name} has the same properties</p>
+        <button onClick={closeModalEditSame}>Accept</button>
+      </Modal>
+      <Modal isOpen={isOpenCreateSuccess} closeModal={closeModalCreateSuccess}>
+        <p>{`${newDog.name} created successfully`}</p>
+        <button onClick={closeModalCreateSuccess}>Create another breed</button>
+        <button onClick={() => navigate("/home")}>Return Home</button>
+      </Modal>
+      <Modal isOpen={isOpenCreateFail} closeModal={closeModalCreateFail}>
+        <p>{`Failed to create ${newDog.name}`}</p>
+        <p>{`${errorCreate}`}</p>
+        <button onClick={handleSubmit}>Try again</button>
+        <button onClick={closeModalCreateFail}>Cancel</button>
+      </Modal>
     </>
   );
 };
