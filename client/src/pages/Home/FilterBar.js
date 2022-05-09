@@ -160,9 +160,6 @@ const FilterBar = ({ pages, setPages }) => {
     sessionStorage.setItem("filterApiData", filter.api);
     sessionStorage.setItem("filterOwnData", filter.own);
 
-    window.onbeforeunload = function () {
-      sessionStorage.clear();
-    };
     dispatch(filterDogs(filter));
     setPages({
       ...pages,

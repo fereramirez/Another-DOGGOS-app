@@ -35,7 +35,7 @@ const SearchBar = ({ setLoading, setError }) => {
     sessionStorage.setItem("searchData", form);
     // sessionStorage.setItem("orderByData", "name");
     // sessionStorage.setItem("orderAscData", "asc");
-    onbeforeunload = function () {
+    window.onbeforeunload = function () {
       sessionStorage.clear();
     };
     setLoading(true);

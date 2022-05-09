@@ -63,11 +63,14 @@ const DogDetails = () => {
       })
       .finally(() => setLoading(false));
 
+    window.onbeforeunload = function () {
+      sessionStorage.clear();
+    };
+
     return () => {
       dispatch(getDog({}));
       clearTimeout(timeoutId.current);
     };
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

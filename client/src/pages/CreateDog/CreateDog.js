@@ -329,6 +329,10 @@ const CreateDog = () => {
       });
     }
 
+    window.onbeforeunload = function () {
+      sessionStorage.clear();
+    };
+
     return () => {
       clearTimeout(timeoutId.current);
       setWarnForm({});
