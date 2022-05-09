@@ -16,7 +16,7 @@ const getAllDogs = async (req, res, next) => {
       if (dog.weight.metric.includes("N")) dog.weight.metric = "15 - 20";
     }
     const allDogs = dogsApiResponse.concat(dogsMyDbResponse);
-    return res.send(allDogs);
+    return res.status(200).send(allDogs);
   } catch (err) {
     let error = {};
     if (err.response) {
@@ -34,7 +34,7 @@ const getAllDogs = async (req, res, next) => {
 
 const getDogsQuery = async (req, res, next) => {
   const nameQuery = req.query.name;
-  if (!nameQuery) res.status(400).send("There is no 'name' query");
+  if (!nameQuery) return res.status(400).send("There is no 'name' query");
   try {
     const { data: allDogsApi } = await axios.get(`${API_URL}`);
     const dogsFoundApi = allDogsApi.filter((dog) =>
@@ -57,7 +57,9 @@ const getDogsQuery = async (req, res, next) => {
     const allDogsResponse = await Promise.all([dogsFoundApi, dogsFoundDb]);
     const [dogsFoundApiResponse, dogsFoundDbResponse] = allDogsResponse;
     const allDogsFound = dogsFoundApiResponse.concat(dogsFoundDbResponse);
-    allDogsFound.length > 0 ? res.send(allDogsFound) : res.send([null]);
+    allDogsFound.length > 0
+      ? res.status(200).send(allDogsFound)
+      : res.status(200).send([null]);
     //res.send(allDogsFound);
   } catch (err) {
     let error = {};
@@ -76,7 +78,7 @@ const getDogsQuery = async (req, res, next) => {
 
 const getDog = async (req, res, next) => {
   const idDog = req.params.idDog;
-  if (!idDog) res.status(400).send("There is no 'idDog' parameter");
+  if (!idDog) return res.status(400).send("There is no 'idDog' parameter");
   try {
     let dogFound = null;
     if (idDog.includes("-")) {
@@ -98,7 +100,7 @@ const getDog = async (req, res, next) => {
         dog.id === parseInt(idDog) ? (dogFound = dog) : null;
       }
     }
-    if (!dogFound) res.status(404).send("Dog not found");
+    if (!dogFound) return res.status(404).send("Dog not found");
     const {
       name,
       weight,
@@ -109,7 +111,7 @@ const getDog = async (req, res, next) => {
       image,
       id,
     } = dogFound;
-    res.send({
+    return res.status(200).send({
       name,
       weight,
       height,
@@ -135,12 +137,24 @@ const getDog = async (req, res, next) => {
 };
 
 const createDog = async (req, res, next) => {
-  if (!req.body) res.status(400).send("The body is empty");
+  if (!req.body) return res.status(400).send("The body is empty");
 
   const newDog = {
     ...req.body,
     id: uuidv4(),
   };
+
+  const { data: dogsApi } = await axios.get(`${API_URL}?api_key=${API_KEY}`);
+  const dogsMyDb = await Dog.findAll();
+  const allDogsResponse = await Promise.all([dogsApi, dogsMyDb]);
+  const [dogsApiResponse, dogsMyDbResponse] = allDogsResponse;
+  const allDogs = dogsApiResponse.concat(dogsMyDbResponse);
+
+  for (const dog of allDogs) {
+    if (dog.name.toUpperCase() === newDog.name.toUpperCase()) {
+      return res.status(400).send("The breed already exists");
+    }
+  }
 
   try {
     const createdDog = await Dog.create(newDog);
@@ -164,7 +178,7 @@ const createDog = async (req, res, next) => {
     });
     await createdDog.addTemperament(tempsToAdd);
  */
-    return res.send(createdDog);
+    return res.status(201).send(createdDog);
   } catch (error) {
     next(error);
   }
@@ -172,17 +186,31 @@ const createDog = async (req, res, next) => {
 
 const editDog = async (req, res, next) => {
   const idDog = req.params.idDog;
-  if (!idDog) res.status(400).send("There is no 'idDog' parameter");
-  if (!req.body) res.status(400).send("The body is empty");
+  if (!idDog) return res.status(400).send("There is no 'idDog' parameter");
+  if (!req.body) return res.status(400).send("The body is empty");
+  const editedDog = req.body;
+
+  const { data: dogsApi } = await axios.get(`${API_URL}?api_key=${API_KEY}`);
+  const dogsMyDb = await Dog.findAll();
+  const allDogsResponse = await Promise.all([dogsApi, dogsMyDb]);
+  const [dogsApiResponse, dogsMyDbResponse] = allDogsResponse;
+  const allDogs = dogsApiResponse.concat(dogsMyDbResponse);
+
+  if (editedDog.name) {
+    for (const dog of allDogs) {
+      if (dog.name.toUpperCase() === editedDog.name.toUpperCase()) {
+        return res.status(400).send("The breed already exists");
+      }
+    }
+  }
 
   try {
     dogFound = await Dog.findOne({
       where: { id: idDog },
     });
-    console.log(dogFound);
-    if (!dogFound) res.status(404).send("Dog not found");
-    const response = await dogFound.update(req.body);
-    res.send(response);
+    if (!dogFound) return res.status(404).send("Dog not found");
+    const response = await dogFound.update(editedDog);
+    return res.status(201).send(response);
   } catch (error) {
     next(error);
   }
@@ -190,14 +218,14 @@ const editDog = async (req, res, next) => {
 
 const deleteDog = async (req, res, next) => {
   const idDog = req.params.idDog;
-  if (!idDog) res.status(400).send("There is no 'idDog' parameter");
+  if (!idDog) return res.status(400).send("There is no 'idDog' parameter");
   try {
     dogFound = await Dog.findOne({
       where: { id: idDog },
     });
-    if (!dogFound) res.status(404).send("Dog not found");
+    if (!dogFound) return res.status(404).send("Dog not found");
     await dogFound.destroy();
-    res.send("Deleted");
+    return res.status(200).send("Deleted");
   } catch (error) {
     next(error);
   }

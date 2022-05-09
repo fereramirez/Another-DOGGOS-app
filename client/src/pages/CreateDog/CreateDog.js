@@ -107,10 +107,11 @@ const CreateDog = () => {
   };
 
   const handleFocus = (e) => {
-    setFocusInfo({
-      ...focusInfo,
-      [e.target.name]: true,
-    });
+    if (Object.keys(dogToUpdate).length === 0)
+      setFocusInfo({
+        ...focusInfo,
+        [e.target.name]: true,
+      });
   };
 
   const deleteTemperament = (temp) => {
@@ -177,10 +178,11 @@ const CreateDog = () => {
     clearTimeout(timeoutId.current);
     setErrors(validateForm());
     setWarnForm({});
-    setFocusInfo({
-      ...focusInfo,
-      [e.target.name]: false,
-    });
+    if (Object.keys(dogToUpdate).length === 0)
+      setFocusInfo({
+        ...focusInfo,
+        [e.target.name]: false,
+      });
   };
 
   const handleReset = () => {
@@ -234,7 +236,7 @@ const CreateDog = () => {
               openModalEditSuccess();
               timeout = () => setTimeout(() => navigate("/home"), 5000);
               timeoutId.current = timeout();
-            }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
+            })
             .catch((err) => {
               if (err.response) {
                 setErrorEdit(`${err.message}: ${err.response.statusText}`);
@@ -244,7 +246,7 @@ const CreateDog = () => {
                 setErrorEdit("Error " + err.message);
               }
               openModalEditFail();
-            }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
+            })
             .finally(() => setLoading(false));
         } else {
           openModalEditSame();
@@ -261,17 +263,19 @@ const CreateDog = () => {
             setErrors(validateForm());
             dispatch(createDog(res.data));
             openModalCreateSuccess();
-          }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
+          })
           .catch((err) => {
             if (err.response) {
-              setErrorCreate(`${err.message}: ${err.response.statusText}`);
+              setErrorCreate(`${err.message}: ${err.response.data}`);
             } else if (err.request) {
+              console.log("2");
               setErrorCreate("Server does not respond");
             } else {
+              console.log("3");
               setErrorCreate("Error " + err.message);
             }
             openModalCreateFail();
-          }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
+          })
           .finally(() => setLoading(false));
       }
     }
@@ -283,6 +287,16 @@ const CreateDog = () => {
 
   useEffect(() => {
     setLoading(true);
+    if (Object.keys(dogToUpdate).length)
+      setFocusInfo({
+        name: true,
+        min_height: true,
+        max_height: true,
+        min_weight: true,
+        max_weight: true,
+        life_span: true,
+        temperaments: true,
+      });
     const editDogData = sessionStorage.getItem("editDogData");
     editDogData || setDogToUpdate({});
 
@@ -350,12 +364,14 @@ const CreateDog = () => {
     <>
       {error ? (
         <Error message={error} />
+      ) : loading ? (
+        <Loader />
       ) : (
         <>
           <h1>{sessionStorage.getItem("editDogData") ? "EDIT" : "CREATE"}</h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} onReset={handleReset}>
             <>
-              {focusInfo.name && <label>Enter the breed name</label>}
+              {focusInfo.name && <label>Breed name</label>}
               <input
                 type="text"
                 name="name"
@@ -374,11 +390,12 @@ const CreateDog = () => {
                 <div key={inputName}>
                   {focusInfo[inputName] && (
                     <label>
-                      Enter the{" "}
-                      {inputName
-                        .replace("_", " ")
-                        .replace("min", "minimum")
-                        .replace("max", "maximum")}
+                      {inputName.charAt(0).toUpperCase() +
+                        inputName
+                          .slice(1)
+                          .replace("_", " ")
+                          .replace("in", "inimum")
+                          .replace("ax", "aximum")}
                     </label>
                   )}
                   <input
@@ -411,48 +428,43 @@ const CreateDog = () => {
                 </div>
               ))}
             </>
-            {loading ? (
-              <Loader />
-            ) : (
-              <>
-                <label>
-                  Temperaments
-                  {focusInfo.temperaments && (
-                    <label>
-                      Select at least one and at most 5 temperaments
-                    </label>
-                  )}
-                  <select
-                    name="temperaments"
-                    multiple
-                    size="12"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                  >
-                    {allTemperaments.current.map((temperament) => (
-                      <option value={temperament} key={temperament}>
-                        {temperament}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                {temperaments.length > 0 &&
-                  temperaments.map((temperament) => (
-                    <div key={temperament}>
-                      <h4>{temperament}</h4>
-                      <span onClick={() => deleteTemperament(temperament)}>
-                        x
-                      </span>
-                    </div>
+
+            <>
+              <label>
+                {!focusInfo.temperaments
+                  ? "Temperaments"
+                  : "Select at least one and at most 5 temperaments"}
+                <select
+                  name="temperaments"
+                  multiple
+                  size="12"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                >
+                  {allTemperaments.current.map((temperament) => (
+                    <option value={temperament} key={temperament}>
+                      {temperament}
+                    </option>
                   ))}
-                {warnForm.temperaments && <p>{warnForm.temperaments}</p>}
-                {showErrors && errors.temperaments && (
-                  <p>{errors.temperaments}</p>
-                )}
-                <br />
-                <>
-                  {/* <button onClick={customTemperament}>Add custom temperament</button>
+                </select>
+              </label>
+              {temperaments.length > 0 &&
+                temperaments.map((temperament) => (
+                  <div key={temperament}>
+                    <h4>{temperament}</h4>
+                    <span onClick={() => deleteTemperament(temperament)}>
+                      x
+                    </span>
+                  </div>
+                ))}
+              {warnForm.temperaments && <p>{warnForm.temperaments}</p>}
+              {showErrors && errors.temperaments && (
+                <p>{errors.temperaments}</p>
+              )}
+              <br />
+              <>
+                {/* <button onClick={customTemperament}>Add custom temperament</button>
             {addTemperament && (
               <input
               type="text"
@@ -464,7 +476,7 @@ const CreateDog = () => {
                 value={newTemperament}
                 />
               )} */}
-                  {/* {temperaments.includes("Add custom temperament") && (
+                {/* {temperaments.includes("Add custom temperament") && (
               <input
               type="text"
                 name="newTemperament"
@@ -475,9 +487,9 @@ const CreateDog = () => {
                 value={newTemperament}
                 />
               )} */}
-                </>
               </>
-            )}
+            </>
+
             <input
               type="submit"
               value={
@@ -486,11 +498,11 @@ const CreateDog = () => {
                   : "Create breed"
               }
             />
-            <button onClick={handleReset}>Reset</button>
-            {/* response && <h1>FORMULARIO ENVIADO</h1> */}
+            <input type="reset" value="Reset" />
           </form>
         </>
       )}
+
       <span onClick={() => navigate("/home")}>
         <Modal isOpen={isOpenEditSuccess} closeModal={closeModalEditSuccess}>
           <p>{`${dogToUpdate.name} edited successfully`}</p>
@@ -500,8 +512,7 @@ const CreateDog = () => {
       <Modal isOpen={isOpenEditFail} closeModal={closeModalEditFail}>
         <p>{`Failed to edit ${dogToUpdate.name}`}</p>
         <p>{`${errorEdit}`}</p>
-        <button onClick={handleSubmit}>Try again</button>
-        <button onClick={closeModalEditFail}>Cancel</button>
+        <button onClick={closeModalEditFail}>Accept</button>
       </Modal>
       <Modal isOpen={isOpenEditSame} closeModal={closeModalEditSame}>
         <p>{dogToUpdate.name} has the same properties</p>
@@ -515,8 +526,7 @@ const CreateDog = () => {
       <Modal isOpen={isOpenCreateFail} closeModal={closeModalCreateFail}>
         <p>{`Failed to create ${newDog.current.name}`}</p>
         <p>{`${errorCreate}`}</p>
-        <button onClick={handleSubmit}>Try again</button>
-        <button onClick={closeModalCreateFail}>Cancel</button>
+        <button onClick={closeModalCreateFail}>Accept</button>
       </Modal>
     </>
   );
