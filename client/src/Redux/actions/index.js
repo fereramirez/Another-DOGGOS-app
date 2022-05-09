@@ -7,7 +7,6 @@ export const EDIT_DOG = "EDIT_DOG";
 export const DELETE_DOG = "DELETE_DOG";
 export const FILTER_DOGS = "FILTER_DOGS";
 export const ORDER_DOGS = "ORDER_DOGS";
-export const NO_DOGS = "NO_DOGS";
 
 export const getAllDogs = (dogs) => {
   return {
@@ -69,11 +68,5 @@ export const orderDogs = (order) => {
   return {
     type: ORDER_DOGS,
     payload: order,
-  };
-};
-
-export const noDogs = () => {
-  return {
-    type: NO_DOGS,
   };
 };

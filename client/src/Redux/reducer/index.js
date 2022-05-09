@@ -8,7 +8,6 @@ import {
   DELETE_DOG,
   FILTER_DOGS,
   ORDER_DOGS,
-  NO_DOGS,
 } from "../actions/index.js";
 
 const initialState = {
@@ -165,9 +164,6 @@ export default function rootReducer(state = initialState, action) {
           }
         }),
       };
-
-    case NO_DOGS:
-      return initialState;
 
     default:
       return state;
