@@ -79,10 +79,17 @@ const FilterBar = ({ pages, setPages }) => {
   }, []);
 
   const handleOrder = (e) => {
-    setOrder({
-      ...order,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === "by") {
+      setOrder({
+        [e.target.name]: e.target.value,
+        asc: "asc",
+      });
+    } else {
+      setOrder({
+        ...order,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   useEffect(() => {
