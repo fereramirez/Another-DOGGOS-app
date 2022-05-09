@@ -40,7 +40,8 @@ const CreateDog = () => {
   const [loading, setLoading] = useState(false);
   const dogDetails = useSelector((state) => state.dogDetails);
   const [dogToUpdate, setDogToUpdate] = useState(dogDetails);
-  const [newDog, setNewDog] = useState({});
+  //const [newDog, setNewDog] = useState({});
+  const newDog = useRef({});
   //const [response, setResponse] = useState(null);
   const [form, setForm] = useState(initialForm);
   const [focusInfo, setFocusInfo] = useState(initialFocusInfo);
@@ -61,8 +62,8 @@ const CreateDog = () => {
   // const [newTemperament, setNewTemperament] = useState("");
   let allTemperaments = useRef([]);
   //let temperamentsToString = useRef("");
-  let warnTimeout;
-  let warnTimeoutId = useRef();
+  let timeout;
+  let timeoutId = useRef();
 
   const {
     name,
@@ -117,7 +118,7 @@ const CreateDog = () => {
       ...form,
       temperaments: temperaments.filter((temperament) => temperament !== temp),
     });
-    clearTimeout(warnTimeoutId.current);
+    clearTimeout(timeoutId.current);
   };
 
   const handleChange = ({ target }) => {
@@ -125,7 +126,7 @@ const CreateDog = () => {
     let validatedValue;
 
     if (!validity.valid) {
-      clearTimeout(warnTimeoutId.current);
+      clearTimeout(timeoutId.current);
       validatedValue = form[name];
       setWarnForm({
         [name]:
@@ -133,8 +134,8 @@ const CreateDog = () => {
             ? "Breed name only accepts letters and whitespaces"
             : "Only numbers allowed",
       });
-      warnTimeout = () => setTimeout(() => setWarnForm({}), 5000);
-      warnTimeoutId.current = warnTimeout();
+      timeout = () => setTimeout(() => setWarnForm({}), 5000);
+      timeoutId.current = timeout();
     } else {
       validatedValue = value;
     }
@@ -156,9 +157,9 @@ const CreateDog = () => {
         setWarnForm({
           [name]: "5 temperaments can be selected at most",
         });
-        clearTimeout(warnTimeoutId.current);
-        warnTimeout = () => setTimeout(() => setWarnForm({}), 5000);
-        warnTimeoutId.current = warnTimeout();
+        clearTimeout(timeoutId.current);
+        timeout = () => setTimeout(() => setWarnForm({}), 5000);
+        timeoutId.current = timeout();
       }
       /* } else if (name === "newTemperament") {
       validatedValue = validity.valid ? value : newTemperament;
@@ -173,7 +174,7 @@ const CreateDog = () => {
   };
 
   const handleBlur = (e) => {
-    clearTimeout(warnTimeoutId.current);
+    clearTimeout(timeoutId.current);
     setErrors(validateForm());
     setWarnForm({});
     setFocusInfo({
@@ -200,24 +201,25 @@ const CreateDog = () => {
           : (temperamentsToString = `${temperamentsToString}, ${temperaments[i]}`);
       }
 
-      setNewDog({
+      newDog.current = {
         name,
         height: { metric: `${min_height} - ${max_height}` },
         weight: { metric: `${min_weight} - ${max_weight}` },
         life_span: `${life_span} years`,
         temperament: temperamentsToString,
-      });
+      };
       if (Object.keys(dogToUpdate).length) {
         const updatedDog = {};
-        if (dogToUpdate.name !== newDog.name) updatedDog.name = newDog.name;
-        if (dogToUpdate.height.metric !== newDog.height.metric)
-          updatedDog.height.metric = newDog.height.metric;
-        if (dogToUpdate.weight.metric !== newDog.weight.metric)
-          updatedDog.weight.metric = newDog.weight.metric;
-        if (dogToUpdate.life_span !== newDog.life_span)
-          updatedDog.life_span = newDog.life_span;
-        if (dogToUpdate.temperament !== newDog.temperament)
-          updatedDog.temperament = newDog.temperament;
+        if (dogToUpdate.name !== newDog.current.name)
+          updatedDog.name = newDog.current.name;
+        if (dogToUpdate.height.metric !== newDog.current.height.metric)
+          updatedDog.height = { metric: newDog.current.height.metric };
+        if (dogToUpdate.weight.metric !== newDog.current.weight.metric)
+          updatedDog.weight = { metric: newDog.current.weight.metric };
+        if (dogToUpdate.life_span !== newDog.current.life_span)
+          updatedDog.life_span = newDog.current.life_span;
+        if (dogToUpdate.temperament !== newDog.current.temperament)
+          updatedDog.temperament = newDog.current.temperament;
 
         if (Object.keys(updatedDog).length) {
           axios
@@ -230,7 +232,8 @@ const CreateDog = () => {
               setErrors(validateForm());
               dispatch(editDog(res.data));
               openModalEditSuccess();
-              setTimeout(() => navigate("/home"), 5000);
+              timeout = () => setTimeout(() => navigate("/home"), 5000);
+              timeoutId.current = timeout();
             }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
             .catch((err) => {
               if (err.response) {
@@ -245,10 +248,11 @@ const CreateDog = () => {
             .finally(() => setLoading(false));
         } else {
           openModalEditSame();
+          setLoading(false);
         }
       } else {
         axios
-          .post(URL, newDog)
+          .post(URL, newDog.current)
           .then((res) => {
             handleReset();
             //   setResponse(true);
@@ -260,11 +264,11 @@ const CreateDog = () => {
           }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
           .catch((err) => {
             if (err.response) {
-              setError(`${err.message}: ${err.response.statusText}`);
+              setErrorCreate(`${err.message}: ${err.response.statusText}`);
             } else if (err.request) {
-              setError("Server does not respond");
+              setErrorCreate("Server does not respond");
             } else {
-              setError("Error " + err.message);
+              setErrorCreate("Error " + err.message);
             }
             openModalCreateFail();
           }) //!VENTANA MODAL, crear nuevo estado para informar esto, setResponse
@@ -279,6 +283,8 @@ const CreateDog = () => {
 
   useEffect(() => {
     setLoading(true);
+    const editDogData = sessionStorage.getItem("editDogData");
+    editDogData || setDogToUpdate({});
 
     axios
       .get(URL)
@@ -307,8 +313,6 @@ const CreateDog = () => {
       })
       .finally(() => setLoading(false));
 
-    const editDogData = sessionStorage.getItem("editDogData");
-
     if (editDogData) {
       let dogTemperaments = dogDetails.temperament.replace(/,/g, "").split(" ");
       let dogHeight = dogDetails.height.metric.replace(/ /g, "").split("-");
@@ -326,7 +330,7 @@ const CreateDog = () => {
     }
 
     return () => {
-      clearTimeout(warnTimeoutId.current);
+      clearTimeout(timeoutId.current);
       setWarnForm({});
       sessionStorage.removeItem("editDogData");
     };
@@ -496,16 +500,16 @@ const CreateDog = () => {
         <button onClick={closeModalEditFail}>Cancel</button>
       </Modal>
       <Modal isOpen={isOpenEditSame} closeModal={closeModalEditSame}>
-        <p>${dogToUpdate.name} has the same properties</p>
+        <p>{dogToUpdate.name} has the same properties</p>
         <button onClick={closeModalEditSame}>Accept</button>
       </Modal>
       <Modal isOpen={isOpenCreateSuccess} closeModal={closeModalCreateSuccess}>
-        <p>{`${newDog.name} created successfully`}</p>
+        <p>{`${newDog.current.name} created successfully`}</p>
         <button onClick={closeModalCreateSuccess}>Create another breed</button>
         <button onClick={() => navigate("/home")}>Return Home</button>
       </Modal>
       <Modal isOpen={isOpenCreateFail} closeModal={closeModalCreateFail}>
-        <p>{`Failed to create ${newDog.name}`}</p>
+        <p>{`Failed to create ${newDog.current.name}`}</p>
         <p>{`${errorCreate}`}</p>
         <button onClick={handleSubmit}>Try again</button>
         <button onClick={closeModalCreateFail}>Cancel</button>

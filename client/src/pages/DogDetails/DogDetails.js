@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
@@ -31,6 +31,8 @@ const DogDetails = () => {
   const [isOpenEdit, openModalEdit, closeModalEdit] = useModal();
   const [isOpenSuccess, openModalSuccess, closeModalSuccess] = useModal();
   const [isOpenFail, openModalFail, closeModalFail] = useModal();
+  let timeout;
+  let timeoutId = useRef();
 
   const {
     name,
@@ -63,6 +65,7 @@ const DogDetails = () => {
 
     return () => {
       dispatch(getDog({}));
+      clearTimeout(timeoutId.current);
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,7 +85,8 @@ const DogDetails = () => {
       .then((res) => {
         openModalSuccess();
         dispatch(deleteDog(idDelete));
-        setTimeout(() => navigate("/home"), 5000);
+        timeout = () => setTimeout(() => navigate("/home"), 5000);
+        timeoutId.current = timeout();
       })
       .catch((err) => {
         console.log(err);
