@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { searchDogs } from "../../Redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { searchDogs, errorLoading, loading } from "../../Redux/actions";
 import { URL_NAME } from "../../Constants";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const SearchBar = ({ setLoading, setError }) => {
+const SearchBar = ({ setError }) => {
   const [form, setForm] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const thereWasAnError = useSelector((state) => state.thereWasAnError);
 
   useEffect(() => {
     let initialInput = sessionStorage.getItem("searchData") || "";
@@ -30,18 +33,21 @@ const SearchBar = ({ setLoading, setError }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    navigate("/home");
     sessionStorage.setItem("filterData", "");
     sessionStorage.setItem("pageData", 0);
     sessionStorage.setItem("searchData", form);
     // sessionStorage.setItem("orderByData", "name");
     // sessionStorage.setItem("orderAscData", "asc");
-    setLoading(true);
+    dispatch(loading(true));
     axios
       .get(`${URL_NAME}${form}`)
       .then(({ data: dogs }) => {
         dispatch(searchDogs(dogs));
+        dispatch(errorLoading(false));
       })
       .catch((err) => {
+        dispatch(errorLoading(true));
         if (err.response) {
           setError(`${err.message}: ${err.response.data}`);
         } else if (err.request) {
@@ -50,23 +56,25 @@ const SearchBar = ({ setLoading, setError }) => {
           setError("Error " + err.message);
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => dispatch(loading(false)));
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Search breed"
-          name="breed"
-          onChange={handleChange}
-          value={form}
-          autoComplete="off"
-        />
-        {form && <span onClick={handleReset}>x</span>}
-        <input type="submit" value="Search" />
-      </form>
+      {thereWasAnError || (
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Search breed"
+            name="breed"
+            onChange={handleChange}
+            value={form}
+            autoComplete="off"
+          />
+          {form && <span onClick={handleReset}>x</span>}
+          <input type="submit" value="Search" />
+        </form>
+      )}
     </>
   );
 };

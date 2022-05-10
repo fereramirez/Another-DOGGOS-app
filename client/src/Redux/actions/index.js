@@ -7,6 +7,8 @@ export const EDIT_DOG = "EDIT_DOG";
 export const DELETE_DOG = "DELETE_DOG";
 export const FILTER_DOGS = "FILTER_DOGS";
 export const ORDER_DOGS = "ORDER_DOGS";
+export const ERROR_LOAD = "ERROR_LOAD";
+export const LOADING = "LOADING";
 
 export const getAllDogs = (dogs) => {
   return {
@@ -68,5 +70,19 @@ export const orderDogs = (order) => {
   return {
     type: ORDER_DOGS,
     payload: order,
+  };
+};
+
+export const errorLoading = (err) => {
+  return {
+    type: ERROR_LOAD,
+    payload: err,
+  };
+};
+
+export const loading = (loading) => {
+  return {
+    type: LOADING,
+    payload: loading,
   };
 };

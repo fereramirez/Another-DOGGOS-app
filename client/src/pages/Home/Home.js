@@ -1,29 +1,36 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CardsContainer from "./CardsContainer";
-import SearchBar from "./SearchBar";
-import { getAllDogs } from "../../Redux/actions/index.js";
+//import SearchBar from "./SearchBar";
+import {
+  getAllDogs,
+  errorLoading,
+  loading,
+} from "../../Redux/actions/index.js";
+//import { isItLoading, thereWasAnError } from "../../Redux/reducer/index";
 import { URL } from "../../Constants";
 import Error from "../../components/Error";
 import axios from "axios";
 
 const Home = () => {
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  //const dogsShowed=useSelector(state=>state.dogsShowed)
   const dispatch = useDispatch();
+  const thereWasAnError = useSelector((state) => state.thereWasAnError);
 
   useEffect(() => {
     let notFirstLoad = sessionStorage.getItem("notFirstLoad");
     if (!notFirstLoad) {
-      setLoading(true);
+      dispatch(loading(true));
       axios
         .get(URL)
         .then(({ data: dogs }) => {
           dispatch(getAllDogs(dogs));
+          dispatch(errorLoading(false));
           sessionStorage.setItem("notFirstLoad", true);
         })
         .catch((err) => {
+          dispatch(errorLoading(true));
           if (err.response) {
             setError(`${err.message}: ${err.response.data}`);
           } else if (err.request) {
@@ -32,7 +39,7 @@ const Home = () => {
             setError("Error " + err.message);
           }
         })
-        .finally(() => setLoading(false));
+        .finally(() => dispatch(loading(false)));
     }
     window.onbeforeunload = function () {
       sessionStorage.clear();
@@ -43,12 +50,12 @@ const Home = () => {
 
   return (
     <>
-      {error ? (
+      {thereWasAnError ? (
         <Error message={error} />
       ) : (
         <>
-          <SearchBar setLoading={setLoading} setError={setError} />
-          <CardsContainer loading={loading} />
+          {/* <SearchBar setLoading={setLoading} setError={setError} /> */}
+          <CardsContainer />
         </>
       )}
     </>

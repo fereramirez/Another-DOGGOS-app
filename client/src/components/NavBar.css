@@ -1,0 +1,24 @@
+.nav-container {
+  width: 100%;
+  height: 3rem;
+}
+
+.dumb-container {
+  width: 100%;
+  height: 3rem;
+}
+
+.fixed {
+  background-color: purple;
+  position: fixed;
+  display: flex;
+  justify-content: space-around;
+}
+
+.fixed span {
+  color: white;
+}
+
+.fixed span:hover {
+  color: black;
+}

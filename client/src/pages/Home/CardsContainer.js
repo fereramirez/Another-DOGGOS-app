@@ -6,12 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import Loader from "../../components/Loader";
 import { showDogs } from "../../Redux/actions";
 import { dogsPerPage } from "../../Constants";
+import "./CardsContainer.css";
 
-const CardsContainer = ({ loading }) => {
+const CardsContainer = () => {
   const state = useSelector((state) => state);
-  const { dogsAll, dogsFound, dogsFiltered, dogsShowed } = state;
+  const { dogsAll, dogsFound, dogsFiltered, dogsShowed, isItLoading } = state;
   const dispatch = useDispatch();
-  const topCardsRef = useRef(null);
+  //const topCardsRef = useRef(null);
   let dogs;
   dogsFound.length === 0 && dogsFiltered.length === 0
     ? (dogs = dogsAll)
@@ -27,9 +28,6 @@ const CardsContainer = ({ loading }) => {
   };
   const [pages, setPages] = useState(initialPages);
   const { pageShowed, indexFirstDogShowed, indexLastDogShowed } = pages;
-
-  const autoScroll = () =>
-    topCardsRef.current.scrollIntoView({ behavior: "smooth" });
 
   useEffect(() => {
     dispatch(showDogs({ indexFirstDogShowed, indexLastDogShowed }));
@@ -47,7 +45,7 @@ const CardsContainer = ({ loading }) => {
   }, [dogs]);
 
   useEffect(() => {
-    autoScroll();
+    //(() => topCardsRef.current.scrollIntoView({ behavior: "smooth" }))();
     sessionStorage.setItem("pageData", pageShowed);
     window.onunload = function () {
       sessionStorage.removeItem("pageData");
@@ -68,7 +66,7 @@ const CardsContainer = ({ loading }) => {
 
   return (
     <div>
-      {loading ? (
+      {isItLoading ? (
         <Loader />
       ) : (
         <>
@@ -76,18 +74,20 @@ const CardsContainer = ({ loading }) => {
             <h1>No dogs found</h1>
           ) : (
             <>
-              <FilterBar pages={pages} setPages={setPages} />
-              <div ref={topCardsRef}>
-                {dogs && dogs[0] === null ? (
-                  <h1>No coincidences found</h1>
-                ) : (
-                  dogsShowed[0] !== null &&
-                  dogsShowed.map((dog) => (
-                    <Card dogDetails={dog} key={dog.id} />
-                  ))
-                )}
+              <div className="container">
+                <FilterBar pages={pages} setPages={setPages} />
+                <div /* ref={topCardsRef} */>
+                  {dogs && dogs[0] === null ? (
+                    <h1>No coincidences found</h1>
+                  ) : (
+                    dogsShowed[0] !== null &&
+                    dogsShowed.map((dog) => (
+                      <Card dogDetails={dog} key={dog.id} />
+                    ))
+                  )}
+                </div>
+                <Pagination pages={pages} setPages={setPages} />
               </div>
-              <Pagination pages={pages} setPages={setPages} />
             </>
           )}
         </>

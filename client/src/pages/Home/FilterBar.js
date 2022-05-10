@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterDogs, orderDogs, showDogs } from "../../Redux/actions";
-import { dogsPerPage } from "../../Constants";
+import "./FilterBar.css";
 
 const initialOrder = {
   by: "name",
@@ -18,10 +18,11 @@ const FilterBar = ({ pages, setPages }) => {
   const [filter, setFilter] = useState(initialFilter);
 
   const state = useSelector((state) => state);
-  const { dogsAll, dogsFound, dogsFiltered } = state;
+  const { dogsAll, dogsFound } = state;
   const dispatch = useDispatch();
   let allTemperaments = useRef([]);
-  const { indexFirstDogShowed, indexLastDogShowed } = pages;
+  const { indexFirstDogShowed, indexLastDogShowed, pageShowed } = pages;
+  const topCardsRef = useRef(null);
 
   const handleChecked = ({ target }) => {
     setFilter({
@@ -186,52 +187,60 @@ const FilterBar = ({ pages, setPages }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dogsFiltered]); */
 
+  useEffect(() => {
+    (() => topCardsRef.current.scrollIntoView({ behavior: "smooth" }))();
+  }, [pageShowed]);
+
   return (
-    <>
-      <label>
-        <input
-          name="api"
-          type="checkbox"
-          checked={filter.api}
-          // defaultChecked={filter.api}
-          onChange={handleChecked}
-        />
-        API dogs
-      </label>
-      <label>
-        <input
-          name="own"
-          type="checkbox"
-          checked={filter.own}
-          //defaultChecked={filter.own}
-          onChange={handleChecked}
-        />
-        Own dogs
-      </label>
+    <div className="filter-container" ref={topCardsRef}>
+      <div className="check-container">
+        <label>
+          <input
+            name="api"
+            type="checkbox"
+            checked={filter.api}
+            // defaultChecked={filter.api}
+            onChange={handleChecked}
+          />
+          API dogs
+        </label>
+        <label>
+          <input
+            name="own"
+            type="checkbox"
+            checked={filter.own}
+            //defaultChecked={filter.own}
+            onChange={handleChecked}
+          />
+          Own dogs
+        </label>
+      </div>
       <div>
         <span>Order by </span>
-        <select
-          name="by"
-          onChange={handleOrder}
-          //  defaultValue="name"
-          value={order.by}
-        >
-          <option value="name">Name</option>
-          <option value="weight">Weight</option>
-        </select>
-        <select
-          name="asc"
-          onChange={handleOrder}
-          // defaultValue="asc"
-          value={order.asc}
-        >
-          <option value="asc">
-            {order.by === "name" ? "A-Z" : "Less weight"}
-          </option>
-          <option value="desc">
-            {order.by === "name" ? "Z-A" : "More weight"}
-          </option>
-        </select>
+        <div>
+          <select
+            name="by"
+            onChange={handleOrder}
+            //  defaultValue="name"
+            value={order.by}
+          >
+            <option value="name">Name</option>
+            <option value="weight">Weight</option>
+          </select>
+          <select
+            name="asc"
+            onChange={handleOrder}
+            // defaultValue="asc"
+            value={order.asc}
+          >
+            <option value="asc">
+              {order.by === "name" ? "A-Z" : "Less weight"}
+            </option>
+            <option value="desc">
+              {order.by === "name" ? "Z-A" : "More weight"}
+            </option>
+          </select>
+        </div>
       </div>
       {/* <select name="temperament" onChange={handleFilter}>
         {allTemperaments.current.map((temperament) => (
@@ -258,7 +267,7 @@ const FilterBar = ({ pages, setPages }) => {
         </datalist>
         {filter.temperament && <span onClick={handleResetTemperament}>x</span>}
       </div>
-    </>
+    </div>
   );
 };
 export default FilterBar;

@@ -8,6 +8,8 @@ import {
   DELETE_DOG,
   FILTER_DOGS,
   ORDER_DOGS,
+  ERROR_LOAD,
+  LOADING,
 } from "../actions/index.js";
 
 const initialState = {
@@ -16,6 +18,8 @@ const initialState = {
   dogsFiltered: [],
   dogsShowed: [],
   dogDetails: {},
+  thereWasAnError: false,
+  isItLoading: false,
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -163,6 +167,17 @@ export default function rootReducer(state = initialState, action) {
             }
           }
         }),
+      };
+
+    case ERROR_LOAD:
+      return {
+        ...state,
+        thereWasAnError: action.payload,
+      };
+    case LOADING:
+      return {
+        ...state,
+        isItLoading: action.payload,
       };
 
     default:
