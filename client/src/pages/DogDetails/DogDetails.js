@@ -54,7 +54,7 @@ const DogDetails = () => {
       })
       .catch((err) => {
         if (err.response) {
-          setError(`${err.message}: ${err.response.statusText}`);
+          setError(`${err.message}: ${err.response.data}`);
         } else if (err.request) {
           setError("Server does not respond");
         } else {
@@ -62,10 +62,6 @@ const DogDetails = () => {
         }
       })
       .finally(() => setLoading(false));
-
-    window.onbeforeunload = function () {
-      sessionStorage.clear();
-    };
 
     return () => {
       dispatch(getDog({}));
@@ -94,7 +90,7 @@ const DogDetails = () => {
       .catch((err) => {
         console.log(err);
         if (err.response) {
-          setErrorDelete(`${err.message}: ${err.response.statusText}`);
+          setErrorDelete(`${err.message}: ${err.response.data}`);
         } else if (err.request) {
           setErrorDelete("Server does not respond");
         } else {
@@ -115,7 +111,12 @@ const DogDetails = () => {
         details && (
           <>
             <h1>{name}</h1>
-            {/* <img src={image.url} alt={name} height="120" weight="120" /> */}
+            <img
+              src={image ? image.url : "https://place.dog/300/200"}
+              alt={name}
+              height="120"
+              weight="120"
+            />
             <div>Height: {height.metric} cms.</div>
             <div>Weight: {weight.metric} kgs.</div>
             <div>Life Span: {life_span}</div>

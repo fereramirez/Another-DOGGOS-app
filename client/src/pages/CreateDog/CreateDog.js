@@ -239,7 +239,7 @@ const CreateDog = () => {
             })
             .catch((err) => {
               if (err.response) {
-                setErrorEdit(`${err.message}: ${err.response.statusText}`);
+                setErrorEdit(`${err.message}: ${err.response.data}`);
               } else if (err.request) {
                 setErrorEdit("Server does not respond");
               } else {
@@ -287,7 +287,7 @@ const CreateDog = () => {
 
   useEffect(() => {
     setLoading(true);
-    if (Object.keys(dogToUpdate).length)
+    if (Object.keys(dogToUpdate).length) {
       setFocusInfo({
         name: true,
         min_height: true,
@@ -297,6 +297,7 @@ const CreateDog = () => {
         life_span: true,
         temperaments: true,
       });
+    }
     const editDogData = sessionStorage.getItem("editDogData");
     editDogData || setDogToUpdate({});
 
@@ -318,7 +319,7 @@ const CreateDog = () => {
       })
       .catch((err) => {
         if (err.response) {
-          setError(`${err.message}: ${err.response.statusText}`);
+          setError(`${err.message}: ${err.response.data}`);
         } else if (err.request) {
           setError("Server does not respond");
         } else {

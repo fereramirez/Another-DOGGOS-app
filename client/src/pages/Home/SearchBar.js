@@ -35,9 +35,6 @@ const SearchBar = ({ setLoading, setError }) => {
     sessionStorage.setItem("searchData", form);
     // sessionStorage.setItem("orderByData", "name");
     // sessionStorage.setItem("orderAscData", "asc");
-    window.onbeforeunload = function () {
-      sessionStorage.clear();
-    };
     setLoading(true);
     axios
       .get(`${URL_NAME}${form}`)
@@ -46,7 +43,7 @@ const SearchBar = ({ setLoading, setError }) => {
       })
       .catch((err) => {
         if (err.response) {
-          setError(`${err.message}: ${err.response.statusText}`);
+          setError(`${err.message}: ${err.response.data}`);
         } else if (err.request) {
           setError("Server does not respond");
         } else {

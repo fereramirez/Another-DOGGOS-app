@@ -5,7 +5,12 @@ const Card = ({ dogDetails }) => {
   return (
     <>
       <Link to={`/dogdetails/${id}`}>
-        {/* <img src={image.url} alt={name} height="120" weight="120" /> */}
+        <img
+          src={image ? image.url : "https://place.dog/300/200"}
+          alt={name}
+          height="120"
+          weight="120"
+        />
         <h4>{name}</h4>
       </Link>
     </>

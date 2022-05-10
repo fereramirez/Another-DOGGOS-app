@@ -2,15 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import Card from "./Card";
 import Pagination from "./Pagination";
 import FilterBar from "./FilterBar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loader from "../../components/Loader";
 import { showDogs } from "../../Redux/actions";
 import { dogsPerPage } from "../../Constants";
 
 const CardsContainer = ({ loading }) => {
   const state = useSelector((state) => state);
-  const dispatch = useDispatch();
   const { dogsAll, dogsFound, dogsFiltered, dogsShowed } = state;
+  const dispatch = useDispatch();
+  const topCardsRef = useRef(null);
   let dogs;
   dogsFound.length === 0 && dogsFiltered.length === 0
     ? (dogs = dogsAll)
@@ -26,6 +27,9 @@ const CardsContainer = ({ loading }) => {
   };
   const [pages, setPages] = useState(initialPages);
   const { pageShowed, indexFirstDogShowed, indexLastDogShowed } = pages;
+
+  const autoScroll = () =>
+    topCardsRef.current.scrollIntoView({ behavior: "smooth" });
 
   useEffect(() => {
     dispatch(showDogs({ indexFirstDogShowed, indexLastDogShowed }));
@@ -43,6 +47,7 @@ const CardsContainer = ({ loading }) => {
   }, [dogs]);
 
   useEffect(() => {
+    autoScroll();
     sessionStorage.setItem("pageData", pageShowed);
     window.onunload = function () {
       sessionStorage.removeItem("pageData");
@@ -72,7 +77,7 @@ const CardsContainer = ({ loading }) => {
           ) : (
             <>
               <FilterBar pages={pages} setPages={setPages} />
-              <div>
+              <div ref={topCardsRef}>
                 {dogs && dogs[0] === null ? (
                   <h1>No coincidences found</h1>
                 ) : (

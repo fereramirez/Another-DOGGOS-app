@@ -25,7 +25,7 @@ const Home = () => {
         })
         .catch((err) => {
           if (err.response) {
-            setError(`${err.message}: ${err.response.statusText}`);
+            setError(`${err.message}: ${err.response.data}`);
           } else if (err.request) {
             setError("Server does not respond");
           } else {
@@ -34,6 +34,10 @@ const Home = () => {
         })
         .finally(() => setLoading(false));
     }
+    window.onbeforeunload = function () {
+      sessionStorage.clear();
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
