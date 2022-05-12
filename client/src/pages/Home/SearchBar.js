@@ -4,6 +4,9 @@ import { searchDogs, errorLoading, loading } from "../../Redux/actions";
 import { URL_NAME } from "../../Constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./SearchBar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const SearchBar = ({ setError }) => {
   const [form, setForm] = useState("");
@@ -62,7 +65,7 @@ const SearchBar = ({ setError }) => {
   return (
     <>
       {thereWasAnError || (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="inputWithButton">
           <input
             type="text"
             placeholder="Search breed"
@@ -71,8 +74,16 @@ const SearchBar = ({ setError }) => {
             value={form}
             autoComplete="off"
           />
-          {form && <span onClick={handleReset}>x</span>}
-          <input type="submit" value="Search" />
+          {form && (
+            <div>
+              <div onClick={handleReset} className="x-mark">
+                <FontAwesomeIcon icon={faXmark} />
+              </div>
+              <span onClick={handleSubmit}>
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              </span>
+            </div>
+          )}
         </form>
       )}
     </>

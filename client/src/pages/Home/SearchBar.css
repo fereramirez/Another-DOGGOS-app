@@ -1,0 +1,27 @@
+.inputWithButton {
+  position: relative;
+  width: 220px;
+  display: flex;
+  align-items: center;
+}
+
+.inputWithButton > input {
+  width: 100%;
+  height: 2rem;
+  padding-right: 60px;
+}
+
+.inputWithButton > div {
+  margin-right: 0.3rem;
+  position: absolute;
+  right: 0;
+  padding-right: 0.3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+.x-mark {
+  margin-right: 0.3rem;
+  font-size: 1.2rem;
+}

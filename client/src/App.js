@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import "./app.css";
+import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 import About from "./pages/About/About";
 import CreateDog from "./pages/CreateDog/CreateDog";
@@ -19,6 +20,7 @@ const App = () => {
             <>
               <NavBar />
               <Home />
+              <Footer />
             </>
           }
         />
@@ -28,6 +30,7 @@ const App = () => {
             <>
               <NavBar />
               <DogDetails />
+              <Footer />
             </>
           }
         />
@@ -37,6 +40,7 @@ const App = () => {
             <>
               <NavBar />
               <CreateDog />
+              <Footer />
             </>
           }
         />
@@ -46,6 +50,7 @@ const App = () => {
             <>
               <NavBar />
               <About />
+              <Footer />
             </>
           }
         />
@@ -55,6 +60,7 @@ const App = () => {
             <>
               <NavBar />
               <PageNotFound />
+              <Footer />
             </>
           }
         />

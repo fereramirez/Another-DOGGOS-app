@@ -74,9 +74,9 @@ const CardsContainer = () => {
             <h1>No dogs found</h1>
           ) : (
             <>
-              <div className="container">
+              <div className="cards-pag-container">
                 <FilterBar pages={pages} setPages={setPages} />
-                <div /* ref={topCardsRef} */>
+                <div className="cards-container" /* ref={topCardsRef} */>
                   {dogs && dogs[0] === null ? (
                     <h1>No coincidences found</h1>
                   ) : (

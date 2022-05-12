@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterDogs, orderDogs, showDogs } from "../../Redux/actions";
 import "./FilterBar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const initialOrder = {
   by: "name",
@@ -191,8 +193,37 @@ const FilterBar = ({ pages, setPages }) => {
     (() => topCardsRef.current.scrollIntoView({ behavior: "smooth" }))();
   }, [pageShowed]);
 
+  const [show, setShow] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const controlNavbar = () => {
+    if (typeof window !== "undefined") {
+      if (window.scrollY < lastScrollY) {
+        // if scroll down hide the navbar
+        setShow(false);
+      } else {
+        // if scroll up show the navbar
+        setShow(true);
+      }
+
+      // remember current page location to use in the next move
+      setLastScrollY(window.scrollY);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", controlNavbar);
+
+      // cleanup function
+      return () => {
+        window.removeEventListener("scroll", controlNavbar);
+      };
+    }
+  }, [lastScrollY]);
+
   return (
-    <div className="filter-container" ref={topCardsRef}>
+    <div className={`filter-container ${show && "hidden"}`} ref={topCardsRef}>
       <div className="check-container">
         <label>
           <input
@@ -215,11 +246,12 @@ const FilterBar = ({ pages, setPages }) => {
           Own dogs
         </label>
       </div>
-      <div>
-        <span>Order by </span>
+      <div className="order-container">
+        <label htmlFor="order">Order by </label>
         <div>
           <select
             name="by"
+            id="order"
             onChange={handleOrder}
             //  defaultValue="name"
             value={order.by}
@@ -249,23 +281,30 @@ const FilterBar = ({ pages, setPages }) => {
           </option>
         ))}
       </select> */}
-      <div>
-        <span>Filter </span>
-        <input
-          name="temperament"
-          placeholder="by Temperament"
-          pattern="^[A-Za-zÑñÁáÉéÍíÓóÚúÜüs]+$"
-          list="allTemperaments"
-          onChange={handleChange}
-          value={filter.temperament}
-          autoComplete="off"
-        />
-        <datalist id="allTemperaments">
-          {allTemperaments.current.map((temperament) => (
-            <option value={temperament} key={temperament} />
-          ))}
-        </datalist>
-        {filter.temperament && <span onClick={handleResetTemperament}>x</span>}
+      <div className="temp-filter-container">
+        <label htmlFor="temperament">Filter </label>
+        <span className="input-temp-container">
+          <input
+            name="temperament"
+            id="temperament"
+            placeholder="by Temperament"
+            pattern="^[A-Za-zÑñÁáÉéÍíÓóÚúÜüs]+$"
+            list="allTemperaments"
+            onChange={handleChange}
+            value={filter.temperament}
+            autoComplete="off"
+          />
+          <datalist id="allTemperaments">
+            {allTemperaments.current.map((temperament) => (
+              <option value={temperament} key={temperament} />
+            ))}
+          </datalist>
+          {filter.temperament && (
+            <div onClick={handleResetTemperament}>
+              <FontAwesomeIcon icon={faXmark} />
+            </div>
+          )}
+        </span>
       </div>
     </div>
   );

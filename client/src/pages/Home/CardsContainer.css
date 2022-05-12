@@ -1,5 +1,14 @@
-.container {
+.cards-pag-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 9rem;
+}
+
+.cards-container {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  align-items: center;
 }
