@@ -9,6 +9,8 @@
   width: 100%;
   height: 2rem;
   padding-right: 60px;
+  border-radius: 8px;
+  border-color: white;
 }
 
 .inputWithButton > div {

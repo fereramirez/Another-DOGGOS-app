@@ -4,11 +4,6 @@
   z-index: 100;
 }
 
-/* .dumb-container {
-  width: 100%;
-  height: 4rem;
-} */
-
 .fixed {
   background-color: #753bbd;
   position: fixed;
@@ -18,10 +13,72 @@
   top: 0;
 }
 
-.routes {
+.logo {
+  font-size: 3rem;
   color: white;
 }
 
-.routes:hover {
-  color: black;
+.route {
+  color: white;
+  display: inline-block;
+  padding: 1rem;
+}
+
+.menu-routes {
+  display: flex;
+  height: 100%;
+}
+
+.one-route-container {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  font-size: 1.3rem;
+}
+
+.route-icon {
+  color: white;
+  font-size: 2rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-100%);
+}
+
+.one-route-container span {
+  transition: transform 0.2s ease-out;
+}
+
+.one-route-container:hover .route {
+  transform: translateY(100%);
+}
+
+.one-route-container:hover .route-icon {
+  transform: none;
+}
+
+.current-route svg:first-child {
+  color: #e7a8f0;
+  font-size: 6.4rem;
+  transform: translate(1rem, -1rem);
+}
+.current-route svg:last-child {
+  color: #753bbd;
+  font-size: 2rem;
+  transform: translate(-2.3rem, -2.7rem);
+}
+
+.over {
+  overflow: visible;
+}
+.about svg:first-child {
+  transform: translate(0.7rem, -1rem);
+}
+.home svg:first-child {
+  transform: translate(1.2rem, -1rem);
 }
