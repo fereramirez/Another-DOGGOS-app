@@ -1,0 +1,50 @@
+.page-button,
+.pagination-arrow {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.page-button {
+  font-size: 1.1rem;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.pagination-arrow {
+  font-size: 2rem;
+}
+.pagination-arrow svg {
+  pointer-events: none;
+}
+
+.pagination-container {
+  /* border: 1px solid red; */
+  width: 70%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.current-page {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: default;
+  outline: inherit;
+  font-size: 2.5rem;
+  color: purple;
+}
+
+.pagination-arrow:hover,
+.page-button:hover {
+  color: purple;
+  transition: transform 0.2s ease-out;
+  transform: scale(1.3);
+}

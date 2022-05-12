@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { dogsPerPage } from "../../Constants";
+import "./Pagination.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+  faPaw,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Pagination = ({ pages, setPages }) => {
   const { totalPages, pageShowed } = pages;
@@ -58,12 +65,16 @@ const Pagination = ({ pages, setPages }) => {
   }, [dogs]);
 
   return (
-    <div>
+    <div className="pagination-container">
       {total > 1 && (
         <>
           {pageShowed !== 0 && (
-            <button name="previous" onClick={handleClick}>
-              {"<"}
+            <button
+              name="previous"
+              onClick={handleClick}
+              className="pagination-arrow"
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
             </button>
           )}
           {[...Array(total)].map((el, i) => (
@@ -73,13 +84,26 @@ const Pagination = ({ pages, setPages }) => {
               onClick={handleClick}
               value={i}
               disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
+              className={
+                parseInt(i) === parseInt(pageShowed)
+                  ? "current-page"
+                  : "page-button"
+              }
             >
-              {i + 1}
+              {parseInt(i) === parseInt(pageShowed) ? (
+                <FontAwesomeIcon icon={faPaw} />
+              ) : (
+                i + 1
+              )}
             </button>
           ))}
           {pageShowed !== total - 1 && (
-            <button name="next" onClick={handleClick}>
-              {">"}
+            <button
+              name="next"
+              onClick={handleClick}
+              className="pagination-arrow"
+            >
+              <FontAwesomeIcon icon={faChevronRight} />
             </button>
           )}
         </>

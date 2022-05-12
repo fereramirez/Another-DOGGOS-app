@@ -75,6 +75,10 @@
 
 .over {
   overflow: visible;
+  cursor: default;
+}
+.over a {
+  cursor: default;
 }
 .about svg:first-child {
   transform: translate(0.7rem, -1rem);
