@@ -1,5 +1,13 @@
-footer {
+.footer {
   background-color: #753bbd;
   height: 3rem;
-  margin-top: 2rem;
+  background-image: url("../Assets/paw-trail-right.png");
+  background-repeat: repeat-x;
+  background-size: auto 3rem;
+  margin-top: auto;
+}
+
+.img-footer {
+  background-color: #753bbd;
+  height: 3rem;
 }

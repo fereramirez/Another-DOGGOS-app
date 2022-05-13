@@ -25,6 +25,8 @@ const FilterBar = ({ pages, setPages }) => {
   let allTemperaments = useRef([]);
   const { indexFirstDogShowed, indexLastDogShowed, pageShowed } = pages;
   const topCardsRef = useRef(null);
+  const [show, setShow] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const handleChecked = ({ target }) => {
     setFilter({
@@ -193,20 +195,13 @@ const FilterBar = ({ pages, setPages }) => {
     (() => topCardsRef.current.scrollIntoView({ behavior: "smooth" }))();
   }, [pageShowed]);
 
-  const [show, setShow] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
   const controlNavbar = () => {
     if (typeof window !== "undefined") {
       if (window.scrollY < lastScrollY) {
-        // if scroll down hide the navbar
         setShow(false);
       } else {
-        // if scroll up show the navbar
         setShow(true);
       }
-
-      // remember current page location to use in the next move
       setLastScrollY(window.scrollY);
     }
   };
@@ -215,32 +210,30 @@ const FilterBar = ({ pages, setPages }) => {
     if (typeof window !== "undefined") {
       window.addEventListener("scroll", controlNavbar);
 
-      // cleanup function
       return () => {
         window.removeEventListener("scroll", controlNavbar);
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastScrollY]);
 
   return (
     <div className={`filter-container ${show && "hidden"}`} ref={topCardsRef}>
       <div className="check-container">
-        <label>
+        <label className={`${!filter.api && "checked"}`}>
           <input
             name="api"
             type="checkbox"
             checked={filter.api}
-            // defaultChecked={filter.api}
             onChange={handleChecked}
           />
           API dogs
         </label>
-        <label>
+        <label className={`${!filter.own && "checked"}`}>
           <input
             name="own"
             type="checkbox"
             checked={filter.own}
-            //defaultChecked={filter.own}
             onChange={handleChecked}
           />
           Own dogs

@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   margin-top: 9rem;
+  align-items: center;
 }
 
 .cards-container {

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createDog, editDog } from "../../Redux/actions";
 import Modal from "../../components/Modal";
 import { useModal } from "../../hooks/useModal";
+import "./CreateDog.css";
 
 const initialForm = {
   name: "",
@@ -362,7 +363,7 @@ const CreateDog = () => {
   }, [form]);
 
   return (
-    <>
+    <div>
       {error ? (
         <Error message={error} />
       ) : loading ? (
@@ -529,7 +530,7 @@ const CreateDog = () => {
         <p>{`${errorCreate}`}</p>
         <button onClick={closeModalCreateFail}>Accept</button>
       </Modal>
-    </>
+    </div>
   );
 };
 

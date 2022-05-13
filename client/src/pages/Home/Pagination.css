@@ -28,6 +28,8 @@
   max-width: 1000px;
   display: flex;
   justify-content: space-evenly;
+  padding-bottom: 1.5rem;
+  padding-top: 1rem;
 }
 
 .current-page {
