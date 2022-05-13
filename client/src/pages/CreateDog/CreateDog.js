@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import { URL } from "../../Constants";
@@ -9,6 +9,8 @@ import { createDog, editDog } from "../../Redux/actions";
 import Modal from "../../components/Modal";
 import { useModal } from "../../hooks/useModal";
 import "./CreateDog.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const initialForm = {
   name: "",
@@ -20,7 +22,7 @@ const initialForm = {
   temperaments: [],
 };
 
-const initialFocusInfo = {
+/* const initialFocusInfo = {
   name: false,
   min_height: false,
   max_height: false,
@@ -28,7 +30,7 @@ const initialFocusInfo = {
   max_weight: false,
   life_span: false,
   temperaments: false,
-};
+}; */
 const regex = {
   name: "^[A-Za-zÑñÁáÉéÍíÓóÚúÜüs ]+$",
   number: "[0-9]*",
@@ -45,7 +47,7 @@ const CreateDog = () => {
   const newDog = useRef({});
   //const [response, setResponse] = useState(null);
   const [form, setForm] = useState(initialForm);
-  const [focusInfo, setFocusInfo] = useState(initialFocusInfo);
+  /*   const [focusInfo, setFocusInfo] = useState(initialFocusInfo); */
   const [warnForm, setWarnForm] = useState({});
   const [errors, setErrors] = useState({});
   const [showErrors, setShowErrors] = useState(false);
@@ -108,11 +110,11 @@ const CreateDog = () => {
   };
 
   const handleFocus = (e) => {
-    if (Object.keys(dogToUpdate).length === 0)
+    /*  if (Object.keys(dogToUpdate).length === 0)
       setFocusInfo({
         ...focusInfo,
         [e.target.name]: true,
-      });
+      }); */
   };
 
   const deleteTemperament = (temp) => {
@@ -179,11 +181,11 @@ const CreateDog = () => {
     clearTimeout(timeoutId.current);
     setErrors(validateForm());
     setWarnForm({});
-    if (Object.keys(dogToUpdate).length === 0)
+    /* if (Object.keys(dogToUpdate).length === 0)
       setFocusInfo({
         ...focusInfo,
         [e.target.name]: false,
-      });
+      }); */
   };
 
   const handleReset = () => {
@@ -288,7 +290,7 @@ const CreateDog = () => {
 
   useEffect(() => {
     setLoading(true);
-    if (Object.keys(dogToUpdate).length) {
+    /*  if (Object.keys(dogToUpdate).length) { //!VOLVER A VER esto es para que aparezcan los titulares de inputs cuando se edita un dog
       setFocusInfo({
         name: true,
         min_height: true,
@@ -298,7 +300,7 @@ const CreateDog = () => {
         life_span: true,
         temperaments: true,
       });
-    }
+    } */
     const editDogData = sessionStorage.getItem("editDogData");
     editDogData || setDogToUpdate({});
 
@@ -363,34 +365,53 @@ const CreateDog = () => {
   }, [form]);
 
   return (
-    <div>
+    <div className="create-container">
       {error ? (
         <Error message={error} />
       ) : loading ? (
         <Loader />
       ) : (
         <>
-          <h1>{sessionStorage.getItem("editDogData") ? "EDIT" : "CREATE"}</h1>
-          <form onSubmit={handleSubmit} onReset={handleReset}>
+          <h1>
+            {sessionStorage.getItem("editDogData")
+              ? "EDIT BREED"
+              : "CREATE YOUR BREED"}
+          </h1>
+          <form
+            onSubmit={handleSubmit}
+            onReset={handleReset}
+            className="create-form"
+          >
             <>
-              {focusInfo.name && <label>Breed name</label>}
-              <input
-                type="text"
-                name="name"
-                placeholder="Breed name"
-                pattern={regex.name}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                onFocus={handleFocus}
-                value={name}
-                autoComplete="off"
-              />
-              {warnForm.name && <p>{warnForm.name}</p>}
-              {showErrors && errors.name && <p>{errors.name}</p>} <br />
-              <br />
-              {arrForRender.map((inputName) => (
-                <div key={inputName}>
-                  {focusInfo[inputName] && (
+              <label>Breed name</label>
+              <div>
+                {warnForm.name ? (
+                  <p className="warn-info">{warnForm.name}</p>
+                ) : (
+                  <p className="hidden-dumb">HIDDEN</p>
+                )}
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Breed name"
+                  pattern={regex.name}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  value={name}
+                  autoComplete="off"
+                />
+                <p
+                  className={`error-info ${
+                    showErrors ? "error-showed" : "error-hidden"
+                  }`}
+                >
+                  {errors.name}
+                </p>
+              </div>
+              {React.Children.toArray(
+                arrForRender.map((inputName) => (
+                  <>
                     <label>
                       {inputName.charAt(0).toUpperCase() +
                         inputName
@@ -399,43 +420,82 @@ const CreateDog = () => {
                           .replace("in", "inimum")
                           .replace("ax", "aximum")}
                     </label>
-                  )}
-                  <input
-                    type="text"
-                    name={inputName}
-                    placeholder={
-                      inputName.charAt(0).toUpperCase() +
-                      inputName.slice(1).replace("_", " ")
-                    }
-                    pattern={regex.number}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    value={form[inputName]}
-                    autoComplete="off"
-                  />
-                  {inputName.includes("height") ? (
-                    <span>cms.</span>
-                  ) : inputName.includes("weight") ? (
-                    <span>kgs.</span>
-                  ) : (
-                    <span>years</span>
-                  )}
-                  {warnForm[inputName] && <p>{warnForm[inputName]}</p>}
-                  {showErrors && errors[inputName] && (
-                    <p>{errors[inputName]}</p>
-                  )}
-                  <br />
-                  <br />
-                </div>
-              ))}
+                    <div>
+                      {warnForm[inputName] ? (
+                        <p className="warn-info">{warnForm[inputName]}</p>
+                      ) : (
+                        <p className="hidden-dumb">HIDDEN</p>
+                      )}
+                      <input
+                        type="text"
+                        name={inputName}
+                        placeholder={
+                          inputName.charAt(0).toUpperCase() +
+                          inputName.slice(1).replace("_", " ")
+                        }
+                        pattern={regex.number}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        onFocus={handleFocus}
+                        value={form[inputName]}
+                        autoComplete="off"
+                      />
+                      {inputName.includes("height") ? (
+                        <span>cms.</span>
+                      ) : inputName.includes("weight") ? (
+                        <span>kgs.</span>
+                      ) : (
+                        <span>years</span>
+                      )}
+                      <p
+                        className={`error-info ${
+                          showErrors ? "error-showed" : "error-hidden"
+                        }`}
+                      >
+                        {errors[inputName]}
+                      </p>
+                    </div>
+                  </>
+                ))
+              )}
             </>
 
             <>
-              <label>
-                {!focusInfo.temperaments
-                  ? "Temperaments"
-                  : "Select at least one and at most 5 temperaments"}
+              <label className="temperament-info">
+                Temperaments
+                {warnForm.temperaments ? (
+                  <p className="warn-info temperament-warn">
+                    {warnForm.temperaments}
+                  </p>
+                ) : (
+                  <p className="hidden-dumb temperament-warn">HIDDEN</p>
+                )}
+                <div className="temperament-selected-container">
+                  {temperaments.length > 0 &&
+                    temperaments.map((temperament) => (
+                      <div key={temperament}>
+                        <h4 className="temperament-selected">
+                          {temperament}
+                          <span
+                            onClick={() => deleteTemperament(temperament)}
+                            className="x-mark-temperament"
+                          >
+                            {" "}
+                            <FontAwesomeIcon icon={faXmark} />
+                          </span>
+                        </h4>
+                      </div>
+                    ))}
+                </div>
+                <p
+                  className={`error-info ${
+                    showErrors ? "error-showed" : "error-hidden"
+                  }`}
+                >
+                  {errors.temperaments}
+                </p>
+              </label>
+              <div>
                 <select
                   name="temperaments"
                   multiple
@@ -450,21 +510,7 @@ const CreateDog = () => {
                     </option>
                   ))}
                 </select>
-              </label>
-              {temperaments.length > 0 &&
-                temperaments.map((temperament) => (
-                  <div key={temperament}>
-                    <h4>{temperament}</h4>
-                    <span onClick={() => deleteTemperament(temperament)}>
-                      x
-                    </span>
-                  </div>
-                ))}
-              {warnForm.temperaments && <p>{warnForm.temperaments}</p>}
-              {showErrors && errors.temperaments && (
-                <p>{errors.temperaments}</p>
-              )}
-              <br />
+              </div>
               <>
                 {/* <button onClick={customTemperament}>Add custom temperament</button>
             {addTemperament && (
@@ -492,40 +538,65 @@ const CreateDog = () => {
               </>
             </>
 
-            <input
-              type="submit"
-              value={
-                sessionStorage.getItem("editDogData")
-                  ? "Edit breed"
-                  : "Create breed"
-              }
-            />
-            <input type="reset" value="Reset" />
+            <div className="submit-button-create">
+              <input
+                type="submit"
+                value={
+                  sessionStorage.getItem("editDogData")
+                    ? "Edit breed"
+                    : "Create breed"
+                }
+                className="button-form"
+              />
+            </div>
+            <div>
+              <input type="reset" value="Reset" className="button-form" />
+            </div>
           </form>
         </>
       )}
 
       <span onClick={() => navigate("/home")}>
-        <Modal isOpen={isOpenEditSuccess} closeModal={closeModalEditSuccess}>
+        <Modal
+          isOpen={isOpenEditSuccess}
+          closeModal={closeModalEditSuccess}
+          type="success"
+        >
           <p>{`${dogToUpdate.name} edited successfully`}</p>
           <p>Returning to Home</p>
         </Modal>
       </span>
-      <Modal isOpen={isOpenEditFail} closeModal={closeModalEditFail}>
+      <Modal
+        isOpen={isOpenEditFail}
+        closeModal={closeModalEditFail}
+        type="error"
+      >
         <p>{`Failed to edit ${dogToUpdate.name}`}</p>
         <p>{`${errorEdit}`}</p>
         <button onClick={closeModalEditFail}>Accept</button>
       </Modal>
-      <Modal isOpen={isOpenEditSame} closeModal={closeModalEditSame}>
+      <Modal
+        isOpen={isOpenEditSame}
+        closeModal={closeModalEditSame}
+        type="warn"
+      >
         <p>{dogToUpdate.name} has the same properties</p>
         <button onClick={closeModalEditSame}>Accept</button>
       </Modal>
-      <Modal isOpen={isOpenCreateSuccess} closeModal={closeModalCreateSuccess}>
+      <Modal
+        isOpen={isOpenCreateSuccess}
+        closeModal={closeModalCreateSuccess}
+        type="success"
+      >
         <p>{`${newDog.current.name} created successfully`}</p>
         <button onClick={closeModalCreateSuccess}>Create another breed</button>
         <button onClick={() => navigate("/home")}>Return Home</button>
       </Modal>
-      <Modal isOpen={isOpenCreateFail} closeModal={closeModalCreateFail}>
+      <Modal
+        isOpen={isOpenCreateFail}
+        closeModal={closeModalCreateFail}
+        type="error"
+      >
         <p>{`Failed to create ${newDog.current.name}`}</p>
         <p>{`${errorCreate}`}</p>
         <button onClick={closeModalCreateFail}>Accept</button>

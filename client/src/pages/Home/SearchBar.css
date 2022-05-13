@@ -23,7 +23,13 @@
   align-items: center;
   align-content: center;
 }
+
 .x-mark {
   margin-right: 0.3rem;
   font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.search-svg {
+  cursor: pointer;
 }

@@ -293,7 +293,7 @@ const FilterBar = ({ pages, setPages }) => {
             ))}
           </datalist>
           {filter.temperament && (
-            <div onClick={handleResetTemperament}>
+            <div onClick={handleResetTemperament} className="x-mark">
               <FontAwesomeIcon icon={faXmark} />
             </div>
           )}

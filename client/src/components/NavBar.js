@@ -24,7 +24,7 @@ const NavBar = () => {
         <ul className="menu-routes">
           <li
             className={`one-route-container ${
-              pathname === "/home" && "over home"
+              pathname === "/home" ? "over home" : ""
             }`}
           >
             <Link to="/home">
@@ -47,7 +47,7 @@ const NavBar = () => {
           </li>
           <li
             className={`one-route-container ${
-              pathname === "/createdog" && "over"
+              pathname === "/createdog" ? "over" : ""
             }`}
           >
             <Link to="/createdog">
@@ -70,7 +70,7 @@ const NavBar = () => {
           </li>
           <li
             className={`one-route-container ${
-              pathname === "/about" && "over about"
+              pathname === "/about" ? "over about" : ""
             }`}
           >
             <Link to="/about">

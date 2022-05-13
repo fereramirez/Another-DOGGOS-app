@@ -79,7 +79,7 @@ const SearchBar = ({ setError }) => {
               <div onClick={handleReset} className="x-mark">
                 <FontAwesomeIcon icon={faXmark} />
               </div>
-              <span onClick={handleSubmit}>
+              <span onClick={handleSubmit} className="search-svg">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </span>
             </div>

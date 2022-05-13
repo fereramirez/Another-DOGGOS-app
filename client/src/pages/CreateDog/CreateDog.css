@@ -1,0 +1,95 @@
+.error-info {
+  color: #ea3546;
+}
+
+.warn-info {
+  color: #daaf12;
+}
+
+.error-input {
+  width: 100%;
+  height: 2rem;
+  padding-right: 60px;
+  border-radius: 8px;
+  border-color: #ea3546;
+}
+
+.create-form {
+  display: grid;
+  grid-template-columns: 40vw 1fr;
+  grid-template-rows: repeat(6, 1fr);
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+  align-items: center;
+}
+
+.error-showed {
+  display: block;
+}
+.error-hidden {
+  visibility: hidden;
+}
+
+.create-container {
+  margin-top: 6rem;
+}
+
+.create-container > h1 {
+  text-align: center;
+}
+
+.create-container input {
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.create-form label {
+  justify-self: end;
+}
+
+.create-form > div {
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+}
+
+.hidden-dumb {
+  visibility: hidden;
+}
+
+.create-form input:focus::placeholder {
+  color: transparent;
+}
+.button-form {
+  width: 150px;
+  height: 2rem;
+}
+.temperament-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.temperament-warn {
+  height: 2.4rem;
+  text-align: right;
+}
+
+.x-mark-temperament {
+  margin-right: 0.3rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #ea3546;
+}
+
+.temperament-selected {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.temperament-selected-container {
+  height: 7.5rem;
+}
+
+.submit-button-create {
+  justify-self: end;
+}

@@ -73,3 +73,9 @@
 .check-container input[type="checkbox"] {
   filter: hue-rotate(90deg) brightness(1);
 }
+
+.x-mark {
+  margin-right: 0.3rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+}

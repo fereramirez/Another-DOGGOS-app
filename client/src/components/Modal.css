@@ -20,14 +20,42 @@
   max-height: 600px;
   overflow-y: auto;
   background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.success {
+  border: 5px solid #40f99b;
+  background-color: #c2ffe1;
+}
+.warn {
+  border: 5px solid #f9c80e;
+  background-color: #feecab;
+}
+.error {
+  border: 5px solid #ea3546;
+  background-color: #eda2aa;
 }
 
 .modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.7rem;
+  right: 0.7rem;
 }
 
 .modal.is-open {
   display: flex;
+}
+
+.x-mark {
+  margin-right: 0.3rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.type-svg {
+  font-size: 2.5rem;
 }
