@@ -13,10 +13,12 @@
   font-size: 1.1rem;
   padding-left: 5px;
   padding-right: 5px;
+  color: #ffeb99;
 }
 
 .pagination-arrow {
   font-size: 2rem;
+  color: #ffeb99;
 }
 .pagination-arrow svg {
   pointer-events: none;
@@ -41,12 +43,12 @@
   cursor: default;
   outline: inherit;
   font-size: 2.5rem;
-  color: purple;
+  color: #fdc500;
 }
 
 .pagination-arrow:hover,
 .page-button:hover {
-  color: purple;
+  color: #ffcc00;
   transition: transform 0.2s ease-out;
   transform: scale(1.3);
 }

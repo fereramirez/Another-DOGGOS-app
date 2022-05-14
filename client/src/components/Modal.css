@@ -30,14 +30,53 @@
 .success {
   border: 5px solid #40f99b;
   background-color: #c2ffe1;
+  color: #1a623e;
+  text-align: center;
+}
+.success button {
+  border-color: #40f99b;
+  background-color: #40f99b;
+  border-radius: 5px;
+  color: #1a623e;
+  cursor: pointer;
+}
+.success button:hover {
+  background-color: #1a623e;
+  color: #c2ffe1;
 }
 .warn {
   border: 5px solid #f9c80e;
   background-color: #feecab;
+  color: #745c06;
+  text-align: center;
+}
+.warn button {
+  border-color: #f9c80e;
+  background-color: #f9c80e;
+  border-radius: 5px;
+  color: #745c06;
+  cursor: pointer;
+}
+.warn button:hover {
+  background-color: #745c06;
+  color: #feecab;
 }
 .error {
   border: 5px solid #ea3546;
   background-color: #eda2aa;
+  color: #6d1821;
+  text-align: center;
+}
+.error button {
+  border-color: #ea3546;
+  background-color: #ea3546;
+  border-radius: 5px;
+  color: #eda2aa;
+  cursor: pointer;
+}
+.error button:hover {
+  background-color: #6d1821;
+  color: #ea3546;
 }
 
 .modal-close {

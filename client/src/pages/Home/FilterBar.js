@@ -241,7 +241,7 @@ const FilterBar = ({ pages, setPages }) => {
       </div>
       <div className="order-container">
         <label htmlFor="order">Order by </label>
-        <div>
+        <div className="order-container">
           <select
             name="by"
             id="order"

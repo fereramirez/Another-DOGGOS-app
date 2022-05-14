@@ -10,7 +10,9 @@
   height: 2rem;
   padding-right: 60px;
   border-radius: 8px;
-  border-color: white;
+  background-color: #fff4c7;
+  border: 2px solid #310055;
+  color: #310055;
 }
 
 .inputWithButton > div {
@@ -28,8 +30,10 @@
   margin-right: 0.3rem;
   font-size: 1.2rem;
   cursor: pointer;
+  color: #310055;
 }
 
 .search-svg {
   cursor: pointer;
+  color: #310055;
 }

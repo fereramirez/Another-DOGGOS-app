@@ -7,10 +7,11 @@
   position: fixed;
   top: 4rem;
   transition: 0.3s ease-in-out;
-  background-color: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #3100551a;
+  box-shadow: 0 2px 5px -1px #31005514;
   z-index: 90;
+  color: #ffcc00;
+  background-color: #ab51e3;
 }
 .filter-container label {
   margin-right: 0.3rem;
@@ -29,8 +30,8 @@
 .hidden {
   height: 4rem;
   width: 100%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #3100551a;
+  box-shadow: 0 2px 5px -1px #31005514;
   /* position: fixed; */
   top: 0;
   transition: 0.3s ease-in-out;
@@ -53,6 +54,9 @@
   border-radius: 8px;
   width: 100%;
   height: 2rem;
+  border-color: #310055;
+  background-color: #fff4c7;
+  color: #310055;
 }
 
 .input-temp-container > div {
@@ -63,7 +67,7 @@
 }
 
 .checked {
-  color: rgb(162, 162, 162);
+  color: #6833a8;
 }
 
 .check-container label {
@@ -71,11 +75,19 @@
 }
 
 .check-container input[type="checkbox"] {
-  filter: hue-rotate(90deg) brightness(1);
+  filter: hue-rotate(190deg) brightness(1.4);
 }
 
 .x-mark {
   margin-right: 0.3rem;
   font-size: 1.2rem;
   cursor: pointer;
+}
+
+.order-container > select {
+  cursor: pointer;
+  background-color: #fff4c7;
+  color: #310055;
+  border-radius: 5px;
+  border: 2px solid #310055;
 }

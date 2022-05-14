@@ -16,9 +16,6 @@ const Modal = ({ children, isOpen, closeModal, type }) => {
         className={`modal-container ${type}`}
         onClick={handleModalContainerClick}
       >
-        {/* <button className="modal-close" onClick={closeModal}>
-          X
-        </button> */}
         <span className="type-svg">
           {type === "success" ? (
             <FontAwesomeIcon icon={faBone} />

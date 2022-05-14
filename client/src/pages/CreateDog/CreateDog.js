@@ -135,7 +135,7 @@ const CreateDog = () => {
       setWarnForm({
         [name]:
           pattern === regex.name
-            ? "Breed name only accepts letters and whitespaces"
+            ? "Only letters allowed"
             : "Only numbers allowed",
       });
       timeout = () => setTimeout(() => setWarnForm({}), 5000);
@@ -371,7 +371,7 @@ const CreateDog = () => {
       ) : loading ? (
         <Loader />
       ) : (
-        <>
+        <div className="create-content-container">
           <h1>
             {sessionStorage.getItem("editDogData")
               ? "EDIT BREED"
@@ -401,13 +401,28 @@ const CreateDog = () => {
                   value={name}
                   autoComplete="off"
                 />
+
                 <p
                   className={`error-info ${
-                    showErrors ? "error-showed" : "error-hidden"
+                    showErrors && errors.name ? "" : "error-hidden"
                   }`}
                 >
-                  {errors.name}
+                  {errors.name ? errors.name : "HIDDEN"}
                 </p>
+
+                {/* {showErrors ? (
+                  <p
+                    className={`error-info ${
+                      showErrors && errors.hasOwnProperty(name)
+                        ? "error-showed"
+                        : "error-hidden"
+                    }`}
+                  >
+                    {errors.hasOwnProperty(name) ? errors.name : " asd"}
+                  </p>
+                ) : (
+                  <p className="hidden-dumb">HIDDEN</p>
+                )} */}
               </div>
               {React.Children.toArray(
                 arrForRender.map((inputName) => (
@@ -449,10 +464,10 @@ const CreateDog = () => {
                       )}
                       <p
                         className={`error-info ${
-                          showErrors ? "error-showed" : "error-hidden"
+                          showErrors && errors[inputName] ? "" : "error-hidden"
                         }`}
                       >
-                        {errors[inputName]}
+                        {errors[inputName] ? errors[inputName] : "HIDDEN"}
                       </p>
                     </div>
                   </>
@@ -461,15 +476,17 @@ const CreateDog = () => {
             </>
 
             <>
-              <label className="temperament-info">
+              <label className="temperament-info c">
                 Temperaments
-                {warnForm.temperaments ? (
-                  <p className="warn-info temperament-warn">
-                    {warnForm.temperaments}
-                  </p>
-                ) : (
-                  <p className="hidden-dumb temperament-warn">HIDDEN</p>
-                )}
+                <p
+                  className={`error-info ${
+                    showErrors && errors.temperaments ? "" : "error-hidden"
+                  }`}
+                >
+                  {errors.temperaments
+                    ? errors.temperaments
+                    : "No temperaments selected"}
+                </p>
                 <div className="temperament-selected-container">
                   {temperaments.length > 0 &&
                     temperaments.map((temperament) => (
@@ -487,15 +504,15 @@ const CreateDog = () => {
                       </div>
                     ))}
                 </div>
-                <p
-                  className={`error-info ${
-                    showErrors ? "error-showed" : "error-hidden"
-                  }`}
-                >
-                  {errors.temperaments}
-                </p>
+                {warnForm.temperaments ? (
+                  <p className="warn-info temperament-warn">
+                    {warnForm.temperaments}
+                  </p>
+                ) : (
+                  <p className="hidden-dumb temperament-warn">HIDDEN</p>
+                )}
               </label>
-              <div>
+              <div className="d">
                 <select
                   name="temperaments"
                   multiple
@@ -503,6 +520,7 @@ const CreateDog = () => {
                   onBlur={handleBlur}
                   onChange={handleChange}
                   onFocus={handleFocus}
+                  className="select-temperaments"
                 >
                   {allTemperaments.current.map((temperament) => (
                     <option value={temperament} key={temperament}>
@@ -538,7 +556,7 @@ const CreateDog = () => {
               </>
             </>
 
-            <div className="submit-button-create">
+            <div className="p buttons-create-container">
               <input
                 type="submit"
                 value={
@@ -546,14 +564,16 @@ const CreateDog = () => {
                     ? "Edit breed"
                     : "Create breed"
                 }
-                className="button-form"
+                className="button-form submit-form"
+              />
+              <input
+                type="reset"
+                value="Reset"
+                className="button-form reset-form"
               />
             </div>
-            <div>
-              <input type="reset" value="Reset" className="button-form" />
-            </div>
           </form>
-        </>
+        </div>
       )}
 
       <span onClick={() => navigate("/home")}>

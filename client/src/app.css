@@ -7,6 +7,13 @@
 
 html {
   overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+*,
+*:after,
+*::before {
+  box-sizing: inherit;
 }
 
 a:-webkit-any-link {
@@ -17,6 +24,13 @@ a:-webkit-any-link {
 
 ul {
   list-style: none;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #54318c;
 }
 
 @media (min-width: 1066px) and (max-width: 1680px) {

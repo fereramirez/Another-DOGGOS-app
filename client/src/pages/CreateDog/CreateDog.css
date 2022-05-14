@@ -1,46 +1,59 @@
 .error-info {
   color: #ea3546;
 }
-
 .warn-info {
-  color: #daaf12;
-}
-
-.error-input {
-  width: 100%;
-  height: 2rem;
-  padding-right: 60px;
-  border-radius: 8px;
-  border-color: #ea3546;
+  color: #753bbd;
 }
 
 .create-form {
   display: grid;
-  grid-template-columns: 40vw 1fr;
+  grid-template-columns: 20vw 40vh 15vw 25vh;
   grid-template-rows: repeat(6, 1fr);
-  margin-top: 1rem;
-  margin-bottom: 2.5rem;
+  grid-template-areas:
+    "a b c d"
+    "e f c d"
+    "g h c d"
+    "i j c d"
+    "k l c d"
+    "m n o p";
   align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
 }
 
-.error-showed {
-  display: block;
+.c {
+  grid-area: c;
 }
+.d {
+  grid-area: d;
+}
+.p {
+  grid-area: p;
+}
+
 .error-hidden {
   visibility: hidden;
 }
 
-.create-container {
-  margin-top: 6rem;
+.create-content-container {
+  justify-content: center;
+  border: 5px dashed #753bbd;
+  background-color: #e7a8f0;
+  border-radius: 1rem;
+  margin: 6rem 1rem 2.5rem 1rem;
 }
-
-.create-container > h1 {
+.create-content-container > h1 {
   text-align: center;
+  color: #753bbd;
 }
 
 .create-container input {
   border-radius: 5px;
   margin-right: 5px;
+  background-color: #fff4c7;
+  border: 2px solid #310055;
+  color: #310055;
 }
 
 .create-form label {
@@ -48,8 +61,6 @@
 }
 
 .create-form > div {
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
   margin-left: 1.5rem;
 }
 
@@ -64,13 +75,20 @@
   width: 150px;
   height: 2rem;
 }
+.submit-form {
+  margin-bottom: 0.5rem;
+}
+.reset-form {
+  margin-top: 0.5rem;
+}
 .temperament-info {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  text-align: right;
 }
 .temperament-warn {
-  height: 2.4rem;
+  height: 4.2rem;
   text-align: right;
 }
 
@@ -87,9 +105,21 @@
 }
 
 .temperament-selected-container {
-  height: 7.5rem;
+  height: 150px;
 }
 
-.submit-button-create {
-  justify-self: end;
+.select-temperaments {
+  background-color: #fff4c7;
+  color: #310055;
+}
+
+.buttons-create-container > input {
+  background-color: #f9c80e;
+  border-radius: 5px;
+  color: #745c06;
+  cursor: pointer;
+}
+
+.buttons-create-container > input:hover {
+  background-color: #feecab;
 }

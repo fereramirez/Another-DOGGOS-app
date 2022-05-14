@@ -15,11 +15,11 @@
 
 .logo {
   font-size: 3rem;
-  color: white;
+  color: #ffcc00;
 }
 
 .route {
-  color: white;
+  color: #ffeb99;
   display: inline-block;
   padding: 1rem;
 }
@@ -37,7 +37,7 @@
 }
 
 .route-icon {
-  color: white;
+  color: #ffcc00;
   font-size: 2rem;
   position: absolute;
   top: 0;
@@ -63,12 +63,12 @@
 }
 
 .current-route svg:first-child {
-  color: #e7a8f0;
+  color: #f72585;
   font-size: 6.4rem;
   transform: translate(1rem, -1rem);
 }
 .current-route svg:last-child {
-  color: #753bbd;
+  color: #ffcc00;
   font-size: 2rem;
   transform: translate(-2.3rem, -2.7rem);
 }
