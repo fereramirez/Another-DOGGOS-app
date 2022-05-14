@@ -8,7 +8,7 @@
   top: 4rem;
   transition: 0.3s ease-in-out;
   border-bottom: 1px solid #3100551a;
-  box-shadow: 0 2px 5px -1px #31005514;
+  box-shadow: 0 10px 10px -1px #320055bd;
   z-index: 90;
   color: #ffcc00;
   background-color: #ab51e3;
@@ -57,6 +57,7 @@
   border-color: #310055;
   background-color: #fff4c7;
   color: #310055;
+  box-shadow: 3px 3px 5px -1px #320055b8;
 }
 
 .input-temp-container > div {
@@ -90,4 +91,5 @@
   color: #310055;
   border-radius: 5px;
   border: 2px solid #310055;
+  box-shadow: 3px 3px 5px -1px #320055b8;
 }

@@ -290,7 +290,7 @@ const CreateDog = () => {
 
   useEffect(() => {
     setLoading(true);
-    /*  if (Object.keys(dogToUpdate).length) { //!VOLVER A VER esto es para que aparezcan los titulares de inputs cuando se edita un dog
+    /*  if (Object.keys(dogToUpdate).length) {
       setFocusInfo({
         name: true,
         min_height: true,
@@ -393,7 +393,7 @@ const CreateDog = () => {
                 <input
                   type="text"
                   name="name"
-                  placeholder="Breed name"
+                  /* placeholder="Breed name" */
                   pattern={regex.name}
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -444,10 +444,10 @@ const CreateDog = () => {
                       <input
                         type="text"
                         name={inputName}
-                        placeholder={
+                        /* placeholder={
                           inputName.charAt(0).toUpperCase() +
                           inputName.slice(1).replace("_", " ")
-                        }
+                        } */
                         pattern={regex.number}
                         onBlur={handleBlur}
                         onChange={handleChange}

@@ -54,6 +54,7 @@
   background-color: #fff4c7;
   border: 2px solid #310055;
   color: #310055;
+  box-shadow: 3px 3px 5px -1px #320055b8;
 }
 
 .create-form label {
@@ -111,6 +112,9 @@
 .select-temperaments {
   background-color: #fff4c7;
   color: #310055;
+  border-radius: 5px;
+  border: 2px solid #310055;
+  box-shadow: 3px 3px 5px -1px #320055b8;
 }
 
 .buttons-create-container > input {
@@ -118,8 +122,10 @@
   border-radius: 5px;
   color: #745c06;
   cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out;
 }
 
 .buttons-create-container > input:hover {
   background-color: #feecab;
+  box-shadow: 6px 6px 8px -1px #320055b8;
 }

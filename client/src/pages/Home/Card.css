@@ -3,6 +3,12 @@
 .card {
   width: 90%;
   height: 90%;
+  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 10px 10px 10px -1px #320055b8;
+}
+
+.card:hover {
+  box-shadow: 20px 20px 10px -1px #320055db;
 }
 
 .data-card {

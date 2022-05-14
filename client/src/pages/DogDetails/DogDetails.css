@@ -13,6 +13,8 @@
   max-height: 100%;
   height: auto;
   margin-left: 2rem;
+  border-radius: 10px;
+  box-shadow: 8px 8px 5px -1px #320055b8;
 }
 
 .details-info {
@@ -24,6 +26,7 @@
   justify-content: center;
   margin-left: 2rem;
   margin-right: 2rem;
+  text-shadow: 5px 5px 5px #150024;
 }
 
 .details-info > div {
@@ -33,15 +36,19 @@
 
 .details-info > button {
   margin-top: 1rem;
-  border-color: #f9c80e;
-  background-color: #f9c80e;
+  border-color: #320055;
+  background-color: #f72585;
   border-radius: 5px;
-  color: #745c06;
+  color: #f9c80e;
   cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 4px 4px 5px -1px #320055b8;
 }
 
 .details-info > button:hover {
-  background-color: #feecab;
+  background-color: #f9c80e;
+  color: #320055;
+  box-shadow: 8px 8px 8px -1px #320055b8;
 }
 
 .img-container {
