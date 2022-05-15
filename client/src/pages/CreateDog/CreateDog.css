@@ -7,22 +7,22 @@
 
 .create-form {
   display: grid;
-  grid-template-columns: 20vw 40vh 15vw 25vh;
   grid-template-rows: repeat(6, 1fr);
+  /*   grid-template-columns: 20vw 40vh 15vw 25vh;
   grid-template-areas:
     "a b c d"
     "e f c d"
     "g h c d"
     "i j c d"
     "k l c d"
-    "m n o p";
+    "m n o p"; */
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
   margin-bottom: 1rem;
 }
 
-.c {
+/* .c {
   grid-area: c;
 }
 .d {
@@ -30,7 +30,7 @@
 }
 .p {
   grid-area: p;
-}
+} */
 
 .error-hidden {
   visibility: hidden;
@@ -38,7 +38,6 @@
 
 .create-content-container {
   justify-content: center;
-  border: 5px dashed #753bbd;
   background-color: #e7a8f0;
   border-radius: 1rem;
   margin: 6rem 1rem 2.5rem 1rem;

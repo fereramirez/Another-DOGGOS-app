@@ -21,8 +21,9 @@
 
 .route {
   color: #ffeb99;
-  display: inline-block;
   padding: 1rem;
+  transform: translate(0, 0.35rem);
+  filter: drop-shadow(3px 5px 2px #320055b8);
 }
 
 .menu-routes {
@@ -40,15 +41,8 @@
 .route-icon {
   color: #ffcc00;
   font-size: 2rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translateY(-100%);
+  filter: drop-shadow(3px 5px 2px #320055b8);
 }
 
 .one-route-container span {
@@ -66,13 +60,11 @@
 .current-route svg:first-child {
   color: #f72585;
   font-size: 6.4rem;
-  transform: translate(1rem, -1rem);
   filter: drop-shadow(3px 5px 2px #320055b8);
 }
 .current-route svg:last-child {
   color: #ffcc00;
   font-size: 2rem;
-  transform: translate(-2.3rem, -2.7rem);
 }
 
 .over {
@@ -81,10 +73,4 @@
 }
 .over a {
   cursor: default;
-}
-.about svg:first-child {
-  transform: translate(0.7rem, -1rem);
-}
-.home svg:first-child {
-  transform: translate(1.2rem, -1rem);
 }

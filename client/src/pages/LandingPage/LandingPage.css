@@ -1,19 +1,167 @@
 .landing-container {
   width: 100vw;
   height: 100vh;
-  background-image: url("../../Assets/Perritos.jpg");
-  background-position: center;
-  background-size: cover;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-top: 15rem solid #ffcc00;
+  border-bottom: 15rem solid transparent;
+  border-right: 15rem solid transparent;
+  transition: transform 0.45s ease, background 0.45s ease;
+}
+
+.landing-paw {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 900;
+  position: absolute;
+  font-size: 6.5rem;
+  top: 35px;
+  left: 5px;
+  text-align: center;
+  filter: drop-shadow(4px 4px 4px #320055b8);
+  transform: rotate(-45deg) translate(-2.5rem, -7.4rem);
+  /* display: block; */
+  width: 20rem;
+  height: 9.2rem;
+  animation: paw-shake-attention 5s cubic-bezier(0.36, 0.07, 0.19, 0.97)
+    infinite alternate;
+  /* backface-visibility: hidden;
+  transform-origin: top right; */
 }
 
-.boton-start {
-  margin-bottom: 40px;
+.landing-paw:hover {
+  animation: paw-shake-hover 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: rotate(-40deg) translate(-3rem, -18.7rem);
+  height: 25rem;
+  width: 37rem;
 }
 
-.title {
-  margin-top: 40px;
+.landing-container > a:hover + .triangle {
+  transform: scale(2) translate(3rem, 6rem);
+}
+
+.landing-text {
+  width: 15rem;
+  transform: rotate(-45deg) translate(7.5rem, -9rem);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  text-shadow: 2px 2px 3px #15002476;
+}
+
+.landing-start {
+  width: 15rem;
+  transform: rotate(-45deg) translate(8.5rem, -8rem);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  text-shadow: 2px 2px 3px #15002476;
+}
+.landing-container > a:hover + .triangle > p {
+  opacity: 1;
+  display: block;
+}
+.landing-start > span > span {
+  font-weight: bolder;
+  font-size: 1.2rem;
+  animation: wave 5s ease infinite;
+  display: inline-block;
+  top: 2rem;
+  color: #f72585;
+}
+
+#background-video {
+  background-color: rgb(0, 0, 0);
+  opacity: 0.4;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  /* right: 0; */
+  top: 0;
+  /* bottom: 0; */
+  z-index: 0;
+}
+
+@keyframes paw-shake-attention {
+  0% {
+    transform: rotate(-45deg) translate(-2.5rem, -7.4rem);
+  }
+  1.5% {
+    transform: rotate(-40deg) translate(-2.5rem, -7.4rem);
+  }
+  3.0% {
+    transform: rotate(-50deg) translate(-2.5rem, -7.4rem);
+  }
+  4.5% {
+    transform: rotate(-41deg) translate(-2.5rem, -7.4rem);
+  }
+  6.0% {
+    transform: rotate(-49deg) translate(-2.5rem, -7.4rem);
+  }
+  7.5% {
+    transform: rotate(-43deg) translate(-2.5rem, -7.4rem);
+  }
+  8.5% {
+    transform: rotate(-47deg) translate(-2.5rem, -7.4rem);
+  }
+  9.2% {
+    transform: rotate(-44deg) translate(-2.5rem, -7.4rem);
+  }
+  10.0% {
+    transform: rotate(-45deg) translate(-2.5rem, -7.4rem);
+  }
+}
+
+@keyframes paw-shake-hover {
+  /* 0% {
+    transform: rotate(-45deg) translate(-3rem, -18.7rem);
+  } */
+  15% {
+    transform: rotate(-40deg) translate(-3rem, -18.7rem);
+  }
+  30% {
+    transform: rotate(-50deg) translate(-3rem, -18.7rem);
+  }
+  45% {
+    transform: rotate(-41deg) translate(-3rem, -18.7rem);
+  }
+  60% {
+    transform: rotate(-49deg) translate(-3rem, -18.7rem);
+  }
+  75% {
+    transform: rotate(-43deg) translate(-3rem, -18.7rem);
+  }
+  85% {
+    transform: rotate(-47deg) translate(-3rem, -18.7rem);
+  }
+  92% {
+    transform: rotate(-44deg) translate(-3rem, -18.7rem);
+  }
+  100% {
+    transform: rotate(-45deg) translate(-3rem, -18.7rem);
+  }
+}
+@keyframes wave {
+  0%,
+  8.0%,
+  20.0% {
+    transform: translateY(0);
+  }
+  4.0% {
+    transform: translateY(-4px);
+  }
+}
+.landing-start > span > span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.landing-start > span > span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.landing-start > span > span:nth-child(4) {
+  animation-delay: 0.3s;
 }

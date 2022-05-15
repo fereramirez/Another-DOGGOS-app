@@ -51,7 +51,7 @@ ul {
     grid-template-rows: repeat(1, 1fr);
   }
 }
-@media (min-width: 420px) and (max-width: 719px) {
+@media (min-width: 421px) and (max-width: 719px) {
   .cards-container {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(1, 1fr);
@@ -61,5 +61,202 @@ ul {
   .cards-container {
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: repeat(1, 1fr);
+  }
+}
+
+@media (max-width: 1030px) {
+  .check-container {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 612px) {
+  .current-route svg:first-child {
+    transform: translate(1rem, -1rem);
+  }
+  .about svg:first-child {
+    transform: translate(0.7rem, -1rem);
+  }
+  .home svg:first-child {
+    transform: translate(1.2rem, -1rem);
+  }
+  .current-route svg:last-child {
+    transform: translate(-2.3rem, -2.7rem);
+  }
+  .inputWithButton {
+    width: 220px;
+  }
+  .route {
+    display: inline-block;
+  }
+  .route-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-100%);
+  }
+
+  .title-for-mobile {
+    display: none;
+  }
+  .title-for-desktop {
+    display: block;
+  }
+  .details-info {
+    height: 70vh;
+  }
+  .details-container img {
+    max-width: 60%;
+    max-height: 100%;
+    height: auto;
+    margin-left: 2rem;
+    border-radius: 10px;
+    box-shadow: 8px 8px 5px -1px #320055b8;
+  }
+}
+
+@media (max-width: 611px) {
+  .inputWithButton {
+    width: 120px;
+  }
+  .route {
+    display: none;
+  }
+  .one-route-container {
+    align-items: center;
+    width: 4rem;
+    justify-content: center;
+  }
+  .fixed {
+    justify-content: space-evenly;
+  }
+  .current-route {
+    width: 3rem;
+  }
+  .current-route svg:first-child {
+    transform: translate(0, 1.3rem) scalex(0.6);
+  }
+  .current-route svg:last-child {
+    transform: translate(1.4rem, -3.1rem);
+  }
+  .home .current-route svg:last-child {
+    transform: translate(1.3rem, -3.1rem);
+  }
+  .about .current-route svg:last-child {
+    transform: translate(1.8rem, -3.1rem);
+  }
+
+  .filter-container > div {
+    flex-direction: column;
+  }
+  .one-route-container:hover .route-icon > svg {
+    transition: transform 0.2s ease-out;
+    transform: scale(1.3);
+  }
+  .about-to-move {
+    transform: translatex(-0.3rem);
+  }
+
+  .title-for-mobile {
+    width: 100%;
+    text-align: center;
+    display: block;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+    border-bottom-color: #ffcc00;
+    border-radius: 5px;
+    box-shadow: 0 4px 0 -1px #1e0034e7;
+  }
+  .title-for-mobile h1 {
+    margin-bottom: 0.5rem;
+  }
+  .title-for-desktop {
+    display: none;
+  }
+  .details-container {
+    flex-direction: column;
+  }
+  .details-info {
+    height: fit-content;
+    margin-top: 2rem;
+  }
+  .details-container img {
+    /* object-fit: contain; */
+    max-width: 100%;
+    max-height: 800%;
+    height: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-radius: 10px;
+    box-shadow: 8px 8px 5px -1px #320055b8;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (min-width: 851px) {
+  .create-form {
+    grid-template-columns: 20vw 40vh 15vw 25vh;
+    grid-template-areas:
+      "a b c d"
+      "e f c d"
+      "g h c d"
+      "i j c d"
+      "k l c d"
+      "m n o p";
+  }
+  .c {
+    grid-area: c;
+  }
+  .d {
+    grid-area: d;
+  }
+  .p {
+    grid-area: p;
+  }
+}
+
+@media (max-width: 850px) {
+  .create-form {
+    grid-template-columns: 40vw 60vw;
+    grid-template-areas:
+      "a b"
+      "c d"
+      "e f"
+      "g h"
+      "i j"
+      "k l"
+      "m n"
+      "p p";
+  }
+
+  .p {
+    grid-area: p;
+  }
+  .buttons-create-container {
+    margin-top: 1.5rem;
+    justify-self: center;
+  }
+
+  .d {
+    margin-top: 2rem;
+  }
+}
+
+@media (min-width: 531px) {
+  .create-content-container {
+    border: 5px dashed #753bbd;
+  }
+}
+
+@media (max-width: 530px) {
+  .create-form > div > input {
+    width: 150px;
+  }
+  .create-container {
+    background-color: #e7a8f0;
   }
 }

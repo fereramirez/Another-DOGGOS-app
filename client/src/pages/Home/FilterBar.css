@@ -26,6 +26,9 @@
   justify-content: center;
   align-items: center;
 }
+.order-container > label {
+  text-align: right;
+}
 
 .hidden {
   height: 4rem;

@@ -111,16 +111,17 @@ const DogDetails = () => {
       ) : (
         details && (
           <div className="details-container">
-            {/* <div className="img-container"> */}
+            <div className="title-for-mobile">
+              <h1>{name}</h1>
+            </div>
             <img
               src={image ? image.url : "https://place.dog/300/200"}
               alt={name}
               height="120"
               weight="120"
             />
-            {/* </div> */}
             <div className="details-info">
-              <h1>{name}</h1>
+              <h1 className="title-for-desktop">{name}</h1>
               <div>Height: {height.metric} cms.</div>
               <div>Weight: {weight.metric} kgs.</div>
               <div>Life Span: {life_span}</div>
@@ -128,7 +129,6 @@ const DogDetails = () => {
               {typeof details.id === "string" && (
                 <>
                   <button onClick={openModalEdit}>Edit</button>
-                  {/* <button onClick={() => handleDelete(idDelete)}>Delete</button> */}
                   <button onClick={openModalDelete}>Delete</button>
                 </>
               )}

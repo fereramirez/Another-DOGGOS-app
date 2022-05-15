@@ -47,7 +47,7 @@ const NavBar = () => {
           </li>
           <li
             className={`one-route-container ${
-              pathname === "/createdog" ? "over" : ""
+              pathname === "/createdog" ? "over createdog" : ""
             }`}
           >
             <Link to="/createdog">
@@ -84,7 +84,7 @@ const NavBar = () => {
               ) : (
                 <>
                   <span className="route">ABOUT</span>
-                  <span className="route-icon">
+                  <span className="route-icon about-to-move">
                     <FontAwesomeIcon icon={faQuestion} />
                   </span>
                 </>
