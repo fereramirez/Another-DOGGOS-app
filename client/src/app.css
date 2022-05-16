@@ -256,6 +256,9 @@ ul {
     margin-top: 1.5rem;
     justify-self: center;
   }
+  .create-content-container {
+    margin-bottom: 2rem;
+  }
 
   .d {
     margin-top: 2rem;

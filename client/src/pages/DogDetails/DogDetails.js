@@ -55,7 +55,10 @@ const DogDetails = () => {
       })
       .catch((err) => {
         if (err.response) {
-          setError(`${err.message}: ${err.response.data}`);
+          console.log(err.request);
+          err.response.data
+            ? setError(`${err.message}: ${err.response.data}`)
+            : setError(err.message);
         } else if (err.request) {
           setError("Server does not respond");
         } else {
@@ -107,7 +110,9 @@ const DogDetails = () => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Error message={error} />
+        <div className="dumb-for-error">
+          <Error message={error} />
+        </div>
       ) : (
         details && (
           <div className="details-container">

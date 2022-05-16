@@ -52,7 +52,9 @@ const SearchBar = ({ setError }) => {
       .catch((err) => {
         dispatch(errorLoading(true));
         if (err.response) {
-          setError(`${err.message}: ${err.response.data}`);
+          err.response.data
+            ? setError(`${err.message}: ${err.response.data}`)
+            : setError(err.message);
         } else if (err.request) {
           setError("Server does not respond");
         } else {

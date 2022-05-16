@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CardsContainer from "./CardsContainer";
-//import SearchBar from "./SearchBar";
 import {
   getAllDogs,
   errorLoading,
   loading,
 } from "../../Redux/actions/index.js";
-//import { isItLoading, thereWasAnError } from "../../Redux/reducer/index";
 import { URL } from "../../Constants";
 import Error from "../../components/Error";
 import axios from "axios";
 
 const Home = () => {
-  //const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const thereWasAnError = useSelector((state) => state.thereWasAnError);
@@ -32,7 +29,9 @@ const Home = () => {
         .catch((err) => {
           dispatch(errorLoading(true));
           if (err.response) {
-            setError(`${err.message}: ${err.response.data}`);
+            err.response.data
+              ? setError(`${err.message}: ${err.response.data}`)
+              : setError(err.message);
           } else if (err.request) {
             setError("Server does not respond");
           } else {
@@ -55,9 +54,7 @@ const Home = () => {
           <Error message={error} />
         </div>
       ) : (
-        //! VOLVER A VER poner div y darle margin top para que Error no sea tapado por NavBar
         <>
-          {/* <SearchBar setLoading={setLoading} setError={setError} /> */}
           <CardsContainer />
         </>
       )}
