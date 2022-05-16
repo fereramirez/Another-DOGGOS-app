@@ -7,6 +7,24 @@
   font: inherit;
   cursor: pointer;
   outline: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.pagination-arrow > span {
+  font-size: 1.1rem;
+}
+.first-page-arrow {
+  margin-right: 0.4rem;
+}
+.first-page-arrow > span {
+  margin-right: 0.4rem;
+}
+.last-page-arrow {
+  margin-left: 0.4rem;
+}
+.last-page-arrow > span {
+  margin-left: 0.4rem;
 }
 
 .page-button {

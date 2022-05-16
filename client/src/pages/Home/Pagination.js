@@ -4,6 +4,8 @@ import { dogsPerPage } from "../../Constants";
 import "./Pagination.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
   faChevronLeft,
   faChevronRight,
   faPaw,
@@ -64,47 +66,102 @@ const Pagination = ({ pages, setPages }) => {
     setTotal(Math.ceil(dogs.length / dogsPerPage));
   }, [dogs]);
 
+  const [width, setWidth] = useState(window.innerWidth);
+
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, []);
+
+  const isMobile = width <= 650;
+
   return (
     <div className="pagination-container">
       {total > 1 && (
         <>
           {pageShowed !== 0 && (
-            <button
-              name="previous"
-              onClick={handleClick}
-              className="pagination-arrow"
-            >
-              <FontAwesomeIcon icon={faChevronLeft} />
-            </button>
-          )}
-          {[...Array(total)].map((el, i) => (
-            <button
-              name="page"
-              key={i}
-              onClick={handleClick}
-              value={i}
-              disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
-              className={
-                parseInt(i) === parseInt(pageShowed)
-                  ? "current-page"
-                  : "page-button"
-              }
-            >
-              {parseInt(i) === parseInt(pageShowed) ? (
-                <FontAwesomeIcon icon={faPaw} />
-              ) : (
-                i + 1
+            <>
+              {isMobile && (
+                <button className="pagination-arrow first-page-arrow">
+                  <span>1</span>
+                  <FontAwesomeIcon icon={faAngleDoubleLeft} />
+                </button>
               )}
-            </button>
-          ))}
+              <button
+                name="previous"
+                onClick={handleClick}
+                className="pagination-arrow"
+              >
+                <FontAwesomeIcon icon={faChevronLeft} />
+              </button>
+            </>
+          )}
+          {[...Array(total)].map((el, i) =>
+            !isMobile ? (
+              <button
+                name="page"
+                key={i}
+                onClick={handleClick}
+                value={i}
+                disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
+                className={
+                  parseInt(i) === parseInt(pageShowed)
+                    ? "current-page"
+                    : "page-button"
+                }
+              >
+                {parseInt(i) === parseInt(pageShowed) ? (
+                  <FontAwesomeIcon icon={faPaw} />
+                ) : (
+                  i + 1
+                )}
+              </button>
+            ) : i === pageShowed ||
+              i === pageShowed - 1 ||
+              i === pageShowed + 1 ? (
+              <button
+                name="page"
+                key={i}
+                onClick={handleClick}
+                value={i}
+                disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
+                className={
+                  parseInt(i) === parseInt(pageShowed)
+                    ? "current-page"
+                    : "page-button"
+                }
+              >
+                {parseInt(i) === parseInt(pageShowed) ? (
+                  <FontAwesomeIcon icon={faPaw} />
+                ) : (
+                  i + 1
+                )}
+              </button>
+            ) : (
+              <></>
+            )
+          )}
           {pageShowed !== total - 1 && (
-            <button
-              name="next"
-              onClick={handleClick}
-              className="pagination-arrow"
-            >
-              <FontAwesomeIcon icon={faChevronRight} />
-            </button>
+            <>
+              <button
+                name="next"
+                onClick={handleClick}
+                className="pagination-arrow"
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </button>
+              {isMobile && (
+                <button className="pagination-arrow last-page-arrow">
+                  <FontAwesomeIcon icon={faAngleDoubleRight} />
+                  <span>{totalPages}</span>
+                </button>
+              )}
+            </>
           )}
         </>
       )}
