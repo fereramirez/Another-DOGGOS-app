@@ -404,6 +404,7 @@ const CreateDog = () => {
                   onFocus={handleFocus}
                   value={name}
                   autoComplete="off"
+                  className="input-without-metric"
                 />
 
                 <p
@@ -458,6 +459,7 @@ const CreateDog = () => {
                         onFocus={handleFocus}
                         value={form[inputName]}
                         autoComplete="off"
+                        className="input-with-metric"
                       />
                       {inputName.includes("height") ? (
                         <span>cms.</span>

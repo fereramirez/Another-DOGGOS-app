@@ -276,8 +276,11 @@ ul {
 }
 
 @media (max-width: 530px) {
-  .create-form > div > input {
-    width: 150px;
+  .input-without-metric {
+    width: 170px;
+  }
+  .input-with-metric {
+    width: 120px;
   }
   .create-container {
     background-color: #e7a8f0;
