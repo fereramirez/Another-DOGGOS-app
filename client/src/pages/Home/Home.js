@@ -51,8 +51,11 @@ const Home = () => {
   return (
     <>
       {thereWasAnError ? (
-        <Error message={error} />
+        <div className="dumb-for-error">
+          <Error message={error} />
+        </div>
       ) : (
+        //! VOLVER A VER poner div y darle margin top para que Error no sea tapado por NavBar
         <>
           {/* <SearchBar setLoading={setLoading} setError={setError} /> */}
           <CardsContainer />

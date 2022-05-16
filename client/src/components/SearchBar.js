@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { searchDogs, errorLoading, loading } from "../../Redux/actions";
-import { URL_NAME } from "../../Constants";
+import { searchDogs, errorLoading, loading } from "../Redux/actions";
+import { URL_NAME } from "../Constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./SearchBar.css";

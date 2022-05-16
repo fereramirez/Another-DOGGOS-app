@@ -7,6 +7,8 @@ import Loader from "../../components/Loader";
 import { showDogs } from "../../Redux/actions";
 import { dogsPerPage } from "../../Constants";
 import "./CardsContainer.css";
+import Error from "../../components/Error";
+import { useLocation } from "react-router-dom";
 
 const CardsContainer = () => {
   const state = useSelector((state) => state);
@@ -28,6 +30,8 @@ const CardsContainer = () => {
   };
   const [pages, setPages] = useState(initialPages);
   const { pageShowed, indexFirstDogShowed, indexLastDogShowed } = pages;
+  let location = useLocation();
+  const { pathname } = location;
 
   useEffect(() => {
     dispatch(showDogs({ indexFirstDogShowed, indexLastDogShowed }));
@@ -45,7 +49,9 @@ const CardsContainer = () => {
   }, [dogs]);
 
   useEffect(() => {
-    (() => topCardsRef.current.scrollIntoView({ behavior: "smooth" }))();
+    pathname === "/home" &&
+      dogs[0] !== null &&
+      (() => topCardsRef.current.scrollIntoView({ behavior: "smooth" }))();
     sessionStorage.setItem("pageData", pageShowed);
     window.onunload = function () {
       sessionStorage.removeItem("pageData");
@@ -71,7 +77,9 @@ const CardsContainer = () => {
       ) : (
         <>
           {dogs && dogs !== dogsFiltered && dogs[0] === null ? (
-            <h1>No dogs found</h1>
+            <div className="dumb-for-error">
+              <Error message="No dogs found" />
+            </div>
           ) : (
             <>
               <div className="dumb-ref" ref={topCardsRef}></div>
@@ -79,7 +87,7 @@ const CardsContainer = () => {
                 <FilterBar pages={pages} setPages={setPages} />
                 <div className="cards-container">
                   {dogs && dogs[0] === null ? (
-                    <h1>No coincidences found</h1>
+                    <Error message="No coincidences found" />
                   ) : (
                     dogsShowed[0] !== null &&
                     dogsShowed.map((dog) => (

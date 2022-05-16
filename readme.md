@@ -6,7 +6,6 @@
 - Afirmar y conectar conceptos.
 - Aprender mejores prácticas.
 - Aprender y practicar el workflow de GIT.
-- Usar y practicar testing.
 
 ## Enunciado
 
@@ -46,7 +45,7 @@ Se debe desarrollar una aplicación de React/Redux que contenga las siguientes p
   - Imagen
   - Nombre
   - Temperamento
-- [ ] Botones/Opciones para filtrar por por temperamento y por raza existente o agregada por nosotros
+- [ ] Botones/Opciones para filtrar por temperamento y por raza existente o agregada por nosotros
 - [ ] Botones/Opciones para ordenar tanto ascendentemente como descendentemente las razas de perro por orden alfabético y por peso
 - [ ] Paginado para ir buscando y mostrando las siguientes razas
 
@@ -88,24 +87,15 @@ El modelo de la base de datos deberá tener las siguientes entidades:
 Se debe desarrollar un servidor en Node/Express con las siguientes rutas:
 
 - [ ] **GET /dogs**:
-  - Obtener un listado de las primeras 8 razas de perro
+  - Obtener un listado de todas las razas de perro
   - Debe devolver solo los datos necesarios para la ruta principal
 - [ ] **GET /dogs?name="..."**:
-  - Obtener un listado de las primeras 8 razas de perro que contengan la palabra ingresada como query parameter
+  - Obtener un listado de las razas de perro que contengan la palabra ingresada como query parameter
   - Si no existe ninguna raza de perro mostrar un mensaje adecuado
 - [ ] **GET /dogs/{idDog}**:
   - Obtener el detalle de una raza de perro en particular
   - Debe traer solo los datos pedidos en la ruta de detalle de raza de perro
   - Incluir los temperamentos asociados
-- [ ] **GET /temperament**:
-  - Obtener todos los temperamentos posibles
-  - En una primera instancia deberán obtenerlos desde la API externa y guardarlos en su propia base de datos y luego ya utilizarlos desde allí
 - [ ] **POST /dog**:
   - Recibe los datos recolectados desde el formulario controlado de la ruta de creación de raza de perro por body
   - Crea una raza de perro en la base de datos
-
-#### Testing
-
-- [ ] Al menos tener un componente del frontend con sus tests respectivos
-- [ ] Al menos tener una ruta del backend con sus tests respectivos
-- [ ] Al menos tener un modelo de la base de datos con sus tests respectivos

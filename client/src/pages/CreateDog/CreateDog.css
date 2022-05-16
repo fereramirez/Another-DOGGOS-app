@@ -8,29 +8,11 @@
 .create-form {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
-  /*   grid-template-columns: 20vw 40vh 15vw 25vh;
-  grid-template-areas:
-    "a b c d"
-    "e f c d"
-    "g h c d"
-    "i j c d"
-    "k l c d"
-    "m n o p"; */
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
   margin-bottom: 1rem;
 }
-
-/* .c {
-  grid-area: c;
-}
-.d {
-  grid-area: d;
-}
-.p {
-  grid-area: p;
-} */
 
 .error-hidden {
   visibility: hidden;
@@ -40,11 +22,17 @@
   justify-content: center;
   background-color: #e7a8f0;
   border-radius: 1rem;
-  margin: 6rem 1rem 2.5rem 1rem;
+  margin-top: 6rem;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
 }
 .create-content-container > h1 {
   text-align: center;
   color: #753bbd;
+  text-shadow: 2px 2px 3px #15002476;
 }
 
 .create-container input {

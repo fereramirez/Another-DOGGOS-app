@@ -10,8 +10,8 @@ const About = () => {
     <div className="about-page">
       <p>
         This is my first React project. It's a CRUD app and was based on final
-        projects of some Frontend Bootcamps. It was done using the following
-        technologies{" "}
+        inidivual projects of some Frontend Bootcamps, but I took some
+        liberties. It was done using the following technologies:
       </p>
       <div>
         <a href="https://reactjs.org/" rel="noreferrer" target="_blank">
@@ -35,6 +35,7 @@ const About = () => {
           <span>Sequelize</span>
         </a>
       </div>
+      <p>Thanks for your attention.</p>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import SearchBar from "../pages/Home/SearchBar";
+import SearchBar from "./SearchBar";
 import "./NavBar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,7 +8,6 @@ import {
   faHouseChimney,
   faPencil,
   faQuestion,
-  /* faScroll, */
 } from "@fortawesome/free-solid-svg-icons";
 
 const NavBar = () => {

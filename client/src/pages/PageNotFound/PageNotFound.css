@@ -1,0 +1,25 @@
+.page-not-found {
+  margin-top: 7rem;
+  z-index: 500;
+}
+
+.page-not-found h1 {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  color: #ffcc00;
+  z-index: 500;
+}
+
+.not-exists-video {
+  opacity: 0.4;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  /* right: 0; */
+  top: 0;
+  /* bottom: 0; */
+  z-index: 0;
+}

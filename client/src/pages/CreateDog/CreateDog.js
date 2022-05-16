@@ -367,7 +367,9 @@ const CreateDog = () => {
   return (
     <div className="create-container">
       {error ? (
-        <Error message={error} />
+        <div className="dumb-for-error">
+          <Error message={error} />
+        </div>
       ) : loading ? (
         <Loader />
       ) : (
