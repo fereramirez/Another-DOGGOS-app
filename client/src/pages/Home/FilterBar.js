@@ -20,10 +20,10 @@ const FilterBar = ({ pages, setPages }) => {
   const [filter, setFilter] = useState(initialFilter);
 
   const state = useSelector((state) => state);
-  const { dogsAll, dogsFound } = state;
+  const { dogsAll, dogsFound, dogsFiltered } = state;
   const dispatch = useDispatch();
   let allTemperaments = useRef([]);
-  const { indexFirstDogShowed, indexLastDogShowed, pageShowed } = pages;
+  const { indexFirstDogShowed, indexLastDogShowed } = pages;
   const topCardsRef = useRef(null);
   const [show, setShow] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -185,15 +185,11 @@ const FilterBar = ({ pages, setPages }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter.temperament]);
 
-  /*  useEffect(() => {
+  useEffect(() => {
     if (dogsFiltered.length === 0 && filter.temperament)
       dispatch(filterDogs(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dogsFiltered]); */
-
-  useEffect(() => {
-    (() => topCardsRef.current.scrollIntoView({ behavior: "smooth" }))();
-  }, [pageShowed]);
+  }, [dogsFiltered]);
 
   const controlNavbar = () => {
     if (typeof window !== "undefined") {

@@ -283,3 +283,53 @@ ul {
     background-color: #e7a8f0;
   }
 }
+
+@media (max-height: 700px) {
+  .error-search-container > h1 {
+    color: #ffcc00;
+    text-shadow: 6px 6px 3px #15002476;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 461px) {
+  .logo {
+    font-size: 3rem;
+  }
+  .route-icon {
+    font-size: 2rem;
+  }
+  .current-route svg:last-child {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 460px) {
+  .logo {
+    font-size: 2.5rem;
+    margin-left: 0.5rem;
+  }
+  .route-icon {
+    font-size: 1.5rem;
+  }
+  .one-route-container {
+    width: 3rem;
+  }
+  /* .current-route {
+    width: 3rem;
+  } */
+  .current-route svg:first-child {
+    transform: translate(0, 1rem) scalex(0.4);
+  }
+  .current-route svg:last-child {
+    transform: translate(1.6rem, -3.1rem);
+    font-size: 1.5rem;
+  }
+  .home .current-route svg:last-child {
+    transform: translate(1.55rem, -3.1rem);
+  }
+  .about .current-route svg:last-child {
+    transform: translate(1.95rem, -3.1rem);
+  }
+}

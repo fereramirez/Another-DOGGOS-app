@@ -62,21 +62,28 @@ const CardsContainer = () => {
   }, [pageShowed]);
 
   useEffect(() => {
+    (() => topCardsRef.current.scrollIntoView({ behavior: "smooth" }))();
+  }, [dogsShowed]);
+
+  useEffect(() => {
     dispatch(showDogs({ indexFirstDogShowed, indexLastDogShowed }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indexFirstDogShowed]);
 
   return (
-    <div className="dumb-ref" ref={topCardsRef}>
+    <div
+      className={`${isItLoading ? "dumb-ref-loading" : "dumb-ref"}`}
+      ref={topCardsRef}
+    >
       {isItLoading ? (
         <Loader />
       ) : (
         <>
           {dogs && dogs !== dogsFiltered && dogs[0] === null ? (
-            <div className="dumb-for-error">
-              <Error message="No dogs found" />
-            </div>
+            /*  <div className="dumb-for-error"> */
+            <Error message="No dogs found" />
           ) : (
+            /* </div> */
             <>
               <div className="cards-pag-container">
                 <FilterBar pages={pages} setPages={setPages} />

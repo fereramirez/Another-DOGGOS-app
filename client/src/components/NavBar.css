@@ -15,7 +15,6 @@
 }
 
 .logo {
-  font-size: 3rem;
   color: #ffcc00;
 }
 
@@ -41,7 +40,6 @@
 
 .route-icon {
   color: #ffcc00;
-  font-size: 2rem;
   display: flex;
   filter: drop-shadow(3px 5px 2px #320055b8);
 }
@@ -65,7 +63,6 @@
 }
 .current-route svg:last-child {
   color: #ffcc00;
-  font-size: 2rem;
 }
 
 .over {
