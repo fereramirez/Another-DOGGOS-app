@@ -76,6 +76,11 @@ const SearchBar = ({ setError }) => {
             value={form}
             autoComplete="off"
           />
+          {!form && (
+            <span className="search-svg search-svg-non-functional">
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </span>
+          )}
           {form && (
             <div>
               <div onClick={handleReset} className="x-mark">

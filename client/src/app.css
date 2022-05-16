@@ -303,6 +303,15 @@ ul {
   .current-route svg:last-child {
     font-size: 2rem;
   }
+  .inputWithButton > input {
+    width: 100%;
+  }
+  .inputWithButton > div {
+    right: 0;
+  }
+  .search-svg-non-functional {
+    display: none;
+  }
 }
 
 @media (max-width: 460px) {
@@ -331,5 +340,17 @@ ul {
   }
   .about .current-route svg:last-child {
     transform: translate(1.95rem, -3.1rem);
+  }
+  .inputWithButton > input {
+    width: 90%;
+  }
+  .inputWithButton > div {
+    right: 8px;
+  }
+  .inputWithButton > input::placeholder {
+    color: transparent;
+  }
+  .search-svg-non-functional {
+    transform: translateX(-1.5rem);
   }
 }
