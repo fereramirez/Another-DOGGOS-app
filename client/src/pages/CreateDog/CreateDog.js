@@ -411,18 +411,18 @@ const CreateDog = () => {
     }
   }; */
   const enterHandler = (e) => {
-    if (e.code === "Enter" && e.target.value) {
-      if (temperaments.includes(e.target.value)) {
+    if (e.code === "Enter" && temperamentMobile) {
+      if (temperaments.includes(temperamentMobile)) {
         setForm({
           ...form,
           [name]: temperaments.filter(
-            (temperament) => temperament !== e.target.value
+            (temperament) => temperament !== temperamentMobile
           ),
         });
-      } else if (e.target.value && temperaments.length < 5) {
+      } else if (temperamentMobile && temperaments.length < 5) {
         setForm({
           ...form,
-          [name]: [...temperaments, e.target.value],
+          [name]: [...temperaments, temperamentMobile],
         });
       } else if (temperaments.length === 5) {
         setWarnForm({
@@ -432,7 +432,12 @@ const CreateDog = () => {
         timeout = () => setTimeout(() => setWarnForm({}), 5000);
         timeoutId.current = timeout();
       }
+      setTemperamentMobile("");
     }
+  };
+  const [temperamentMobile, setTemperamentMobile] = useState("");
+  const handleTemperamentsMobile = (e) => {
+    setTemperamentMobile(e.target.value);
   };
 
   return (
@@ -601,13 +606,13 @@ const CreateDog = () => {
                       name="temperaments"
                       list="allTemperaments"
                       onBlur={handleBlur}
-                      /*   onKeyDown={eventSourceCatcher}
-                      onChange={eventValueCatcher} */
+                      /*   onKeyDown={eventSourceCatcher} */
+                      onChange={handleTemperamentsMobile}
                       onKeyUp={enterHandler}
                       onFocus={handleFocus}
                       className="select-temperaments-mobile"
                       autoComplete="off"
-                      /* value={temperamentsMobile} */
+                      value={temperamentMobile}
                       placeholder="Tap HERE to select"
                     />
                     <datalist id="allTemperaments">
