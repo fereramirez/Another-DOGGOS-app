@@ -542,7 +542,7 @@ const CreateDog = () => {
               </label>
 
               <div className="d">
-                {isItMobile ? (
+                {/* {isItMobile ? (
                   <span>
                     <input
                       name="temperaments"
@@ -559,23 +559,23 @@ const CreateDog = () => {
                       ))}
                     </datalist>
                   </span>
-                ) : (
-                  <select
-                    name="temperaments"
-                    multiple
-                    size="12"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    className="select-temperaments"
-                  >
-                    {allTemperaments.current.map((temperament) => (
-                      <option value={temperament} key={temperament}>
-                        {temperament}
-                      </option>
-                    ))}
-                  </select>
-                )}
+                ) : ( */}
+                <select
+                  name="temperaments"
+                  multiple
+                  size="12"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  className="select-temperaments"
+                >
+                  {allTemperaments.current.map((temperament) => (
+                    <option value={temperament} key={temperament}>
+                      {temperament}
+                    </option>
+                  ))}
+                </select>
+                {/*     )} */}
               </div>
               <>
                 {/* <button onClick={customTemperament}>Add custom temperament</button>
