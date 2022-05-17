@@ -386,6 +386,11 @@ const CreateDog = () => {
     setIsItMobile(mobileCheck);
   }, []);
 
+  const [temperamentsMobile, setTemperamentsMobile] = useState("");
+  const handleTemperamentsMobile = () => {
+    setTemperamentsMobile("");
+  };
+
   return (
     <div className="create-container">
       {error ? (
@@ -502,7 +507,7 @@ const CreateDog = () => {
             </>
 
             <>
-              <label className="temperament-info c">
+              <label className="temperament-info c temperament-info-mobile-container">
                 Temperaments
                 <p
                   className={`error-info ${
@@ -541,25 +546,31 @@ const CreateDog = () => {
                 )}
               </label>
 
-              <div className="d">
-                {/* {isItMobile ? (
-                  <span>
-                    <input
-                      name="temperaments"
-                      list="allTemperaments"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      onFocus={handleFocus}
-                      className="select-temperaments"
-                      autoComplete="off"
-                    />
-                    <datalist id="allTemperaments">
-                      {allTemperaments.current.map((temperament) => (
-                        <option value={temperament} key={temperament} />
-                      ))}
-                    </datalist>
-                  </span>
-                ) : ( */}
+              <div
+                className={`d select-temperaments-mobile-container ${
+                  isItMobile ? "" : "n"
+                }`}
+              >
+                {/*  {isItMobile ? ( */}
+                <span>
+                  <input
+                    name="temperaments"
+                    list="allTemperaments"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    className="select-temperaments-mobile"
+                    autoComplete="off"
+                    value={temperamentsMobile}
+                    placeholder="Tap HERE to select"
+                  />
+                  <datalist id="allTemperaments">
+                    {allTemperaments.current.map((temperament) => (
+                      <option value={temperament} key={temperament} />
+                    ))}
+                  </datalist>
+                </span>
+                {/*   ) : (
                 <select
                   name="temperaments"
                   multiple
@@ -575,7 +586,7 @@ const CreateDog = () => {
                     </option>
                   ))}
                 </select>
-                {/*     )} */}
+                     )}  */}
               </div>
               <>
                 {/* <button onClick={customTemperament}>Add custom temperament</button>
@@ -604,7 +615,11 @@ const CreateDog = () => {
               </>
             </>
 
-            <div className="p buttons-create-container">
+            <div
+              className={`buttons-create-container buttons-create-container-mobile ${
+                isItMobile ? "n" : "p"
+              }`}
+            >
               <input
                 type="submit"
                 value={

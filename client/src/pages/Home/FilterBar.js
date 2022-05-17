@@ -235,7 +235,7 @@ const FilterBar = ({ pages, setPages }) => {
             checked={filter.own}
             onChange={handleChecked}
           />
-          Own dogs
+          Created
         </label>
       </div>
       <div className="order-container bb">

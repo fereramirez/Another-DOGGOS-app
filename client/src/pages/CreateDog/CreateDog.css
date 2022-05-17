@@ -130,3 +130,18 @@
   background-color: #feecab;
   box-shadow: 6px 6px 8px -1px #320055b8;
 }
+
+.select-temperaments-mobile {
+  width: 170px;
+}
+.select-temperaments-mobile-container {
+  margin-top: 1.5rem;
+  margin-bottom: auto;
+}
+.temperament-info-mobile-container {
+  margin-top: 2rem;
+}
+.buttons-create-container-mobile {
+  margin-top: 0;
+  transform: translateY(-2rem);
+}

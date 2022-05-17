@@ -247,6 +247,9 @@ ul {
   .p {
     grid-area: p;
   }
+  .n {
+    grid-area: n;
+  }
   .buttons-create-container {
     margin-top: 1.5rem;
     justify-self: center;
