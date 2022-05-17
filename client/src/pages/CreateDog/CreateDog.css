@@ -145,3 +145,14 @@
   margin-top: 0;
   transform: translateY(-2rem);
 }
+.plus-temperament-mobile {
+  position: absolute;
+  font-size: 1.3rem;
+  color: #320055;
+  right: 1.5rem;
+  top: 0.1rem;
+  cursor: pointer;
+}
+.temperament-input-container-mobile {
+  position: relative;
+}

@@ -10,7 +10,7 @@ import Modal from "../../components/Modal";
 import { useModal } from "../../hooks/useModal";
 import "./CreateDog.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const initialForm = {
   name: "",
@@ -386,33 +386,33 @@ const CreateDog = () => {
     setIsItMobile(mobileCheck);
   }, []);
 
-  const enterHandler = (e) => {
-    if (e.keyCode === 13 && temperamentMobile) {
-      e.preventDefault();
-      if (temperaments.includes(temperamentMobile)) {
-        setForm({
-          ...form,
-          [e.target.name]: temperaments.filter(
-            (temperament) => temperament !== temperamentMobile
-          ),
-        });
-      } else if (temperamentMobile && temperaments.length < 5) {
-        console.log(e);
-        console.log(temperamentMobile);
-        setForm({
-          ...form,
-          temperaments: [...temperaments, temperamentMobile],
-        });
-      } else if (temperaments.length === 5) {
-        setWarnForm({
-          [e.target.name]: "5 temperaments can be selected at most",
-        });
-        clearTimeout(timeoutId.current);
-        timeout = () => setTimeout(() => setWarnForm({}), 5000);
-        timeoutId.current = timeout();
-      }
-      setTemperamentMobile("");
+  const handleTemperamentPlus = (e) => {
+    /* if (e.keyCode === 13 && temperamentMobile) { */
+    e.preventDefault();
+    if (temperaments.includes(temperamentMobile)) {
+      setForm({
+        ...form,
+        [e.target.name]: temperaments.filter(
+          (temperament) => temperament !== temperamentMobile
+        ),
+      });
+    } else if (temperamentMobile && temperaments.length < 5) {
+      console.log(e);
+      console.log(temperamentMobile);
+      setForm({
+        ...form,
+        temperaments: [...temperaments, temperamentMobile],
+      });
+    } else if (temperaments.length === 5) {
+      setWarnForm({
+        [e.target.name]: "5 temperaments can be selected at most",
+      });
+      clearTimeout(timeoutId.current);
+      timeout = () => setTimeout(() => setWarnForm({}), 5000);
+      timeoutId.current = timeout();
     }
+    setTemperamentMobile("");
+    /* } */
   };
   const [temperamentMobile, setTemperamentMobile] = useState("");
 
@@ -594,25 +594,33 @@ const CreateDog = () => {
                 }`}
               >
                 {isItMobile ? (
-                  <span>
+                  <span className="temperament-input-container-mobile">
                     <input
                       name="temperaments"
                       pattern={regex.name}
                       list="allTemperaments"
                       onBlur={handleBlur}
                       onChange={handleTemperamentsMobile}
-                      onKeyUp={enterHandler}
+                      /* onKeyUp={enterHandler} */
                       onFocus={handleFocus}
                       className="select-temperaments-mobile"
                       autoComplete="off"
                       value={temperamentMobile}
-                      placeholder="Tap HERE to select"
+                      placeholder="Tap HERE"
                     />
                     <datalist id="allTemperaments">
                       {allTemperaments.current.map((temperament) => (
                         <option value={temperament} key={temperament} />
                       ))}
                     </datalist>
+                    {temperamentMobile && (
+                      <span
+                        onClick={handleTemperamentPlus}
+                        className="plus-temperament-mobile"
+                      >
+                        <FontAwesomeIcon icon={faPlus} />
+                      </span>
+                    )}
                   </span>
                 ) : (
                   <select
