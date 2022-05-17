@@ -548,7 +548,7 @@ const CreateDog = () => {
 
               <div
                 className={`d select-temperaments-mobile-container ${
-                  isItMobile ? "" : "n"
+                  isItMobile ? "n" : ""
                 }`}
               >
                 {isItMobile ? (
