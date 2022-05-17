@@ -214,9 +214,12 @@ const FilterBar = ({ pages, setPages }) => {
   }, [lastScrollY]);
 
   return (
-    <div className={`filter-container ${show && "hidden"}`} ref={topCardsRef}>
-      <div className="check-container">
-        <label className={`${!filter.api && "checked"}`}>
+    <div
+      className={`filter-container ${show ? "hidden" : ""}`}
+      ref={topCardsRef}
+    >
+      <div className="check-container a">
+        <label className={`${!filter.api ? "checked" : ""}`}>
           <input
             name="api"
             type="checkbox"
@@ -225,7 +228,7 @@ const FilterBar = ({ pages, setPages }) => {
           />
           API dogs
         </label>
-        <label className={`${!filter.own && "checked"}`}>
+        <label className={`${!filter.own ? "checked" : ""}`}>
           <input
             name="own"
             type="checkbox"
@@ -235,7 +238,7 @@ const FilterBar = ({ pages, setPages }) => {
           Own dogs
         </label>
       </div>
-      <div className="order-container">
+      <div className="order-container b">
         <label htmlFor="order">Order by </label>
         <div className="order-container">
           <select
@@ -270,7 +273,7 @@ const FilterBar = ({ pages, setPages }) => {
           </option>
         ))}
       </select> */}
-      <div className="temp-filter-container">
+      <div className="temp-filter-container c">
         <label htmlFor="temperament">Filter </label>
         <span className="input-temp-container">
           <input

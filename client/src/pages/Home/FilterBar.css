@@ -1,8 +1,4 @@
 .filter-container {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 4rem;
   width: 100%;
   position: fixed;
   top: 4rem;
@@ -18,11 +14,9 @@
 }
 .check-container {
   display: flex;
-  /* flex-direction: column; */
 }
 .order-container {
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
 }
