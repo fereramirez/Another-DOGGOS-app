@@ -1,8 +1,8 @@
 .error-info {
-  color: #ea3546;
+  color: #f72585;
 }
 .warn-info {
-  color: #753bbd;
+  color: #fff4c7;
 }
 
 .create-form {
@@ -20,7 +20,7 @@
 
 .create-content-container {
   justify-content: center;
-  background-color: #e7a8f0;
+  /* background-color: #e7a8f0; */
   border-radius: 1rem;
   margin-top: 6rem;
   width: fit-content;
@@ -29,10 +29,18 @@
   margin-left: auto;
   margin-right: auto;
 }
-.create-content-container > h1 {
+.create-content-container h1 {
+  width: 80%;
   text-align: center;
-  color: #753bbd;
-  text-shadow: 2px 2px 3px #15002476;
+  color: #ffcc00;
+  text-shadow: 3px 3px 3px #15002476;
+  border-bottom-width: 5px;
+  border-bottom-style: solid;
+  border-bottom-color: #ffcc00;
+  border-radius: 5px;
+  box-shadow: 0 4px 0 -1px #380060e7;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .create-container input {
@@ -41,15 +49,21 @@
   background-color: #fff4c7;
   border: 2px solid #310055;
   color: #310055;
+  font-weight: bolder;
   box-shadow: 3px 3px 5px -1px #320055b8;
+  height: 2rem;
 }
 
 .create-form label {
   justify-self: end;
+  color: #ffcc00;
 }
 
 .create-form > div {
   margin-left: 1.5rem;
+}
+.create-form > div > span {
+  color: #ffcc00;
 }
 
 .hidden-dumb {

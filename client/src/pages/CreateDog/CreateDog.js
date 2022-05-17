@@ -515,7 +515,9 @@ const CreateDog = () => {
                     {warnForm.temperaments}
                   </p>
                 ) : (
-                  <p className="hidden-dumb temperament-warn">HIDDEN</p>
+                  <p className="hidden-dumb temperament-warn">
+                    5 temperaments can be selected at most
+                  </p>
                 )}
               </label>
               <div className="d">
