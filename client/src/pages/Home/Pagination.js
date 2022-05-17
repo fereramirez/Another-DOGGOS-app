@@ -94,13 +94,17 @@ const Pagination = ({ pages, setPages }) => {
     <div className="pagination-container">
       {total > 1 && (
         <>
-          {pageShowed !== 0 && (
+          {
             <>
-              {isMobile && pageShowed !== 1 && (
+              {isMobile && (
                 <button
                   name="first-page"
                   onClick={handleClick}
-                  className="pagination-arrow first-page-arrow"
+                  className={`pagination-arrow first-page-arrow ${
+                    pageShowed !== 0 && pageShowed !== 1
+                      ? ""
+                      : "hidden-in-mobile"
+                  }`}
                 >
                   <span>1</span>
                   <FontAwesomeIcon icon={faAngleDoubleLeft} />
@@ -109,12 +113,14 @@ const Pagination = ({ pages, setPages }) => {
               <button
                 name="previous"
                 onClick={handleClick}
-                className="pagination-arrow"
+                className={`pagination-arrow ${
+                  pageShowed !== 0 ? "" : "hidden-in-mobile"
+                }`}
               >
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>
             </>
-          )}
+          }
           {React.Children.toArray(
             [...Array(total)].map((el, i) =>
               !isMobile ? (
@@ -167,27 +173,33 @@ const Pagination = ({ pages, setPages }) => {
               )
             )
           )}
-          {pageShowed !== total - 1 && (
+          {
             <>
               <button
                 name="next"
                 onClick={handleClick}
-                className="pagination-arrow"
+                className={`pagination-arrow ${
+                  pageShowed !== total - 1 ? "" : "hidden-in-mobile"
+                }`}
               >
                 <FontAwesomeIcon icon={faChevronRight} />
               </button>
-              {isMobile && pageShowed !== total - 2 && (
+              {isMobile && (
                 <button
                   name="last-page"
                   onClick={handleClick}
-                  className="pagination-arrow last-page-arrow"
+                  className={`pagination-arrow last-page-arrow ${
+                    pageShowed !== total - 1 && pageShowed !== total - 2
+                      ? ""
+                      : "hidden-in-mobile"
+                  }`}
                 >
                   <FontAwesomeIcon icon={faAngleDoubleRight} />
                   <span>{total}</span>
                 </button>
               )}
             </>
-          )}
+          }
         </>
       )}
     </div>

@@ -315,6 +315,9 @@ ul {
   .search-svg-non-functional {
     display: none;
   }
+  .showed-in-mobile {
+    display: none;
+  }
 }
 
 @media (max-width: 460px) {
