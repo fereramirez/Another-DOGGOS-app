@@ -386,47 +386,25 @@ const CreateDog = () => {
     setIsItMobile(mobileCheck);
   }, []);
 
-  /*  let source = null;
-  const eventSourceCatcher = (e) => {
-    source = e.key === "Unidentified" ? "list" : "input";
-  };
-  const eventValueCatcher = (e) => {
-    if (source === "list") {
-      //? maximo de temps seleccionables⬇
-      if (!tempList.includes(e.target.value) && tempList.length < 3) {
-        setTemperaments([...tempList, e.target.value.trim()]);
-        document.getElementById("form-temps").value = "";
-        setMount(true);
-      } else if (tempList.length === 3) {
-        let aux = { ...error };
-        setError({
-          ...error,
-          temperaments: "You can select just three temperaments.",
-        });
-        document.getElementById("form-temps").value = "";
-        setTimeout(() => {
-          setError(aux);
-        }, 5000);
-      }
-    }
-  }; */
   const enterHandler = (e) => {
     if (e.code === "Enter" && temperamentMobile) {
       if (temperaments.includes(temperamentMobile)) {
         setForm({
           ...form,
-          [name]: temperaments.filter(
+          [e.target.name]: temperaments.filter(
             (temperament) => temperament !== temperamentMobile
           ),
         });
       } else if (temperamentMobile && temperaments.length < 5) {
+        console.log(e);
+        console.log(temperamentMobile);
         setForm({
           ...form,
-          [name]: [...temperaments, temperamentMobile],
+          temperaments: [...temperaments, temperamentMobile],
         });
       } else if (temperaments.length === 5) {
         setWarnForm({
-          [name]: "5 temperaments can be selected at most",
+          [e.target.name]: "5 temperaments can be selected at most",
         });
         clearTimeout(timeoutId.current);
         timeout = () => setTimeout(() => setWarnForm({}), 5000);
@@ -436,8 +414,22 @@ const CreateDog = () => {
     }
   };
   const [temperamentMobile, setTemperamentMobile] = useState("");
-  const handleTemperamentsMobile = (e) => {
-    setTemperamentMobile(e.target.value);
+
+  const handleTemperamentsMobile = ({ target }) => {
+    const { name, value, validity } = target;
+    let validatedValue = "";
+
+    if (!validity.valid) {
+      clearTimeout(timeoutId.current);
+      setWarnForm({
+        [name]: "Only letters allowed",
+      });
+      timeout = () => setTimeout(() => setWarnForm({}), 5000);
+      timeoutId.current = timeout();
+    } else {
+      validatedValue = value;
+    }
+    setTemperamentMobile(validatedValue);
   };
 
   return (
@@ -604,9 +596,9 @@ const CreateDog = () => {
                   <span>
                     <input
                       name="temperaments"
+                      pattern={regex.name}
                       list="allTemperaments"
                       onBlur={handleBlur}
-                      /*   onKeyDown={eventSourceCatcher} */
                       onChange={handleTemperamentsMobile}
                       onKeyUp={enterHandler}
                       onFocus={handleFocus}
