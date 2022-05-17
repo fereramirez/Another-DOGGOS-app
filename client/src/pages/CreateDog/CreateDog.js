@@ -386,9 +386,53 @@ const CreateDog = () => {
     setIsItMobile(mobileCheck);
   }, []);
 
-  const [temperamentsMobile, setTemperamentsMobile] = useState("");
-  const handleTemperamentsMobile = () => {
-    setTemperamentsMobile("");
+  /*  let source = null;
+  const eventSourceCatcher = (e) => {
+    source = e.key === "Unidentified" ? "list" : "input";
+  };
+  const eventValueCatcher = (e) => {
+    if (source === "list") {
+      //? maximo de temps seleccionables⬇
+      if (!tempList.includes(e.target.value) && tempList.length < 3) {
+        setTemperaments([...tempList, e.target.value.trim()]);
+        document.getElementById("form-temps").value = "";
+        setMount(true);
+      } else if (tempList.length === 3) {
+        let aux = { ...error };
+        setError({
+          ...error,
+          temperaments: "You can select just three temperaments.",
+        });
+        document.getElementById("form-temps").value = "";
+        setTimeout(() => {
+          setError(aux);
+        }, 5000);
+      }
+    }
+  }; */
+  const enterHandler = (e) => {
+    if (e.code === "Enter" && e.target.value) {
+      if (temperaments.includes(e.target.value)) {
+        setForm({
+          ...form,
+          [name]: temperaments.filter(
+            (temperament) => temperament !== e.target.value
+          ),
+        });
+      } else if (e.target.value && temperaments.length < 5) {
+        setForm({
+          ...form,
+          [name]: [...temperaments, e.target.value],
+        });
+      } else if (temperaments.length === 5) {
+        setWarnForm({
+          [name]: "5 temperaments can be selected at most",
+        });
+        clearTimeout(timeoutId.current);
+        timeout = () => setTimeout(() => setWarnForm({}), 5000);
+        timeoutId.current = timeout();
+      }
+    }
   };
 
   return (
@@ -557,11 +601,13 @@ const CreateDog = () => {
                       name="temperaments"
                       list="allTemperaments"
                       onBlur={handleBlur}
-                      onChange={handleChange}
+                      /*   onKeyDown={eventSourceCatcher}
+                      onChange={eventValueCatcher} */
+                      onKeyUp={enterHandler}
                       onFocus={handleFocus}
                       className="select-temperaments-mobile"
                       autoComplete="off"
-                      value={temperamentsMobile}
+                      /* value={temperamentsMobile} */
                       placeholder="Tap HERE to select"
                     />
                     <datalist id="allTemperaments">
