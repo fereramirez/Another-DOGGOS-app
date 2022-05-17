@@ -388,6 +388,7 @@ const CreateDog = () => {
 
   const handleTemperamentPlus = (e) => {
     /* if (e.keyCode === 13 && temperamentMobile) { */
+    console.log(e);
     e.preventDefault();
     if (temperaments.includes(temperamentMobile)) {
       setForm({
@@ -606,7 +607,6 @@ const CreateDog = () => {
                       className="select-temperaments-mobile"
                       autoComplete="off"
                       value={temperamentMobile}
-                      placeholder="Tap HERE"
                     />
                     <datalist id="allTemperaments">
                       {allTemperaments.current.map((temperament) => (
