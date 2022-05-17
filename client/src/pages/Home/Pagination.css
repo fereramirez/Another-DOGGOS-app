@@ -26,6 +26,26 @@
 .last-page-arrow > span {
   margin-left: 0.4rem;
 }
+@media (min-width: 1001px) {
+  .pagination-container {
+    width: 70%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .pagination-container {
+    width: 100%;
+  }
+}
+
+.current-page > div {
+  font-size: 1.2rem;
+  color: purple;
+  position: absolute;
+  top: 30%;
+  left: 1rem;
+  right: 1rem;
+}
 
 .page-button {
   font-size: 1.1rem;
@@ -46,7 +66,6 @@
 
 .pagination-container {
   /* border: 1px solid red; */
-  width: 70%;
   max-width: 1000px;
   display: flex;
   justify-content: space-evenly;
@@ -56,6 +75,8 @@
 
 .current-page svg {
   filter: drop-shadow(3px 5px 2px #320055b8);
+  font-size: 3rem;
+  transform: translateY(-0.5rem);
 }
 
 .current-page {
@@ -68,6 +89,8 @@
   outline: inherit;
   font-size: 2.5rem;
   color: #fdc500;
+  display: flex;
+  position: relative;
 }
 
 .pagination-arrow:hover,

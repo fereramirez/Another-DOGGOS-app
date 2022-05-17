@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { dogsPerPage } from "../../Constants";
 import "./Pagination.css";
@@ -40,6 +40,16 @@ const Pagination = ({ pages, setPages }) => {
       setPages({
         ...pages,
         pageShowed: pages.pageShowed - 1,
+      });
+    } else if (target.name === "first-page") {
+      setPages({
+        ...pages,
+        pageShowed: 0,
+      });
+    } else if (target.name === "last-page") {
+      setPages({
+        ...pages,
+        pageShowed: total - 1,
       });
     }
   };
@@ -86,8 +96,12 @@ const Pagination = ({ pages, setPages }) => {
         <>
           {pageShowed !== 0 && (
             <>
-              {isMobile && (
-                <button className="pagination-arrow first-page-arrow">
+              {isMobile && pageShowed !== 1 && (
+                <button
+                  name="first-page"
+                  onClick={handleClick}
+                  className="pagination-arrow first-page-arrow"
+                >
                   <span>1</span>
                   <FontAwesomeIcon icon={faAngleDoubleLeft} />
                 </button>
@@ -101,49 +115,56 @@ const Pagination = ({ pages, setPages }) => {
               </button>
             </>
           )}
-          {[...Array(total)].map((el, i) =>
-            !isMobile ? (
-              <button
-                name="page"
-                key={i}
-                onClick={handleClick}
-                value={i}
-                disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
-                className={
-                  parseInt(i) === parseInt(pageShowed)
-                    ? "current-page"
-                    : "page-button"
-                }
-              >
-                {parseInt(i) === parseInt(pageShowed) ? (
-                  <FontAwesomeIcon icon={faPaw} />
-                ) : (
-                  i + 1
-                )}
-              </button>
-            ) : i === pageShowed ||
-              i === pageShowed - 1 ||
-              i === pageShowed + 1 ? (
-              <button
-                name="page"
-                key={i}
-                onClick={handleClick}
-                value={i}
-                disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
-                className={
-                  parseInt(i) === parseInt(pageShowed)
-                    ? "current-page"
-                    : "page-button"
-                }
-              >
-                {parseInt(i) === parseInt(pageShowed) ? (
-                  <FontAwesomeIcon icon={faPaw} />
-                ) : (
-                  i + 1
-                )}
-              </button>
-            ) : (
-              <></>
+          {React.Children.toArray(
+            [...Array(total)].map((el, i) =>
+              !isMobile ? (
+                <button
+                  name="page"
+                  key={i}
+                  onClick={handleClick}
+                  value={i}
+                  disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
+                  className={
+                    parseInt(i) === parseInt(pageShowed)
+                      ? "current-page"
+                      : "page-button"
+                  }
+                >
+                  {parseInt(i) === parseInt(pageShowed) ? (
+                    <>
+                      <FontAwesomeIcon icon={faPaw} />
+                      <div>{i + 1}</div>
+                    </>
+                  ) : (
+                    i + 1
+                  )}
+                </button>
+              ) : i === pageShowed ||
+                i === pageShowed - 1 ||
+                i === pageShowed + 1 ? (
+                <button
+                  name="page"
+                  onClick={handleClick}
+                  value={i}
+                  disabled={parseInt(i) === parseInt(pageShowed) ? true : false}
+                  className={
+                    parseInt(i) === parseInt(pageShowed)
+                      ? "current-page"
+                      : "page-button"
+                  }
+                >
+                  {parseInt(i) === parseInt(pageShowed) ? (
+                    <>
+                      <FontAwesomeIcon icon={faPaw} />
+                      <div>{i + 1}</div>
+                    </>
+                  ) : (
+                    i + 1
+                  )}
+                </button>
+              ) : (
+                <></>
+              )
             )
           )}
           {pageShowed !== total - 1 && (
@@ -155,10 +176,14 @@ const Pagination = ({ pages, setPages }) => {
               >
                 <FontAwesomeIcon icon={faChevronRight} />
               </button>
-              {isMobile && (
-                <button className="pagination-arrow last-page-arrow">
+              {isMobile && pageShowed !== total - 2 && (
+                <button
+                  name="last-page"
+                  onClick={handleClick}
+                  className="pagination-arrow last-page-arrow"
+                >
                   <FontAwesomeIcon icon={faAngleDoubleRight} />
-                  <span>{totalPages}</span>
+                  <span>{total}</span>
                 </button>
               )}
             </>
