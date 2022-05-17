@@ -218,7 +218,7 @@ const FilterBar = ({ pages, setPages }) => {
       className={`filter-container ${show ? "hidden" : ""}`}
       ref={topCardsRef}
     >
-      <div className="check-container a">
+      <div className="check-container aa">
         <label className={`${!filter.api ? "checked" : ""}`}>
           <input
             name="api"
@@ -238,7 +238,7 @@ const FilterBar = ({ pages, setPages }) => {
           Own dogs
         </label>
       </div>
-      <div className="order-container b">
+      <div className="order-container bb">
         <label htmlFor="order">Order by </label>
         <div className="order-container">
           <select
@@ -273,7 +273,7 @@ const FilterBar = ({ pages, setPages }) => {
           </option>
         ))}
       </select> */}
-      <div className="temp-filter-container c">
+      <div className="temp-filter-container cc">
         <label htmlFor="temperament">Filter </label>
         <span className="input-temp-container">
           <input

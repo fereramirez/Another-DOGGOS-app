@@ -361,17 +361,17 @@ ul {
     display: grid;
     grid-template-columns: 35% 65%;
     grid-template-areas:
-      "a b"
-      "a c";
+      "aa bb"
+      "aa cc";
   }
-  .a {
-    grid-area: a;
+  .aa {
+    grid-area: aa;
   }
-  .b {
-    grid-area: b;
+  .bb {
+    grid-area: bb;
   }
-  .c {
-    grid-area: c;
+  .cc {
+    grid-area: cc;
   }
   .check-container {
     justify-content: space-evenly;
