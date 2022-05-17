@@ -1,6 +1,7 @@
 .landing-container {
   width: 100vw;
   height: 100vh;
+  overflow-y: hidden;
 }
 
 .triangle {
@@ -9,8 +10,7 @@
   border-top: 15rem solid #ffcc00;
   border-bottom: 15rem solid transparent;
   border-right: 15rem solid transparent;
-  transition: transform 0.45s ease /* , background 0.45s ease */;
-  /* position: relative; */
+  transition: transform 0.45s ease;
 }
 
 .landing-paw {
@@ -25,28 +25,67 @@
   left: 5px;
   text-align: center;
   filter: drop-shadow(4px 4px 4px #320055b8);
-  transform: rotate(-45deg) translate(-2.2rem, -8rem);
   width: 22rem;
   height: 11rem;
-  animation: paw-shake-attention 5s cubic-bezier(0.36, 0.07, 0.19, 0.97)
-    infinite alternate;
-}
-
-.landing-paw:hover {
-  animation: paw-shake-hover 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: rotate(-40deg) translate(-3rem, -18.7rem);
-  height: 25rem;
-  width: 37rem;
 }
 
 @media (min-height: 921px) {
   .landing-container > a:hover + .triangle {
     transform: scale(2) translate(3rem, 6rem);
   }
+  .landing-paw {
+    transform: rotate(-45deg) translate(-2.2rem, -8rem);
+    animation: paw-shake-attention 5s cubic-bezier(0.36, 0.07, 0.19, 0.97)
+      infinite alternate;
+  }
+  .landing-paw:hover {
+    animation: paw-shake-hover 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: rotate(-40deg) translate(-3rem, -18.7rem);
+    height: 25rem;
+    width: 37rem;
+  }
+  .landing-container > a:hover + .triangle > p {
+    opacity: 1;
+    display: block;
+  }
 }
-@media (max-height: 920px) {
+@media (min-width: 501px) {
   .landing-container > a:hover + .triangle {
-    transform: scale(1.5) translate(2.5rem, 5rem);
+    transform: scale(2) translate(3rem, 6rem);
+  }
+  .landing-paw {
+    transform: rotate(-45deg) translate(-2.2rem, -8rem);
+    animation: paw-shake-attention 5s cubic-bezier(0.36, 0.07, 0.19, 0.97)
+      infinite alternate;
+  }
+  .landing-paw:hover {
+    animation: paw-shake-hover 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: rotate(-40deg) translate(-3rem, -18.7rem);
+    height: 25rem;
+    width: 37rem;
+  }
+  .landing-container > a:hover + .triangle > p {
+    opacity: 1;
+    display: block;
+  }
+}
+@media (max-height: 920px) and (max-width: 500px) {
+  .landing-container > a + .triangle {
+    transform: scale(1.1) translate(0.6rem, 1.3rem);
+  }
+  .landing-paw {
+    font-size: 5rem;
+    transform: rotate(-45deg) translate(-2.5rem, -11.5rem);
+    height: 14.5rem;
+    width: 25rem;
+  }
+  .landing-paw:hover {
+    animation: paw-shake-hover-mobile 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97)
+      both;
+  }
+  .landing-container > a + .triangle > p {
+    opacity: 1;
+    display: block;
   }
 }
 
@@ -58,6 +97,8 @@
   text-shadow: 2px 2px 3px #15002476;
   /*   border: 2px solid blue; */
   /*  position: absolute; */
+  z-index: 900;
+  font-weight: bolder;
 }
 
 .landing-start {
@@ -67,10 +108,7 @@
   transition: opacity 0.45s ease;
   text-shadow: 2px 2px 3px #15002476;
 }
-.landing-container > a:hover + .triangle > p {
-  opacity: 1;
-  display: block;
-}
+
 .landing-start > span > span {
   font-weight: bolder;
   font-size: 1.2rem;
@@ -123,6 +161,35 @@
   }
 }
 
+@keyframes paw-shake-hover-mobile {
+  /* 0% {
+    transform: rotate(-45deg) translate(-2.5rem, -11.5rem)
+  } */
+  15% {
+    transform: rotate(-40deg) translate(-2.5rem, -11.5rem);
+  }
+  30% {
+    transform: rotate(-50deg) translate(-2.5rem, -11.5rem);
+  }
+  45% {
+    transform: rotate(-41deg) translate(-2.5rem, -11.5rem);
+  }
+  60% {
+    transform: rotate(-49deg) translate(-2.5rem, -11.5rem);
+  }
+  75% {
+    transform: rotate(-43deg) translate(-2.5rem, -11.5rem);
+  }
+  85% {
+    transform: rotate(-47deg) translate(-2.5rem, -11.5rem);
+  }
+  92% {
+    transform: rotate(-44deg) translate(-2.5rem, -11.5rem);
+  }
+  100% {
+    transform: rotate(-45deg) translate(-2.5rem, -11.5rem);
+  }
+}
 @keyframes paw-shake-hover {
   /* 0% {
     transform: rotate(-45deg) translate(-3rem, -18.7rem);
