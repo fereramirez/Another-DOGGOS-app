@@ -547,8 +547,8 @@ const CreateDog = () => {
               </label>
 
               <div
-                className={`d select-temperaments-mobile-container ${
-                  isItMobile ? "n" : ""
+                className={`d ${
+                  isItMobile ? "select-temperaments-mobile-container n" : ""
                 }`}
               >
                 {isItMobile ? (
@@ -616,8 +616,8 @@ const CreateDog = () => {
             </>
 
             <div
-              className={`buttons-create-container buttons-create-container-mobile ${
-                isItMobile ? "n" : "p"
+              className={`buttons-create-container ${
+                isItMobile ? "buttons-create-container-mobile  n" : "p"
               }`}
             >
               <input
