@@ -388,6 +388,7 @@ const CreateDog = () => {
 
   const enterHandler = (e) => {
     if (e.keyCode === 13 && temperamentMobile) {
+      e.preventDefault();
       if (temperaments.includes(temperamentMobile)) {
         setForm({
           ...form,
