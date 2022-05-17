@@ -551,42 +551,42 @@ const CreateDog = () => {
                   isItMobile ? "" : "n"
                 }`}
               >
-                {/*  {isItMobile ? ( */}
-                <span>
-                  <input
+                {isItMobile ? (
+                  <span>
+                    <input
+                      name="temperaments"
+                      list="allTemperaments"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      onFocus={handleFocus}
+                      className="select-temperaments-mobile"
+                      autoComplete="off"
+                      value={temperamentsMobile}
+                      placeholder="Tap HERE to select"
+                    />
+                    <datalist id="allTemperaments">
+                      {allTemperaments.current.map((temperament) => (
+                        <option value={temperament} key={temperament} />
+                      ))}
+                    </datalist>
+                  </span>
+                ) : (
+                  <select
                     name="temperaments"
-                    list="allTemperaments"
+                    multiple
+                    size="12"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     onFocus={handleFocus}
-                    className="select-temperaments-mobile"
-                    autoComplete="off"
-                    value={temperamentsMobile}
-                    placeholder="Tap HERE to select"
-                  />
-                  <datalist id="allTemperaments">
+                    className="select-temperaments"
+                  >
                     {allTemperaments.current.map((temperament) => (
-                      <option value={temperament} key={temperament} />
+                      <option value={temperament} key={temperament}>
+                        {temperament}
+                      </option>
                     ))}
-                  </datalist>
-                </span>
-                {/*   ) : (
-                <select
-                  name="temperaments"
-                  multiple
-                  size="12"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  className="select-temperaments"
-                >
-                  {allTemperaments.current.map((temperament) => (
-                    <option value={temperament} key={temperament}>
-                      {temperament}
-                    </option>
-                  ))}
-                </select>
-                     )}  */}
+                  </select>
+                )}
               </div>
               <>
                 {/* <button onClick={customTemperament}>Add custom temperament</button>
