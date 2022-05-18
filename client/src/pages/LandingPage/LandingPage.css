@@ -137,31 +137,31 @@
 
 @keyframes paw-shake-attention-mobile {
   0% {
-    transform: rotate(-45deg) translate(-2rem, -11.3rem);
+    transform: rotate(-45deg) translate(-2.5rem, -11.5rem);
   }
   1.5% {
-    transform: rotate(-40deg) translate(-2rem, -11.3rem);
+    transform: rotate(-40deg) translate(-2.5rem, -11.5rem);
   }
   3.0% {
-    transform: rotate(-50deg) translate(-2rem, -11.3rem);
+    transform: rotate(-50deg) translate(-2.5rem, -11.5rem);
   }
   4.5% {
-    transform: rotate(-41deg) translate(-2rem, -11.3rem);
+    transform: rotate(-41deg) translate(-2.5rem, -11.5rem);
   }
   6.0% {
-    transform: rotate(-49deg) translate(-2rem, -11.3rem);
+    transform: rotate(-49deg) translate(-2.5rem, -11.5rem);
   }
   7.5% {
-    transform: rotate(-43deg) translate(-2rem, -11.3rem);
+    transform: rotate(-43deg) translate(-2.5rem, -11.5rem);
   }
   8.5% {
-    transform: rotate(-47deg) translate(-2rem, -11.3rem);
+    transform: rotate(-47deg) translate(-2.5rem, -11.5rem);
   }
   9.2% {
-    transform: rotate(-44deg) translate(-2rem, -11.3rem);
+    transform: rotate(-44deg) translate(-2.5rem, -11.5rem);
   }
   10.0% {
-    transform: rotate(-45deg) translate(-2rem, -11.3rem);
+    transform: rotate(-45deg) translate(-2.5rem, -11.5rem);
   }
 }
 @keyframes paw-shake-attention {
@@ -193,7 +193,6 @@
     transform: rotate(-45deg) translate(-2.5rem, -7.4rem);
   }
 }
-
 @keyframes paw-shake-hover-mobile {
   /* 0% {
     transform: rotate(-45deg) translate(-2.5rem, -11.5rem)
