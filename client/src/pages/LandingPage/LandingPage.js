@@ -24,6 +24,15 @@ const LandingPage = () => {
 
   return (
     <>
+      {isMobile ? (
+        <video className="landing-video" autoPlay loop muted>
+          <source src={videoMobile} type="video/mp4" />
+        </video>
+      ) : (
+        <video className="landing-video" autoPlay loop muted>
+          <source src={videoDesktop} type="video/mp4" />
+        </video>
+      )}
       <div className="landing-container">
         <Link to="/home">
           <span className="landing-paw">
@@ -44,15 +53,6 @@ const LandingPage = () => {
           </p>
         </div>
       </div>
-      {isMobile ? (
-        <video className="landing-video" autoPlay loop muted>
-          <source src={videoMobile} type="video/mp4" />
-        </video>
-      ) : (
-        <video className="landing-video" autoPlay loop muted>
-          <source src={videoDesktop} type="video/mp4" />
-        </video>
-      )}
     </>
   );
 };
