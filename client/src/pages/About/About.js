@@ -35,6 +35,14 @@ const About = () => {
           <span>Sequelize</span>
         </a>
       </div>
+      <a
+        href="https://github.com/fereramirez/Another-DOGGOS-app"
+        rel="noreferrer"
+        target="_blank"
+      >
+        {" "}
+        <span className="link-repository">GitHub repository</span>
+      </a>
       <p>Thanks for your attention.</p>
     </div>
   );

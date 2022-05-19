@@ -26,9 +26,17 @@
 }
 
 .about-page p {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .about-page p:last-child {
   text-align: right;
+}
+
+.link-repository {
+  text-align: right;
+  margin-top: 1rem;
+  font-weight: bolder;
+  text-decoration: underline;
+  font-size: 1.1rem;
 }
