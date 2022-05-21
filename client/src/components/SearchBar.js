@@ -37,7 +37,9 @@ const SearchBar = ({ setError }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate("/home");
-    sessionStorage.setItem("filterData", "");
+    sessionStorage.setItem("filterApiData", "true");
+    sessionStorage.setItem("filterOwnData", "true");
+    sessionStorage.setItem("filterTemperamentData", "");
     sessionStorage.setItem("pageData", 0);
     sessionStorage.setItem("searchData", form);
     // sessionStorage.setItem("orderByData", "name");
