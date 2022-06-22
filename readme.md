@@ -1,5 +1,7 @@
 # Individual Project
 
+## Link a la app https://another-dogos-app.vercel.app/
+
 ## Objetivos del Proyecto
 
 - Construir una App utlizando React, Redux, Node y Sequelize.
